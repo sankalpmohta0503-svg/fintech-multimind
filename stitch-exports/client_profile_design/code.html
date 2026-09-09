@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "tertiary-fixed-dim": "#dec29a", "status-critical-fg": "#991B1B", "outline-variant": "#c6c6cd", "surface-dim": "#dcd9db", "status-warning-bg": "#FFFBEB", "surface-container-highest": "#e4e2e4", "status-healthy-bg": "#F0FDF4", "surface-variant": "#e4e2e4", "on-primary": "#ffffff", "border-default": "#CBD5E1", "on-secondary": "#ffffff", "primary-container": "#131b2e", "secondary-fixed": "#89f5e7", "status-healthy-fg": "#166534", "surface-emphasis": "#E2E8F0", "border-strong": "#94A3B8", "border-subtle": "#E2E8F0", "inverse-on-surface": "#f3f0f2", "surface-container-low": "#f6f3f5", "inverse-surface": "#303032", "primary-fixed-dim": "#bec6e0", "error": "#ba1a1a", "background": "#fcf8fa", "secondary-container": "#86f2e4", "on-error": "#ffffff", "on-primary-fixed": "#131b2e", "text-muted": "#64748B", "text-primary": "#0F172A", "primary": "#000000", "primary-fixed": "#dae2fd", "tertiary-fixed": "#fcdeb5", "outline": "#76777d", "on-surface-variant": "#45464d", "on-primary-fixed-variant": "#3f465c", "on-secondary-fixed-variant": "#005049", "on-tertiary": "#ffffff", "on-primary-container": "#7c839b", "surface-container-lowest": "#ffffff", "surface-bright": "#fcf8fa", "status-opportunity-fg": "#1E40AF", "on-secondary-fixed": "#00201d", "canvas": "#F8FAFC", "status-opportunity-bg": "#EFF6FF", "tertiary": "#000000", "surface-container": "#f0edef", "on-secondary-container": "#006f66", "on-tertiary-container": "#98805d", "error-container": "#ffdad6", "secondary": "#006a61", "text-secondary": "#475569", "surface-tint": "#565e74", "surface": "#FFFFFF", "on-error-container": "#93000a", "secondary-fixed-dim": "#6bd8cb", "tertiary-container": "#271901", "on-surface": "#1b1b1d", "status-critical-bg": "#FEF2F2", "inverse-primary": "#bec6e0", "surface-container-high": "#eae7e9", "on-tertiary-fixed": "#271901", "on-background": "#1b1b1d", "status-warning-fg": "#92400E", "surface-subtle": "#F1F5F9", "on-tertiary-fixed-variant": "#574425" }, borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, spacing: { "space-xs": "8px", "space-3xs": "2px", "space-md": "16px", "space-2xs": "4px", "space-lg": "24px", "space-xl": "32px", "space-sm": "12px", "container-max": "1280px", "space-2xl": "48px" }, fontFamily: { "body-medium": ["Inter"], "headline-sm": ["Inter"], "body-default": ["Inter"], "caption": ["Inter"], "headline-lg": ["Inter"], "label": ["Inter"], "section-title": ["Inter"], "headline-md": ["Inter"], "metric-value": ["Inter"] }, fontSize: { "body-medium": ["14px", { "lineHeight": "20px", "fontWeight": "500" }], "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }], "body-default": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "caption": ["12px", { "lineHeight": "16px", "fontWeight": "400" }], "headline-lg": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "600" }], "label": ["12px", { "lineHeight": "16px", "fontWeight": "500" }], "section-title": ["15px", { "lineHeight": "20px", "fontWeight": "600" }], "headline-md": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "metric-value": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700" }] } } } };</script><style>@layer base{html,body{width:100vw;margin:0;padding:0;font-family:'Inter',sans-serif;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}}::-webkit-scrollbar{display:none;}</style></head><body class="bg-canvas text-text-primary min-h-screen relative flex flex-col"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-space-md flex items-center justify-between gap-space-xs"><div class="flex items-center gap-space-xs"><button aria-label="Open Menu" class="w-11 h-11 flex items-center justify-center text-text-primary hover:bg-surface-subtle rounded-xl" id="menu-btn"><span class="material-symbols-outlined text-[24px]">menu</span></button><img alt="FinAuditX Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrcldw98GQN3w6z_lJYpbgwEGJ2tzLvEXLpkSAz-DxjkdQY3ZgBzTyRZvgxCDrqSEX5zsn7rdgk3Uf7XZhpdmx67ysG9BURFUW00HTWjLklSDc6UeMmd_PamuSyozSc4Ufn0aV98WgzWnIvgi_OzfT4DyruXEzr9-xiLW1sVPHDtFP4jRkPHeoiKi7sRRr5-eh8TOIn1b2lCE84kf4vezK7vJmaP88RuAp5wDJpWhNv8bLPajM2JFc9A"/><span class="hidden sm:inline font-headline-sm text-headline-sm text-text-primary font-bold">FinAuditX</span></div><button class="flex items-center gap-space-2xs bg-surface-subtle hover:bg-surface-emphasis px-space-sm py-1.5 rounded-full min-h-[36px]"><span class="material-symbols-outlined text-[18px] text-secondary">account_circle</span><span class="font-label text-label text-text-primary">Vikram M. (42)</span><span class="material-symbols-outlined text-[16px] text-text-muted">expand_more</span></button><div class="flex items-center gap-space-2xs"><a class="flex items-center gap-space-2xs bg-primary text-on-primary hover:bg-neutral-800 px-space-sm py-1.5 rounded-lg min-h-[36px]" data-path="advisor-report" href="#"><span class="material-symbols-outlined text-[18px]">assignment</span><span class="font-label text-label">Report</span></a><button class="w-9 h-9 p-0.5 rounded-full overflow-hidden flex items-center justify-center hover:opacity-90"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDo44UB7LRy5mXHBxu5aovci1Q4T_Al3jXtdOjv3Q0mVpPisTsgJwsOEX27OJovFuUXLwohVnzWBl3dKqgR9was6UiCR7M_EwkBqIuPNRAf0tJOLqpCDW346IAQ5_aOgrRKA-8M9rY13STbLHIpiUgTsPMEd7fo0c4cUZhxbw4hu8J6Byxy2aR-zKZPRDmUs9d1oXwnCCW9FU4HwGdoo1K6qJ8DHd_imTf-xCOUrysFjXxw227JcJhfw"/></button></div></div></header><div class="fixed inset-0 z-50 bg-primary/40 backdrop-blur-sm hidden transition-opacity duration-300" id="menu-backdrop"></div><aside class="fixed top-0 left-0 bottom-0 z-50 w-72 max-w-[85vw] bg-surface shadow-[0_4px_24px_rgba(0,0,0,0.12)] transform -translate-x-full transition-transform duration-300 flex flex-col pt-safe pb-safe" id="nav-drawer"><div class="h-16 px-space-md flex items-center justify-between bg-surface-subtle"><div class="flex items-center gap-space-xs"><img alt="FinAuditX Logo" class="h-7 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrcldw98GQN3w6z_lJYpbgwEGJ2tzLvEXLpkSAz-DxjkdQY3ZgBzTyRZvgxCDrqSEX5zsn7rdgk3Uf7XZhpdmx67ysG9BURFUW00HTWjLklSDc6UeMmd_PamuSyozSc4Ufn0aV98WgzWnIvgi_OzfT4DyruXEzr9-xiLW1sVPHDtFP4jRkPHeoiKi7sRRr5-eh8TOIn1b2lCE84kf4vezK7vJmaP88RuAp5wDJpWhNv8bLPajM2JFc9A"/><span class="font-section-title text-section-title text-text-primary font-bold">FinAuditX</span></div><button class="w-11 h-11 flex items-center justify-center text-text-muted hover:text-text-primary" id="drawer-close-btn"><span class="material-symbols-outlined text-[22px]">close</span></button></div><div class="overflow-y-auto flex-1 p-space-md space-y-space-md"><div class="space-y-space-2xs"><p class="px-space-xs font-label text-label uppercase tracking-wider text-text-muted">Overview</p><nav class="flex flex-col gap-space-3xs" data-active-classes="bg-surface-emphasis text-text-primary font-body-medium"><a aria-current="page" class="flex items-center gap-space-sm px-space-xs py-2 rounded-lg bg-surface-emphasis text-text-primary font-body-medium" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[20px]">space_dashboard</span><span class="font-body-default text-body-default">Dashboard</span></a></nav></div><div class="space-y-space-2xs"><p class="px-space-xs font-label text-label uppercase tracking-wider text-text-muted">Understand</p><nav class="flex flex-col gap-space-3xs" data-active-classes="bg-surface-emphasis text-text-primary font-body-medium"><a class="flex items-center gap-space-sm px-space-xs py-2 rounded-lg text-text-secondary hover:bg-surface-subtle" data-path="client-profile" href="#"><span class="material-symbols-outlined text-[20px]">person</span><span class="font-body-default text-body-default">Profile</span></a><a class="flex items-center gap-space-sm px-space-xs py-2 rounded-lg text-text-secondary hover:bg-surface-subtle" data-path="financial-goals" href="#"><span class="material-symbols-outlined text-[20px]">flag</span><span class="font-body-default text-body-default">Goals</span></a><a class="flex items-center gap-space-sm px-space-xs py-2 rounded-lg text-text-secondary hover:bg-surface-subtle" data-path="portfolio-analysis" href="#"><span class="material-symbols-outlined text-[20px]">pie_chart</span><span class="font-body-default text-body-default">Portfolio</span></a></nav></div><div class="space-y-space-2xs"><p class="px-space-xs font-label text-label uppercase tracking-wider text-text-muted">Diagnose</p><nav class="flex flex-col gap-space-3xs" data-active-classes="bg-surface-emphasis text-text-primary font-body-medium"><a class="flex items-center justify-between px-space-xs py-2 rounded-lg text-text-secondary hover:bg-surface-subtle" data-path="financial-audit" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[20px]">fact_check</span><span class="font-body-default text-body-default">Financial Audit</span></div><span class="bg-status-critical-bg text-status-critical-fg font-label text-label px-2 py-0.5 rounded-full font-bold">3</span></a><a class="flex items-center gap-space-sm px-space-xs py-2 rounded-lg text-text-secondary hover:bg-surface-subtle" data-path="recommendations" href="#"><span class="material-symbols-outlined text-[20px]">verified</span><span class="font-body-default text-body-default">Recommendations</span></a></nav></div><div class="space-y-space-2xs"><p class="px-space-xs font-label text-label uppercase tracking-wider text-text-muted">Explore</p><nav class="flex flex-col gap-space-3xs" data-active-classes="bg-surface-emphasis text-text-primary font-body-medium"><a class="flex items-center gap-space-sm px-space-xs py-2 rounded-lg text-text-secondary hover:bg-surface-subtle" data-path="what-if-simulator" href="#"><span class="material-symbols-outlined text-[20px]">tune</span><span class="font-body-default text-body-default">What-If Simulator</span></a></nav></div><div class="space-y-space-2xs"><p class="px-space-xs font-label text-label uppercase tracking-wider text-text-muted">Deliver</p><nav class="flex flex-col gap-space-3xs" data-active-classes="bg-surface-emphasis text-text-primary font-body-medium"><a class="flex items-center gap-space-sm px-space-xs py-2 rounded-lg text-text-secondary hover:bg-surface-subtle" data-path="advisor-report" href="#"><span class="material-symbols-outlined text-[20px]">assignment</span><span class="font-body-default text-body-default">Advisor Report</span></a></nav></div></div></aside><main class="flex flex-col relative w-full pt-16 pb-20 bg-canvas min-h-screen"><div class="flex flex-col w-full">
+<!-- Top Secondary Client Identity & Session Ribbon -->
+<div class="w-full bg-surface shadow-sm">
+<div class="max-w-container mx-auto px-space-md py-space-sm flex flex-col md:flex-row md:items-center justify-between gap-space-sm">
+<div class="flex flex-wrap items-center gap-x-space-md gap-y-space-xs">
+<div class="flex items-center gap-space-2xs">
+<span class="w-2 h-2 rounded-full bg-status-healthy-fg animate-pulse"></span>
+<span class="font-label text-label text-text-muted uppercase tracking-wider">Live Audit Session</span>
+</div>
+<span class="text-text-muted">•</span>
+<div class="flex items-center gap-space-2xs">
+<span class="font-body-medium text-body-medium text-text-primary">Mandate: #HNW-VKM-842</span>
+</div>
+<span class="text-text-muted hidden sm:inline">•</span>
+<div class="flex items-center gap-space-2xs text-text-secondary">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+<span class="font-body-default text-body-default">Bengaluru, KA</span>
+</div>
+<span class="text-text-muted hidden sm:inline">•</span>
+<div class="flex items-center gap-space-2xs">
+<span class="font-caption text-caption text-text-muted">Synced: Today 09:30 AM IST</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-status-healthy-bg text-status-healthy-fg font-label text-label font-semibold">
+<span class="material-symbols-outlined text-[14px]">verified</span>
+          KYC &amp; SEBI RIA Verified • Valid Thru Oct 2026
+        </span>
+</div>
+</div>
+</div>
+<div class="max-w-container mx-auto px-space-md py-space-lg w-full space-y-space-lg">
+<!-- Sub-header Breadcrumb & Institutional Action Ribbon -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+<div>
+<nav class="flex items-center gap-1.5 font-caption text-caption text-text-muted">
+<span>Accounts</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span>HNW Retail</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-text-secondary">Vikram Malhotra</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-text-primary font-medium">Client Profile &amp; Financial Baseline</span>
+</nav>
+<h1 class="font-headline-lg text-headline-lg text-text-primary mt-1 flex items-center gap-space-sm">
+<span>Vikram Malhotra</span>
+<span class="font-body-medium text-body-medium px-2 py-0.5 rounded-full bg-surface-subtle text-text-secondary font-semibold">Age 42</span>
+<span class="font-label text-label px-2.5 py-0.5 rounded-full bg-status-opportunity-bg text-status-opportunity-fg font-semibold">HNW Retail Tier-1</span>
+</h1>
+</div>
+<!-- Fiduciary Action Toolbar (Zero edit/save forms per RIA protocol) -->
+<div class="flex flex-wrap items-center gap-space-xs">
+<a class="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-surface-subtle hover:bg-surface-emphasis text-text-primary font-label text-label transition-colors" data-path="what-if-simulator" href="#">
+<span class="material-symbols-outlined text-[18px] text-secondary">tune</span>
+          Run Scenario in Simulator
+        </a>
+<a class="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-status-critical-bg hover:opacity-95 text-status-critical-fg font-label text-label font-bold transition-opacity" data-path="financial-audit" href="#">
+<span class="material-symbols-outlined text-[18px]">gpp_maybe</span>
+          Audit Findings (3 Active)
+        </a>
+<button class="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-primary text-on-primary hover:bg-neutral-800 font-label text-label transition-colors" onclick="window.print()">
+<span class="material-symbols-outlined text-[18px]">picture_as_pdf</span>
+          Download Profile Summary (.PDF)
+        </button>
+</div>
+</div>
+<!-- 1. CLIENT IDENTITY & FIDUCIARY BASELINE HERO CARD -->
+<div class="bg-surface rounded-xl p-space-lg shadow-sm">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
+<!-- Left 4 Cols: Demographics & Statutory Identity -->
+<div class="lg:col-span-4 flex flex-col justify-between space-y-space-md">
+<div class="space-y-space-xs">
+<span class="font-label text-label uppercase tracking-wider text-text-muted">Statutory Identity &amp; Tax Scope</span>
+<div class="bg-surface-subtle rounded-lg p-space-sm space-y-2">
+<div class="flex justify-between items-center text-caption font-caption">
+<span class="text-text-muted">Permanent Account Number (PAN):</span>
+<span class="font-medium text-text-primary tracking-wider">A****M102F</span>
+</div>
+<div class="flex justify-between items-center text-caption font-caption">
+<span class="text-text-muted">CKYC Identifier:</span>
+<span class="font-medium text-text-primary">9028-1184-9021</span>
+</div>
+<div class="flex justify-between items-center text-caption font-caption">
+<span class="text-text-muted">Tax Status &amp; Assessment:</span>
+<span class="font-medium text-text-primary">Individual / Resident (Old Regime)</span>
+</div>
+<div class="flex justify-between items-center text-caption font-caption">
+<span class="text-text-muted">Date of Birth / Gender:</span>
+<span class="font-medium text-text-primary">14 Aug 1984 (Male, 42y)</span>
+</div>
+</div>
+</div>
+<div class="space-y-space-xs">
+<span class="font-label text-label uppercase tracking-wider text-text-muted">Professional &amp; Remuneration Base</span>
+<div class="p-space-sm rounded-lg bg-surface-subtle">
+<div class="font-body-medium text-body-medium text-text-primary">Principal Solutions Architect</div>
+<div class="font-caption text-caption text-text-muted">Tier-1 Technology Services Corp • Bengaluru Campus</div>
+<div class="mt-2 pt-2 flex items-baseline justify-between">
+<div>
+<span class="font-caption text-caption text-text-muted">Gross Annual CTC:</span>
+<span class="font-section-title text-section-title text-text-primary ml-1 font-bold">₹32.0 L</span>
+</div>
+<div>
+<span class="font-caption text-caption text-text-muted">Net Monthly Take-Home:</span>
+<span class="font-body-medium text-body-medium text-secondary ml-1 font-bold">₹2.05 L</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Middle 4 Cols: Family Unit & Dependent Liabilities -->
+<div class="lg:col-span-4 flex flex-col justify-between space-y-space-md">
+<div class="space-y-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label text-label uppercase tracking-wider text-text-muted">Family Unit &amp; Solvency Exposure</span>
+<span class="font-caption text-caption text-secondary font-semibold">2 Active Dependents</span>
+</div>
+<div class="space-y-2">
+<div class="p-space-sm rounded-lg bg-surface-subtle flex items-start justify-between">
+<div class="flex items-center gap-space-xs">
+<div class="w-8 h-8 rounded-full bg-surface-emphasis flex items-center justify-center text-text-secondary">
+<span class="material-symbols-outlined text-[18px]">person</span>
+</div>
+<div>
+<div class="font-body-medium text-body-medium text-text-primary">Ananya Malhotra</div>
+<div class="font-caption text-caption text-text-muted">Spouse • Age 40 • Homemaker</div>
+</div>
+</div>
+<span class="font-caption text-caption px-2 py-0.5 rounded bg-surface text-text-secondary font-medium">100% Dependent</span>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-subtle flex items-start justify-between">
+<div class="flex items-center gap-space-xs">
+<div class="w-8 h-8 rounded-full bg-surface-emphasis flex items-center justify-center text-text-secondary">
+<span class="material-symbols-outlined text-[18px]">school</span>
+</div>
+<div>
+<div class="font-body-medium text-body-medium text-text-primary">Aarav Malhotra</div>
+<div class="font-caption text-caption text-text-muted">Son • Age 14 • Grade 9 Student</div>
+</div>
+</div>
+<div class="text-right">
+<span class="font-caption text-caption block text-status-opportunity-fg font-medium">Target: 2030 Undergrad</span>
+<span class="font-caption text-caption text-text-muted">Overseas Stem Mandate</span>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-status-opportunity-bg/60 rounded-lg p-space-sm flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-status-opportunity-fg text-[20px]">flag</span>
+<span class="font-body-medium text-body-medium text-status-opportunity-fg">Committed Goal Timelines</span>
+</div>
+<a class="font-label text-label text-status-opportunity-fg hover:underline font-semibold flex items-center gap-0.5" data-path="financial-goals" href="#">
+              View Trajectory (3 Mandates)
+              <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Right 4 Cols: Fiduciary Risk Profile & Governance Drift -->
+<div class="lg:col-span-4 flex flex-col justify-between space-y-space-md">
+<div class="space-y-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label text-label uppercase tracking-wider text-text-muted">Fiduciary Risk Mandate</span>
+<span class="font-label text-label font-bold px-2 py-0.5 rounded-full bg-surface-container text-text-primary">Score: 68 / 100</span>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-subtle space-y-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-body-medium text-body-medium text-text-primary">Moderate-Aggressive</span>
+<span class="font-caption text-caption text-text-secondary">Capacity: High | Willingness: Mod</span>
+</div>
+<!-- Allocation Ceiling vs Current Drift Bar -->
+<div class="space-y-1 pt-1">
+<div class="flex justify-between text-caption font-caption">
+<span class="text-text-muted">Mandate Ceiling: 65% Equity</span>
+<span class="text-status-critical-fg font-semibold">Current Drift: 72.0% (+7.0%)</span>
+</div>
+<div class="w-full h-2.5 bg-surface-container-highest rounded-full overflow-hidden flex">
+<div class="h-full bg-secondary" style="width: 65%;"></div>
+<div class="h-full bg-status-critical-fg" style="width: 7%;"></div>
+<div class="h-full bg-surface-container-highest" style="width: 28%;"></div>
+</div>
+<div class="flex justify-between text-caption font-caption text-text-muted text-[11px]">
+<span>0%</span>
+<span>Approved Ceiling: 65%</span>
+<span>Current 72%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Direct Audit Breach Callout -->
+<div class="bg-status-critical-bg rounded-lg p-space-sm flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-status-critical-fg text-[20px]">warning</span>
+<span class="font-label text-label text-status-critical-fg font-semibold">3 Active Policy Breaches Flagged</span>
+</div>
+<a class="font-label text-label text-status-critical-fg hover:underline font-bold flex items-center gap-0.5" data-path="financial-audit" href="#">
+              Inspect Breaches
+              <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+<!-- 2. CONCISE FINANCIAL HEALTH & LIQUIDITY MATRIX (4 KEY PILLARS) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<!-- Pillar 1: Net Worth -->
+<div class="bg-surface rounded-xl p-space-md shadow-sm space-y-1">
+<div class="flex items-center justify-between">
+<span class="font-label text-label uppercase tracking-wider text-text-muted">Net Worth (Liquid + Real)</span>
+<span class="material-symbols-outlined text-[20px] text-secondary">account_balance</span>
+</div>
+<div class="font-metric-value text-metric-value text-text-primary">₹1.84 Cr</div>
+<div class="flex items-center justify-between pt-1 font-caption text-caption">
+<span class="text-status-healthy-fg font-medium flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> +12.4% YoY
+          </span>
+<span class="text-text-muted">Asset/Liab: 4.95x</span>
+</div>
+</div>
+<!-- Pillar 2: Monthly Surplus -->
+<div class="bg-surface rounded-xl p-space-md shadow-sm space-y-1">
+<div class="flex items-center justify-between">
+<span class="font-label text-label uppercase tracking-wider text-text-muted">Audited Monthly Surplus</span>
+<span class="material-symbols-outlined text-[20px] text-secondary">savings</span>
+</div>
+<div class="font-metric-value text-metric-value text-text-primary">₹78,000 <span class="font-caption text-caption text-text-muted font-normal">/mo</span></div>
+<div class="flex items-center justify-between pt-1 font-caption text-caption">
+<span class="text-text-secondary font-medium">Savings Rate: 38.0%</span>
+<span class="text-text-muted">Base Take-Home ₹2.05L</span>
+</div>
+</div>
+<!-- Pillar 3: Total Liabilities -->
+<div class="bg-surface rounded-xl p-space-md shadow-sm space-y-1">
+<div class="flex items-center justify-between">
+<span class="font-label text-label uppercase tracking-wider text-text-muted">Total Active Debt</span>
+<span class="material-symbols-outlined text-[20px] text-status-warning-fg">credit_card</span>
+</div>
+<div class="font-metric-value text-metric-value text-text-primary">₹46.50 Lakhs</div>
+<div class="flex items-center justify-between pt-1 font-caption text-caption">
+<span class="text-text-secondary font-medium">EMI: ₹71,000 /mo</span>
+<span class="text-status-warning-fg font-medium">Debt-to-Income: 30.4%</span>
+</div>
+</div>
+<!-- Pillar 4: Emergency Runway -->
+<div class="bg-surface rounded-xl p-space-md shadow-sm space-y-1">
+<div class="flex items-center justify-between">
+<span class="font-label text-label uppercase tracking-wider text-text-muted">Contingency Runway</span>
+<span class="material-symbols-outlined text-[20px] text-status-critical-fg">shield</span>
+</div>
+<div class="font-metric-value text-metric-value text-text-primary">4.1 Months</div>
+<div class="flex items-center justify-between pt-1 font-caption text-caption">
+<span class="text-text-muted">Liquid: ₹9.20 L</span>
+<span class="text-status-critical-fg font-bold">Target: 6.0 Months</span>
+</div>
+</div>
+</div>
+<!-- 3. SECTION NAVIGATION / STICKY TAB ANCHORS -->
+<div class="sticky top-16 z-40 bg-surface/90 backdrop-blur-md rounded-xl p-1.5 shadow-sm">
+<div class="flex items-center gap-1 overflow-x-auto">
+<a class="px-3.5 py-2 rounded-lg bg-surface-emphasis text-text-primary font-label text-label font-medium whitespace-nowrap hover:bg-surface-subtle transition-colors" href="#section-cashflow">
+          1. Cash Flow &amp; Deployments
+        </a>
+<a class="px-3.5 py-2 rounded-lg text-text-secondary hover:text-text-primary hover:bg-surface-subtle font-label text-label font-medium whitespace-nowrap transition-colors" href="#section-balancesheet">
+          2. Balance Sheet &amp; Holdings
+        </a>
+<a class="px-3.5 py-2 rounded-lg text-text-secondary hover:text-text-primary hover:bg-surface-subtle font-label text-label font-medium whitespace-nowrap transition-colors" href="#section-protection">
+          3. Protection &amp; Solvency
+        </a>
+<a class="px-3.5 py-2 rounded-lg text-text-secondary hover:text-text-primary hover:bg-surface-subtle font-label text-label font-medium whitespace-nowrap transition-colors" href="#section-integrations">
+          4. Regulated Feeds &amp; Audit Trail
+        </a>
+</div>
+</div>
+<!-- 4. SECTION A: CASH FLOW STATEMENT -->
+<section class="space-y-space-md" id="section-cashflow">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs">
+<div>
+<span class="font-label text-label uppercase tracking-wider text-text-muted">Section 01</span>
+<h2 class="font-headline-md text-headline-md text-text-primary">Cash Flow Architecture &amp; Deployments</h2>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="font-caption text-caption text-text-muted">Net Cash Inflow:</span>
+<span class="font-section-title text-section-title text-text-primary font-bold">₹2,33,500 / month</span>
+</div>
+</div>
+<!-- Visual Allocation Bar of Total Gross Inflows -->
+<div class="bg-surface rounded-xl p-space-md shadow-sm space-y-space-sm">
+<div class="flex items-center justify-between font-label text-label">
+<span class="text-text-secondary font-medium">Monthly Inflow Utilization Profile</span>
+<span class="text-text-muted font-caption text-caption">Total Accounted Inflow: ₹2,33,500</span>
+</div>
+<div class="w-full h-3 rounded-full bg-surface-container-highest overflow-hidden flex">
+<div class="h-full bg-text-secondary" style="width: 27%;" title="Living &amp; Utilities (27%)"></div>
+<div class="h-full bg-status-warning-fg" style="width: 30%;" title="Debt Servicing EMIs (30%)"></div>
+<div class="h-full bg-secondary" style="width: 10%;" title="Committed SIPs (10%)"></div>
+<div class="h-full bg-status-opportunity-fg" style="width: 33%;" title="Free Surplus Cash (33%)"></div>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-space-xs font-caption text-caption pt-1">
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-sm bg-text-secondary"></span>
+<span class="text-text-muted">Essential Living:</span>
+<span class="font-medium text-text-primary">27% (₹62.0k)</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-sm bg-status-warning-fg"></span>
+<span class="text-text-muted">Debt Repayments:</span>
+<span class="font-medium text-text-primary">30% (₹71.0k)</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-sm bg-secondary"></span>
+<span class="text-text-muted">Current SIPs:</span>
+<span class="font-medium text-text-primary">10% (₹22.5k)</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-sm bg-status-opportunity-fg"></span>
+<span class="text-text-muted">Deployable Cash:</span>
+<span class="font-medium text-text-primary">33% (₹78.0k)</span>
+</div>
+</div>
+</div>
+<!-- Split Table: Inflows vs Outflows -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-space-md">
+<!-- Monthly Inflows Table -->
+<div class="bg-surface rounded-xl shadow-sm overflow-hidden flex flex-col">
+<div class="px-space-md py-space-sm bg-surface-subtle flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-secondary">arrow_downward</span>
+<span class="font-section-title text-section-title text-text-primary">Audited Monthly Inflows</span>
+</div>
+<span class="font-body-medium text-body-medium text-text-primary font-bold">₹2,33,500</span>
+</div>
+<div class="p-space-md flex-1">
+<table class="w-full text-left font-body-default text-body-default">
+<thead>
+<tr class="font-caption text-caption text-text-muted uppercase">
+<th class="pb-2 font-medium">Source / Stream</th>
+<th class="pb-2 font-medium text-center">Frequency</th>
+<th class="pb-2 font-medium text-right">Amount (₹)</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-subtle/40">
+<tr>
+<td class="py-2.5">
+<div class="font-medium text-text-primary">Primary Employment (Net Salary)</div>
+<div class="font-caption text-caption text-text-muted">Tier-1 Tech Services • HDFC Bank A/c</div>
+</td>
+<td class="py-2.5 text-center text-caption font-caption text-text-secondary">Monthly</td>
+<td class="py-2.5 text-right font-body-medium text-body-medium text-text-primary">₹2,05,000</td>
+</tr>
+<tr>
+<td class="py-2.5">
+<div class="font-medium text-text-primary">Annual Bonus Accrual (Amortized)</div>
+<div class="font-caption text-caption text-text-muted">Targeted ₹3.00 L Annual / 12 Months</div>
+</td>
+<td class="py-2.5 text-center text-caption font-caption text-text-secondary">Smoothed</td>
+<td class="py-2.5 text-right font-body-medium text-body-medium text-text-primary">₹25,000</td>
+</tr>
+<tr>
+<td class="py-2.5">
+<div class="font-medium text-text-primary">Mutual Fund Dividend &amp; Savings Yield</div>
+<div class="font-caption text-caption text-text-muted">SGB semi-annual yield + sweep deposit</div>
+</td>
+<td class="py-2.5 text-center text-caption font-caption text-text-secondary">Monthly Avg</td>
+<td class="py-2.5 text-right font-body-medium text-body-medium text-text-primary">₹3,500</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Monthly Outflows & Deployments Table -->
+<div class="bg-surface rounded-xl shadow-sm overflow-hidden flex flex-col">
+<div class="px-space-md py-space-sm bg-surface-subtle flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-status-warning-fg">arrow_upward</span>
+<span class="font-section-title text-section-title text-text-primary">Fixed Commitments &amp; Outflows</span>
+</div>
+<span class="font-body-medium text-body-medium text-text-primary font-bold">₹1,60,000</span>
+</div>
+<div class="p-space-md flex-1">
+<table class="w-full text-left font-body-default text-body-default">
+<thead>
+<tr class="font-caption text-caption text-text-muted uppercase">
+<th class="pb-2 font-medium">Obligation Category</th>
+<th class="pb-2 font-medium">Classification</th>
+<th class="pb-2 font-medium text-right">Outflow (₹)</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-subtle/40">
+<tr>
+<td class="py-2.5">
+<div class="font-medium text-text-primary">Household Living, Schooling &amp; Utilities</div>
+<div class="font-caption text-caption text-text-muted">Essential family operational overhead</div>
+</td>
+<td class="py-2.5"><span class="px-2 py-0.5 rounded bg-surface-subtle text-caption font-caption text-text-secondary font-medium">Essential Non-Discr.</span></td>
+<td class="py-2.5 text-right font-body-medium text-body-medium text-text-primary">₹62,000</td>
+</tr>
+<tr>
+<td class="py-2.5">
+<div class="font-medium text-text-primary">ICICI HFC Home Loan EMI</div>
+<div class="font-caption text-caption text-text-muted">8.85% floating • 11 yrs balance</div>
+</td>
+<td class="py-2.5"><span class="px-2 py-0.5 rounded bg-surface-subtle text-caption font-caption text-text-secondary font-medium">Secured Debt</span></td>
+<td class="py-2.5 text-right font-body-medium text-body-medium text-text-primary">₹46,800</td>
+</tr>
+<tr>
+<td class="py-2.5">
+<div class="font-medium text-text-primary flex items-center gap-1.5">
+                      HDFC Personal Loan EMI
+                      <span class="material-symbols-outlined text-[14px] text-status-critical-fg" title="High Cost Debt Flagged">flag</span>
+</div>
+<div class="font-caption text-caption text-status-critical-fg">13.50% APR • High-cost triage candidate</div>
+</td>
+<td class="py-2.5"><span class="px-2 py-0.5 rounded bg-status-critical-bg text-status-critical-fg text-caption font-caption font-semibold">Unsecured</span></td>
+<td class="py-2.5 text-right font-body-medium text-body-medium text-text-primary">₹24,200</td>
+</tr>
+<tr>
+<td class="py-2.5">
+<div class="font-medium text-text-primary">Committed Mutual Fund SIPs</div>
+<div class="font-caption text-caption text-text-muted">3 schemes active (Retirement + Child)</div>
+</td>
+<td class="py-2.5"><span class="px-2 py-0.5 rounded bg-status-healthy-bg text-status-healthy-fg text-caption font-caption font-medium">Discretionary Inv</span></td>
+<td class="py-2.5 text-right font-body-medium text-body-medium text-text-primary">₹22,500</td>
+</tr>
+<tr>
+<td class="py-2.5">
+<div class="font-medium text-text-primary">Term &amp; Health Insurance Premiums</div>
+<div class="font-caption text-caption text-text-muted">Annual amortized ₹54,000 / 12</div>
+</td>
+<td class="py-2.5"><span class="px-2 py-0.5 rounded bg-surface-subtle text-caption font-caption text-text-secondary font-medium">Protection</span></td>
+<td class="py-2.5 text-right font-body-medium text-body-medium text-text-primary">₹4,500</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Net Monthly Surplus Callout Banner -->
+<div class="bg-surface rounded-xl p-space-md shadow-sm flex flex-col md:flex-row items-center justify-between gap-space-sm bg-gradient-to-r from-surface via-surface-subtle to-surface">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-status-healthy-bg text-status-healthy-fg flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">account_balance_wallet</span>
+</div>
+<div>
+<div class="font-body-medium text-body-medium text-text-primary font-bold">Unallocated Fiduciary Surplus: ₹73,500 – ₹78,000 / month</div>
+<div class="font-caption text-caption text-text-muted">Available for systematic reallocation toward urgent emergency reserve fortification and debt amortization.</div>
+</div>
+</div>
+<a class="px-space-md py-2 rounded-lg bg-surface text-text-primary hover:bg-surface-emphasis font-label text-label font-semibold shadow-sm transition-colors whitespace-nowrap" data-path="recommendations" href="#">
+          Review Advisory Deployment Plan
+        </a>
+</div>
+</section>
+<!-- 5. SECTION B: BALANCE SHEET & ASSET COMPOSITION -->
+<section class="space-y-space-md" id="section-balancesheet">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs">
+<div>
+<span class="font-label text-label uppercase tracking-wider text-text-muted">Section 02</span>
+<h2 class="font-headline-md text-headline-md text-text-primary">Balance Sheet &amp; Audited Asset Composition</h2>
+</div>
+<div class="flex items-center gap-space-sm font-caption text-caption">
+<span class="text-text-muted">Gross Assets: <strong class="text-text-primary">₹3.01 Cr</strong></span>
+<span class="text-text-muted">•</span>
+<span class="text-text-muted">Liabilities: <strong class="text-text-primary">₹46.50 L</strong></span>
+<span class="text-text-muted">•</span>
+<span class="text-text-muted">Net Capital: <strong class="text-secondary">₹2.54 Cr</strong></span>
+</div>
+</div>
+<!-- Assets Structured Table -->
+<div class="bg-surface rounded-xl shadow-sm overflow-hidden">
+<div class="px-space-md py-space-sm bg-surface-subtle flex items-center justify-between">
+<span class="font-section-title text-section-title text-text-primary">1. Asset Holdings (Liquid, Compounding &amp; Real Assets)</span>
+<span class="font-caption text-caption text-text-secondary font-medium">Audited feeds: CAMS, KFintech, RBI Retail Direct &amp; Account Aggregator</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left font-body-default text-body-default min-w-[680px]">
+<thead>
+<tr class="bg-surface font-caption text-caption text-text-muted uppercase">
+<th class="px-space-md py-space-xs font-medium">Asset Class &amp; Holding Detail</th>
+<th class="px-space-md py-space-xs font-medium">Verified Regulatory Feed</th>
+<th class="px-space-md py-space-xs font-medium text-right">Audited Valuation</th>
+<th class="px-space-md py-space-xs font-medium text-right">Liquid Share</th>
+<th class="px-space-md py-space-xs font-medium text-center">Fiduciary Audit Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-subtle/50">
+<tr>
+<td class="px-space-md py-3">
+<div class="font-medium text-text-primary">Domestic Equities (Direct &amp; Active MFs)</div>
+<div class="font-caption text-caption text-text-muted">11 Active MFs + 8 Direct Equities (Mid-Cap heavy)</div>
+</td>
+<td class="px-space-md py-3 font-caption text-caption text-text-secondary">
+                  CAMS Consolidated MF Central
+                </td>
+<td class="px-space-md py-3 text-right font-body-medium text-body-medium text-text-primary">
+                  ₹79,30,000
+                </td>
+<td class="px-space-md py-3 text-right font-caption text-caption text-text-secondary">
+                  62.0% of liquid
+                </td>
+<td class="px-space-md py-3 text-center">
+<span class="px-2 py-0.5 rounded-full bg-status-critical-bg text-status-critical-fg font-label text-label font-semibold">
+                    Overweight Mid-Cap
+                  </span>
+</td>
+</tr>
+<tr>
+<td class="px-space-md py-3">
+<div class="font-medium text-text-primary">Fixed Income, Debt Funds &amp; Corporate Bonds</div>
+<div class="font-caption text-caption text-text-muted">Target Maturity Funds &amp; Short Duration Debt</div>
+</td>
+<td class="px-space-md py-3 font-caption text-caption text-text-secondary">
+                  KFintech Consolidated Feed
+                </td>
+<td class="px-space-md py-3 text-right font-body-medium text-body-medium text-text-primary">
+                  ₹32,00,000
+                </td>
+<td class="px-space-md py-3 text-right font-caption text-caption text-text-secondary">
+                  25.0% of liquid
+                </td>
+<td class="px-space-md py-3 text-center">
+<span class="px-2 py-0.5 rounded-full bg-status-healthy-bg text-status-healthy-fg font-label text-label font-semibold">
+                    Optimal Duration
+                  </span>
+</td>
+</tr>
+<tr>
+<td class="px-space-md py-3">
+<div class="font-medium text-text-primary">Sovereign Gold Bonds (SGB) &amp; Bullion</div>
+<div class="font-caption text-caption text-text-muted">Tranches 2020-21 Series VII &amp; IX (2.50% Coupon)</div>
+</td>
+<td class="px-space-md py-3 font-caption text-caption text-text-secondary">
+                  RBI Retail Direct
+                </td>
+<td class="px-space-md py-3 text-right font-body-medium text-body-medium text-text-primary">
+                  ₹10,20,000
+                </td>
+<td class="px-space-md py-3 text-right font-caption text-caption text-text-secondary">
+                  8.0% of liquid
+                </td>
+<td class="px-space-md py-3 text-center">
+<span class="px-2 py-0.5 rounded-full bg-status-healthy-bg text-status-healthy-fg font-label text-label font-semibold">
+                    Aligned Mandate
+                  </span>
+</td>
+</tr>
+<tr>
+<td class="px-space-md py-3">
+<div class="font-medium text-text-primary">Cash Reserves &amp; Bank Liquid Deposits</div>
+<div class="font-caption text-caption text-text-muted">HDFC Premium Salary + ICICI Savings Sweep</div>
+</td>
+<td class="px-space-md py-3 font-caption text-caption text-text-secondary">
+                  Account Aggregator (Sahamati)
+                </td>
+<td class="px-space-md py-3 text-right font-body-medium text-body-medium text-text-primary">
+                  ₹6,50,000
+                </td>
+<td class="px-space-md py-3 text-right font-caption text-caption text-text-secondary">
+                  5.0% of liquid
+                </td>
+<td class="px-space-md py-3 text-center">
+<span class="px-2 py-0.5 rounded-full bg-status-warning-bg text-status-warning-fg font-label text-label font-semibold">
+                    Runway Deficit
+                  </span>
+</td>
+</tr>
+<!-- Illiquid / Long Term Assets -->
+<tr class="bg-surface-subtle/40">
+<td class="px-space-md py-3">
+<div class="font-medium text-text-primary">Self-Occupied Residential Property</div>
+<div class="font-caption text-caption text-text-muted">3BHK Apartment, Indiranagar, Bengaluru (Primary Home)</div>
+</td>
+<td class="px-space-md py-3 font-caption text-caption text-text-secondary">
+                  Independent Valuation (Q1 2025)
+                </td>
+<td class="px-space-md py-3 text-right font-body-medium text-body-medium text-text-primary">
+                  ₹1,45,00,000
+                </td>
+<td class="px-space-md py-3 text-right font-caption text-caption text-text-muted">
+                  Non-liquid
+                </td>
+<td class="px-space-md py-3 text-center">
+<span class="px-2 py-0.5 rounded-full bg-surface-emphasis text-text-secondary font-label text-label font-medium">
+                    Primary Real Asset
+                  </span>
+</td>
+</tr>
+<tr class="bg-surface-subtle/40">
+<td class="px-space-md py-3">
+<div class="font-medium text-text-primary">Employee Provident Fund (EPF &amp; VPF)</div>
+<div class="font-caption text-caption text-text-muted">Compounding at statutory 8.25% p.a. (Mandatory lock-in)</div>
+</td>
+<td class="px-space-md py-3 font-caption text-caption text-text-secondary">
+                  EPFO Unified Portal UAN
+                </td>
+<td class="px-space-md py-3 text-right font-body-medium text-body-medium text-text-primary">
+                  ₹28,50,000
+                </td>
+<td class="px-space-md py-3 text-right font-caption text-caption text-text-muted">
+                  Retirement Lock-in
+                </td>
+<td class="px-space-md py-3 text-center">
+<span class="px-2 py-0.5 rounded-full bg-status-healthy-bg text-status-healthy-fg font-label text-label font-semibold">
+                    On-Track (8.25%)
+                  </span>
+</td>
+</tr>
+</tbody>
+<tfoot>
+<tr class="bg-surface-subtle font-body-medium text-body-medium text-text-primary">
+<td class="px-space-md py-3 font-bold" colspan="2">Gross Assets Aggregate Value</td>
+<td class="px-space-md py-3 text-right font-bold font-metric-value text-[18px]">₹3,01,50,000</td>
+<td class="px-space-md py-3 text-right text-caption font-caption text-text-secondary">100.0%</td>
+<td class="px-space-md py-3 text-center text-caption font-caption text-text-muted">Audited Today</td>
+</tr>
+</tfoot>
+</table>
+</div>
+</div>
+<!-- Liabilities Structured Table -->
+<div class="bg-surface rounded-xl shadow-sm overflow-hidden">
+<div class="px-space-md py-space-sm bg-surface-subtle flex items-center justify-between">
+<span class="font-section-title text-section-title text-text-primary">2. Liability Obligations &amp; Debt Amortization Schedules</span>
+<span class="font-caption text-caption text-text-secondary font-medium">Source: CIBIL TransUnion Credit Report (Verified Feb 2025)</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left font-body-default text-body-default min-w-[680px]">
+<thead>
+<tr class="bg-surface font-caption text-caption text-text-muted uppercase">
+<th class="px-space-md py-space-xs font-medium">Obligation &amp; Lender</th>
+<th class="px-space-md py-space-xs font-medium">Interest Rate &amp; Structure</th>
+<th class="px-space-md py-space-xs font-medium text-right">Current Outstanding</th>
+<th class="px-space-md py-space-xs font-medium text-right">Monthly EMI</th>
+<th class="px-space-md py-space-xs font-medium">Tenure Remaining</th>
+<th class="px-space-md py-space-xs font-medium text-center">Fiduciary Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-subtle/50">
+<tr>
+<td class="px-space-md py-3">
+<div class="font-medium text-text-primary">ICICI Home Finance Loan</div>
+<div class="font-caption text-caption text-text-muted">Primary Indiranagar Residence • Loan A/c #LBBLR0000418</div>
+</td>
+<td class="px-space-md py-3 font-caption text-caption">
+<span class="font-medium text-text-primary">8.85% p.a.</span>
+<span class="text-text-muted block">EBLR Linked Floating</span>
+</td>
+<td class="px-space-md py-3 text-right font-body-medium text-body-medium text-text-primary">
+                  ₹38,00,000
+                </td>
+<td class="px-space-md py-3 text-right font-body-medium text-body-medium text-text-primary">
+                  ₹46,800
+                </td>
+<td class="px-space-md py-3 font-caption text-caption text-text-secondary">
+                  11 Years (132 mos)
+                </td>
+<td class="px-space-md py-3 text-center">
+<span class="px-2 py-0.5 rounded-full bg-status-healthy-bg text-status-healthy-fg font-label text-label font-semibold">
+                    Healthy Amortization
+                  </span>
+</td>
+</tr>
+<tr>
+<td class="px-space-md py-3">
+<div class="font-medium text-text-primary flex items-center gap-1.5">
+                    HDFC Bank Personal Loan
+                    <span class="material-symbols-outlined text-[16px] text-status-critical-fg" title="High Cost Debt">error</span>
+</div>
+<div class="font-caption text-caption text-text-muted">Home Renovation • Unsecured Loan A/c #PL7710294</div>
+</td>
+<td class="px-space-md py-3 font-caption text-caption">
+<span class="font-bold text-status-critical-fg">13.50% p.a.</span>
+<span class="text-text-muted block">Fixed APR</span>
+</td>
+<td class="px-space-md py-3 text-right font-body-medium text-body-medium text-status-critical-fg font-bold">
+                  ₹8,50,000
+                </td>
+<td class="px-space-md py-3 text-right font-body-medium text-body-medium text-text-primary">
+                  ₹24,200
+                </td>
+<td class="px-space-md py-3 font-caption text-caption text-text-secondary">
+                  38 Months
+                </td>
+<td class="px-space-md py-3 text-center">
+<span class="px-2 py-0.5 rounded-full bg-status-critical-bg text-status-critical-fg font-label text-label font-bold">
+                    Prepay Priority (RIA-DEBT-03)
+                  </span>
+</td>
+</tr>
+<tr>
+<td class="px-space-md py-3">
+<div class="font-medium text-text-primary">Credit Cards (Infinia &amp; ICICI Sapphiro)</div>
+<div class="font-caption text-caption text-text-muted">Total Credit Limit: ₹12.00 Lakhs</div>
+</td>
+<td class="px-space-md py-3 font-caption text-caption">
+<span class="font-medium text-text-primary">0.00%</span>
+<span class="text-text-muted block">Auto-Debit Full</span>
+</td>
+<td class="px-space-md py-3 text-right font-body-medium text-body-medium text-text-primary">
+                  ₹0.00
+                </td>
+<td class="px-space-md py-3 text-right font-body-medium text-body-medium text-text-muted">
+                  Settled in Full
+                </td>
+<td class="px-space-md py-3 font-caption text-caption text-text-secondary">
+                  Current Billing Cycle
+                </td>
+<td class="px-space-md py-3 text-center">
+<span class="px-2 py-0.5 rounded-full bg-status-healthy-bg text-status-healthy-fg font-label text-label font-semibold">
+                    Zero Revolving Debt
+                  </span>
+</td>
+</tr>
+</tbody>
+<tfoot>
+<tr class="bg-surface-subtle font-body-medium text-body-medium text-text-primary">
+<td class="px-space-md py-3 font-bold" colspan="2">Total Audited Liabilities</td>
+<td class="px-space-md py-3 text-right font-bold font-metric-value text-[18px]">₹46,50,000</td>
+<td class="px-space-md py-3 text-right font-bold">₹71,000 /mo</td>
+<td class="px-space-md py-3 font-caption text-caption text-text-secondary" colspan="2">Blended Cost of Capital: 9.70%</td>
+</tr>
+</tfoot>
+</table>
+</div>
+</div>
+</section>
+<!-- 6. SECTION C: PROTECTION, SOLVENCY & CONTINGENCY COVERAGE -->
+<section class="space-y-space-md" id="section-protection">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs">
+<div>
+<span class="font-label text-label uppercase tracking-wider text-text-muted">Section 03</span>
+<h2 class="font-headline-md text-headline-md text-text-primary">Protection, Solvency &amp; Contingency Audit</h2>
+</div>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-status-critical-bg text-status-critical-fg font-label text-label font-bold">
+<span class="material-symbols-outlined text-[14px]">shield</span>
+          1 Critical Underinsurance Breach
+        </span>
+</div>
+<div class="bg-surface rounded-xl shadow-sm overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left font-body-default text-body-default min-w-[700px]">
+<thead>
+<tr class="bg-surface-subtle font-caption text-caption text-text-muted uppercase">
+<th class="px-space-md py-space-xs font-medium">Risk Coverage Domain</th>
+<th class="px-space-md py-space-xs font-medium">Current Insurer &amp; Policy Ref</th>
+<th class="px-space-md py-space-xs font-medium text-right">Existing Sum Assured</th>
+<th class="px-space-md py-space-xs font-medium text-right">SEBI RIA Benchmark</th>
+<th class="px-space-md py-space-xs font-medium text-right">Net Gap / Deficit</th>
+<th class="px-space-md py-space-xs font-medium text-center">Fiduciary Assessment</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-subtle/50">
+<!-- Term Life - Critical Shortfall -->
+<tr class="bg-status-critical-bg/20">
+<td class="px-space-md py-3.5">
+<div class="font-medium text-text-primary flex items-center gap-1.5">
+                    Pure Term Life Insurance
+                    <span class="material-symbols-outlined text-[16px] text-status-critical-fg">error</span>
+</div>
+<div class="font-caption text-caption text-text-muted">Solvency for spouse &amp; child till 2045</div>
+</td>
+<td class="px-space-md py-3.5 font-caption text-caption text-text-secondary">
+                  HDFC Life Click2Protect (#9910481)<br/>
+<span class="text-text-muted">Maturing Oct 2029 (Expiring soon)</span>
+</td>
+<td class="px-space-md py-3.5 text-right font-body-medium text-body-medium text-text-primary">
+                  ₹75.0 Lakhs
+                </td>
+<td class="px-space-md py-3.5 text-right font-body-medium text-body-medium text-text-secondary">
+                  ₹2.55 Crore <span class="block text-[11px] text-text-muted font-normal">(15x Gross CTC + Debt)</span>
+</td>
+<td class="px-space-md py-3.5 text-right font-body-medium text-body-medium text-status-critical-fg font-bold">
+                  - ₹1.80 Crore Deficit
+                </td>
+<td class="px-space-md py-3.5 text-center">
+<span class="px-2.5 py-1 rounded-full bg-status-critical-bg text-status-critical-fg font-label text-label font-bold inline-flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">warning</span> Critical Shortfall
+                  </span>
+</td>
+</tr>
+<!-- Family Health Floater -->
+<tr>
+<td class="px-space-md py-3.5">
+<div class="font-medium text-text-primary">Family Floater Health Insurance</div>
+<div class="font-caption text-caption text-text-muted">Comprehensive hospitalization cover (4 members)</div>
+</td>
+<td class="px-space-md py-3.5 font-caption text-caption text-text-secondary">
+                  HDFC ERGO Optima Secure + Super Topup<br/>
+<span class="text-text-muted">Direct Policy #2810-9921-44</span>
+</td>
+<td class="px-space-md py-3.5 text-right font-body-medium text-body-medium text-text-primary">
+                  ₹40.0 Lakhs <span class="block text-[11px] text-text-muted font-normal">(₹15L Base + ₹25L Topup)</span>
+</td>
+<td class="px-space-md py-3.5 text-right font-body-medium text-body-medium text-text-secondary">
+                  ₹30.0 Lakhs
+                </td>
+<td class="px-space-md py-3.5 text-right font-body-medium text-body-medium text-status-healthy-fg font-medium">
+                  + ₹10.0 L Surplus
+                </td>
+<td class="px-space-md py-3.5 text-center">
+<span class="px-2 py-0.5 rounded-full bg-status-healthy-bg text-status-healthy-fg font-label text-label font-semibold">
+                    Optimal &amp; Adequate
+                  </span>
+</td>
+</tr>
+<!-- Critical Illness -->
+<tr>
+<td class="px-space-md py-3.5">
+<div class="font-medium text-text-primary">Standalone Critical Illness Cover</div>
+<div class="font-caption text-caption text-text-muted">Lump-sum recovery buffer for lifestyle diseases</div>
+</td>
+<td class="px-space-md py-3.5 font-caption text-caption text-text-muted">
+                  No active policy detected in NIR
+                </td>
+<td class="px-space-md py-3.5 text-right font-body-medium text-body-medium text-text-muted">
+                  ₹0.00
+                </td>
+<td class="px-space-md py-3.5 text-right font-body-medium text-body-medium text-text-secondary">
+                  ₹25.0 Lakhs
+                </td>
+<td class="px-space-md py-3.5 text-right font-body-medium text-body-medium text-status-warning-fg font-medium">
+                  - ₹25.0 L Gap
+                </td>
+<td class="px-space-md py-3.5 text-center">
+<span class="px-2 py-0.5 rounded-full bg-status-warning-bg text-status-warning-fg font-label text-label font-semibold">
+                    Recommended Add
+                  </span>
+</td>
+</tr>
+<!-- Personal Accidental & Disability -->
+<tr>
+<td class="px-space-md py-3.5">
+<div class="font-medium text-text-primary">Personal Accident &amp; Total Disability</div>
+<div class="font-caption text-caption text-text-muted">Income replacement rider against total permanent disability</div>
+</td>
+<td class="px-space-md py-3.5 font-caption text-caption text-text-secondary">
+                  Corporate Group GMC Cover<br/>
+<span class="text-text-muted">Employer sponsored policy</span>
+</td>
+<td class="px-space-md py-3.5 text-right font-body-medium text-body-medium text-text-primary">
+                  ₹50.0 Lakhs
+                </td>
+<td class="px-space-md py-3.5 text-right font-body-medium text-body-medium text-text-secondary">
+                  ₹50.0 Lakhs
+                </td>
+<td class="px-space-md py-3.5 text-right font-body-medium text-body-medium text-status-healthy-fg font-medium">
+                  Covered
+                </td>
+<td class="px-space-md py-3.5 text-center">
+<span class="px-2 py-0.5 rounded-full bg-status-healthy-bg text-status-healthy-fg font-label text-label font-semibold">
+                    Covered via Employer
+                  </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- 7. SECTION D: PROGRESSIVE DISCLOSURE ACCORDION (REGULATORY SOURCE FEEDS) -->
+<section class="space-y-space-sm pt-space-xs" id="section-integrations">
+<div class="bg-surface rounded-xl shadow-sm overflow-hidden">
+<button class="w-full px-space-lg py-space-md flex items-center justify-between bg-surface hover:bg-surface-subtle transition-colors text-left" id="accordion-toggle">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-full bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed">
+<span class="material-symbols-outlined text-[20px]">hub</span>
+</div>
+<div>
+<div class="font-section-title text-section-title text-text-primary">Audited Regulatory Integrations &amp; Source Feeds</div>
+<div class="font-caption text-caption text-text-muted">5 Live Regulatory Pipes • Cryptographic Audit Hash: #0F172A-89F5E7</div>
+</div>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="font-label text-label text-status-healthy-fg bg-status-healthy-bg px-2.5 py-1 rounded-full font-semibold">All 5 Operational</span>
+<span class="material-symbols-outlined text-text-muted transition-transform duration-200" id="accordion-icon">expand_more</span>
+</div>
+</button>
+<!-- Accordion Body (Collapsible) -->
+<div class="hidden px-space-lg pb-space-lg pt-space-xs bg-surface space-y-space-md" id="accordion-content">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-sm font-caption text-caption">
+<div class="p-space-sm rounded-lg bg-surface-subtle space-y-1">
+<div class="flex items-center justify-between">
+<span class="font-body-medium text-body-medium text-text-primary">Account Aggregator (AA)</span>
+<span class="text-status-healthy-fg font-medium flex items-center gap-0.5">
+<span class="w-1.5 h-1.5 rounded-full bg-status-healthy-fg"></span> Live
+                </span>
+</div>
+<p class="text-text-muted">Sahamati Protocol ID: AA-HDFC-99182</p>
+<div class="pt-1 text-[11px] text-text-secondary flex justify-between">
+<span>Last Synced: Today 09:18 AM</span>
+<span>2 Bank Accounts Verified</span>
+</div>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-subtle space-y-1">
+<div class="flex items-center justify-between">
+<span class="font-body-medium text-body-medium text-text-primary">CAMS &amp; KFintech MF Central</span>
+<span class="text-status-healthy-fg font-medium flex items-center gap-0.5">
+<span class="w-1.5 h-1.5 rounded-full bg-status-healthy-fg"></span> Verified
+                </span>
+</div>
+<p class="text-text-muted">Folio Count: 14 Active folios across 6 AMCs</p>
+<div class="pt-1 text-[11px] text-text-secondary flex justify-between">
+<span>Direct Units Verified</span>
+<span>PAN Tokenized</span>
+</div>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-subtle space-y-1">
+<div class="flex items-center justify-between">
+<span class="font-body-medium text-body-medium text-text-primary">NSDL / CDSL Demat Pipe</span>
+<span class="text-status-healthy-fg font-medium flex items-center gap-0.5">
+<span class="w-1.5 h-1.5 rounded-full bg-status-healthy-fg"></span> Active
+                </span>
+</div>
+<p class="text-text-muted">DP ID: IN300128 • Client Beneficiary Verified</p>
+<div class="pt-1 text-[11px] text-text-secondary flex justify-between">
+<span>8 Direct Equity Scrips</span>
+<span>SGB RBI Series Matched</span>
+</div>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-subtle space-y-1">
+<div class="flex items-center justify-between">
+<span class="font-body-medium text-body-medium text-text-primary">ITR &amp; Form 26AS Bridge</span>
+<span class="text-status-healthy-fg font-medium flex items-center gap-0.5">
+<span class="w-1.5 h-1.5 rounded-full bg-status-healthy-fg"></span> Assessed
+                </span>
+</div>
+<p class="text-text-muted">AY 2024-25 Filed Under Sec 139(1)</p>
+<div class="pt-1 text-[11px] text-text-secondary flex justify-between">
+<span>Tax Paid: ₹5,84,200</span>
+<span>TDS Corroborated</span>
+</div>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-subtle space-y-1">
+<div class="flex items-center justify-between">
+<span class="font-body-medium text-body-medium text-text-primary">National Insurance Repository (NIR)</span>
+<span class="text-status-healthy-fg font-medium flex items-center gap-0.5">
+<span class="w-1.5 h-1.5 rounded-full bg-status-healthy-fg"></span> Matched
+                </span>
+</div>
+<p class="text-text-muted">eIA A/c: 1990-2819-4820</p>
+<div class="pt-1 text-[11px] text-text-secondary flex justify-between">
+<span>2 Active Policies Pulled</span>
+<span>Nominees Verified</span>
+</div>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-subtle space-y-1">
+<div class="flex items-center justify-between">
+<span class="font-body-medium text-body-medium text-text-primary">EPFO UAN Direct Feed</span>
+<span class="text-status-healthy-fg font-medium flex items-center gap-0.5">
+<span class="w-1.5 h-1.5 rounded-full bg-status-healthy-fg"></span> Synced
+                </span>
+</div>
+<p class="text-text-muted">UAN: 1009-2819-4819 • Passbook Audited</p>
+<div class="pt-1 text-[11px] text-text-secondary flex justify-between">
+<span>Last Employer Credit: Jan 2025</span>
+<span>Interest 8.25% Booked</span>
+</div>
+</div>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container text-caption font-caption text-text-secondary flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-secondary">verified_user</span>
+<span>All data encrypted using 256-bit AES protocol pursuant to SEBI (Investment Advisers) Regulations, 2013 compliance.</span>
+</div>
+<span class="font-mono text-[11px] text-text-muted">SHA-256: 4f18b9c0...a192e</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Interactive script for Accordion toggle -->
+<script>
+    (function() {
+      const toggle = document.getElementById('accordion-toggle');
+      const content = document.getElementById('accordion-content');
+      const icon = document.getElementById('accordion-icon');
+      if (toggle && content && icon) {
+        toggle.addEventListener('click', function() {
+          const isHidden = content.classList.contains('hidden');
+          if (isHidden) {
+            content.classList.remove('hidden');
+            icon.style.transform = 'rotate(180deg)';
+          } else {
+            content.classList.add('hidden');
+            icon.style.transform = 'rotate(0deg)';
+          }
+        });
+      }
+    })();
+  </script>
+</div></main><nav class="fixed bottom-0 inset-x-0 z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-2px_12px_rgba(0,0,0,0.04)]" data-active-classes="text-primary font-headline-sm"><div class="flex justify-around items-center h-16 px-space-xs"><a aria-current="page" class="flex flex-col items-center justify-center gap-0.5 w-16 h-12 text-primary font-headline-sm" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[22px]">dashboard</span><span class="font-caption text-caption">Overview</span></a><a class="flex flex-col items-center justify-center gap-0.5 w-16 h-12 text-text-muted hover:text-text-primary" data-path="portfolio-analysis" href="#"><span class="material-symbols-outlined text-[22px]">donut_large</span><span class="font-caption text-caption">Portfolio</span></a><a class="flex flex-col items-center justify-center gap-0.5 w-16 h-12 text-text-muted hover:text-text-primary relative" data-path="financial-audit" href="#"><span class="material-symbols-outlined text-[22px]">health_and_safety</span><span class="font-caption text-caption">Audit</span><span class="absolute top-1 right-3 w-2 h-2 rounded-full bg-status-critical-fg"></span></a><a class="flex flex-col items-center justify-center gap-0.5 w-16 h-12 text-text-muted hover:text-text-primary" data-path="recommendations" href="#"><span class="material-symbols-outlined text-[22px]">task_alt</span><span class="font-caption text-caption">Actions</span></a><a class="flex flex-col items-center justify-center gap-0.5 w-16 h-12 text-text-muted hover:text-text-primary" data-path="what-if-simulator" href="#"><span class="material-symbols-outlined text-[22px]">query_stats</span><span class="font-caption text-caption">Simulate</span></a></div></nav><script>const mb=document.getElementById('menu-btn'),cb=document.getElementById('drawer-close-btn'),dr=document.getElementById('nav-drawer'),bd=document.getElementById('menu-backdrop');function toggle(o){dr.classList.toggle('-translate-x-full',!o);bd.classList.toggle('hidden',!o);}mb&&mb.addEventListener('click',()=>toggle(true));cb&&cb.addEventListener('click',()=>toggle(false));bd&&bd.addEventListener('click',()=>toggle(false));</script></body></html>

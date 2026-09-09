@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;font-family:'Inter',sans-serif;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={"darkMode":"class","theme":{"extend":{"colors":{"tertiary-fixed-dim":"#dec29a","status-critical-fg":"#991B1B","outline-variant":"#c6c6cd","surface-dim":"#dcd9db","status-warning-bg":"#FFFBEB","surface-container-highest":"#e4e2e4","status-healthy-bg":"#F0FDF4","surface-variant":"#e4e2e4","on-primary":"#ffffff","border-default":"#CBD5E1","on-secondary":"#ffffff","primary-container":"#131b2e","secondary-fixed":"#89f5e7","status-healthy-fg":"#166534","surface-emphasis":"#E2E8F0","border-strong":"#94A3B8","border-subtle":"#E2E8F0","inverse-on-surface":"#f3f0f2","surface-container-low":"#f6f3f5","inverse-surface":"#303032","primary-fixed-dim":"#bec6e0","error":"#ba1a1a","background":"#fcf8fa","secondary-container":"#86f2e4","on-error":"#ffffff","on-primary-fixed":"#131b2e","text-muted":"#64748B","text-primary":"#0F172A","primary":"#000000","primary-fixed":"#dae2fd","tertiary-fixed":"#fcdeb5","outline":"#76777d","on-surface-variant":"#45464d","on-primary-fixed-variant":"#3f465c","on-secondary-fixed-variant":"#005049","on-tertiary":"#ffffff","on-primary-container":"#7c839b","surface-container-lowest":"#ffffff","surface-bright":"#fcf8fa","status-opportunity-fg":"#1E40AF","on-secondary-fixed":"#00201d","canvas":"#F8FAFC","status-opportunity-bg":"#EFF6FF","tertiary":"#000000","surface-container":"#f0edef","on-secondary-container":"#006f66","on-tertiary-container":"#98805d","error-container":"#ffdad6","secondary":"#006a61","text-secondary":"#475569","surface-tint":"#565e74","surface":"#FFFFFF","on-error-container":"#93000a","secondary-fixed-dim":"#6bd8cb","tertiary-container":"#271901","on-surface":"#1b1b1d","status-critical-bg":"#FEF2F2","inverse-primary":"#bec6e0","surface-container-high":"#eae7e9","on-tertiary-fixed":"#271901","on-background":"#1b1b1d","status-warning-fg":"#92400E","surface-subtle":"#F1F5F9","on-tertiary-fixed-variant":"#574425"},"borderRadius":{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},"spacing":{"space-xs":"8px","space-3xs":"2px","space-md":"16px","space-2xs":"4px","space-lg":"24px","space-xl":"32px","space-sm":"12px","container-max":"1280px","space-2xl":"48px"},"fontFamily":{"body-medium":["Inter"],"headline-sm":["Inter"],"body-default":["Inter"],"caption":["Inter"],"headline-lg":["Inter"],"label":["Inter"],"section-title":["Inter"],"headline-md":["Inter"],"metric-value":["Inter"]},"fontSize":{"body-medium":["14px",{"lineHeight":"20px","fontWeight":"500"}],"headline-sm":["18px",{"lineHeight":"24px","fontWeight":"600"}],"body-default":["14px",{"lineHeight":"20px","fontWeight":"400"}],"caption":["12px",{"lineHeight":"16px","fontWeight":"400"}],"headline-lg":["28px",{"lineHeight":"36px","letterSpacing":"-0.02em","fontWeight":"600"}],"label":["12px",{"lineHeight":"16px","fontWeight":"500"}],"section-title":["15px",{"lineHeight":"20px","fontWeight":"600"}],"headline-md":["22px",{"lineHeight":"28px","letterSpacing":"-0.01em","fontWeight":"600"}],"metric-value":["24px",{"lineHeight":"32px","letterSpacing":"-0.02em","fontWeight":"700"}]}}}}</script></head><body class="bg-canvas text-on-surface font-body-default text-body-default min-h-screen"><aside class="fixed left-0 top-0 h-full w-64 bg-surface z-50 flex flex-col shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-20 px-space-md flex items-center gap-space-xs bg-surface"><img alt="FinAuditX Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrcldw98GQN3w6z_lJYpbgwEGJ2tzLvEXLpkSAz-DxjkdQY3ZgBzTyRZvgxCDrqSEX5zsn7rdgk3Uf7XZhpdmx67ysG9BURFUW00HTWjLklSDc6UeMmd_PamuSyozSc4Ufn0aV98WgzWnIvgi_OzfT4DyruXEzr9-xiLW1sVPHDtFP4jRkPHeoiKi7sRRr5-eh8TOIn1b2lCE84kf4vezK7vJmaP88RuAp5wDJpWhNv8bLPajM2JFc9A"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm tracking-tight text-text-primary">FinAuditX</span><span class="font-caption text-caption text-text-muted">Decision Support Core</span></div></div><div class="flex-1 overflow-y-auto px-space-xs py-space-xs"><nav class="flex flex-col gap-space-3xs" data-active-classes="bg-primary-container text-on-primary font-body-medium"><div class="px-space-xs pt-space-xs pb-space-3xs font-label text-label uppercase tracking-wider text-text-muted">Overview</div><a aria-current="page" class="flex items-center justify-between px-space-xs py-space-xs rounded transition-colors bg-primary-container text-on-primary font-body-medium" data-path="dashboard" href="#"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[18px]">dashboard</span><span class="font-body-medium text-body-medium">Dashboard</span></div></a><div class="px-space-xs pt-space-sm pb-space-3xs font-label text-label uppercase tracking-wider text-text-muted">Understand</div><a class="flex items-center gap-space-xs px-space-xs py-space-xs rounded text-on-surface-variant hover:bg-surface-subtle hover:text-on-surface transition-colors" data-path="client-profile" href="#"><span class="material-symbols-outlined text-[18px]">person</span><span class="font-body-medium text-body-medium">Client Profile</span></a><a class="flex items-center gap-space-xs px-space-xs py-space-xs rounded text-on-surface-variant hover:bg-surface-subtle hover:text-on-surface transition-colors" data-path="goals" href="#"><span class="material-symbols-outlined text-[18px]">flag</span><span class="font-body-medium text-body-medium">Goals</span></a><a class="flex items-center gap-space-xs px-space-xs py-space-xs rounded text-on-surface-variant hover:bg-surface-subtle hover:text-on-surface transition-colors" data-path="portfolio" href="#"><span class="material-symbols-outlined text-[18px]">pie_chart</span><span class="font-body-medium text-body-medium">Portfolio</span></a><div class="px-space-xs pt-space-sm pb-space-3xs font-label text-label uppercase tracking-wider text-text-muted">Diagnose</div><a class="flex items-center justify-between px-space-xs py-space-xs rounded text-on-surface-variant hover:bg-surface-subtle hover:text-on-surface transition-colors" data-path="financial-audit" href="#"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[18px]">fact_check</span><span class="font-body-medium text-body-medium">Financial Audit</span></div><span class="px-space-2xs py-0.5 rounded-full font-label text-label bg-status-critical-bg text-status-critical-fg">3</span></a><a class="flex items-center justify-between px-space-xs py-space-xs rounded text-on-surface-variant hover:bg-surface-subtle hover:text-on-surface transition-colors" data-path="recommendations" href="#"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[18px]">assignment_turned_in</span><span class="font-body-medium text-body-medium">Recommendations</span></div><span class="px-space-2xs py-0.5 rounded-full font-label text-label bg-status-opportunity-bg text-status-opportunity-fg">2</span></a><div class="px-space-xs pt-space-sm pb-space-3xs font-label text-label uppercase tracking-wider text-text-muted">Explore</div><a class="flex items-center gap-space-xs px-space-xs py-space-xs rounded text-on-surface-variant hover:bg-surface-subtle hover:text-on-surface transition-colors" data-path="what-if-simulator" href="#"><span class="material-symbols-outlined text-[18px]">tune</span><span class="font-body-medium text-body-medium">What-If Simulator</span></a><div class="px-space-xs pt-space-sm pb-space-3xs font-label text-label uppercase tracking-wider text-text-muted">Deliver</div><a class="flex items-center gap-space-xs px-space-xs py-space-xs rounded text-on-surface-variant hover:bg-surface-subtle hover:text-on-surface transition-colors" data-path="advisor-report" href="#"><span class="material-symbols-outlined text-[18px]">article</span><span class="font-body-medium text-body-medium">Advisor Report</span></a></nav></div><div class="p-space-xs bg-surface-subtle mx-space-xs mb-space-xs rounded flex items-center justify-between"><div class="flex flex-col"><span class="font-label text-label text-text-muted">Workspace Mode</span><span class="font-body-medium text-body-medium text-text-primary">Advisory Suite v2.4</span></div><span class="material-symbols-outlined text-text-muted text-[18px]">verified_user</span></div></aside><div class="pl-64 flex flex-col min-h-screen"><header class="fixed top-0 left-64 right-0 h-20 bg-surface/90 backdrop-blur-xl z-40 shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-20 w-full px-space-lg flex items-center justify-between gap-space-md"><div class="flex flex-col justify-center"><div class="flex items-center gap-space-xs flex-wrap"><span class="font-section-title text-section-title text-text-primary">Vikram Malhotra, 42</span><span class="text-border-default">|</span><span class="font-body-default text-body-default text-text-secondary">Bengaluru</span><span class="text-border-default">|</span><span class="inline-flex items-center px-space-2xs py-0.5 rounded-full font-label text-label bg-status-warning-bg text-status-warning-fg">Moderate Risk</span><span class="text-border-default">|</span><div class="flex items-center gap-1 font-caption text-caption text-text-muted"><span class="inline-block w-1.5 h-1.5 rounded-full bg-secondary"></span><span>Updated Today 09:30 AM</span></div></div><div class="flex items-center gap-space-2xs pt-1 font-caption text-caption text-text-muted"><span class="hover:text-on-surface transition-colors cursor-pointer">Accounts</span><span>/</span><span class="hover:text-on-surface transition-colors cursor-pointer">HNW Retail</span><span>/</span><span class="text-text-primary font-medium">Portfolio Diagnostics</span></div></div><div class="flex items-center gap-space-sm flex-shrink-0"><button class="relative p-space-xs rounded hover:bg-surface-subtle text-text-secondary hover:text-text-primary transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-status-critical-fg"></span></button><button class="inline-flex items-center gap-space-2xs px-space-sm py-space-xs rounded bg-primary text-on-primary font-body-medium text-body-medium hover:bg-primary-container hover:text-on-primary transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">download</span><span>Generate Report</span></button><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDo44UB7LRy5mXHBxu5aovci1Q4T_Al3jXtdOjv3Q0mVpPisTsgJwsOEX27OJovFuUXLwohVnzWBl3dKqgR9was6UiCR7M_EwkBqIuPNRAf0tJOLqpCDW346IAQ5_aOgrRKA-8M9rY13STbLHIpiUgTsPMEd7fo0c4cUZhxbw4hu8J6Byxy2aR-zKZPRDmUs9d1oXwnCCW9FU4HwGdoo1K6qJ8DHd_imTf-xCOUrysFjXxw227JcJhfw"/></div></div></header><main class="flex-1 w-full pt-20 pb-12 bg-canvas px-space-lg"><div class="flex flex-col w-full">
+<!-- Client Identification Context Ribbon -->
+<div class="mb-space-md flex flex-wrap items-center justify-between gap-space-sm bg-surface p-space-md shadow-sm rounded">
+<div class="flex items-center gap-space-sm flex-wrap">
+<div class="w-10 h-10 rounded bg-primary-container text-on-primary flex items-center justify-center font-headline-sm text-headline-sm">
+        VM
+      </div>
+<div>
+<div class="flex items-center gap-space-2xs">
+<span class="font-section-title text-section-title text-text-primary">Vikram Malhotra</span>
+<span class="font-caption text-caption text-text-muted">(Age 42)</span>
+<span class="text-border-default">•</span>
+<span class="font-body-default text-body-default text-text-secondary">Bengaluru, KA</span>
+<span class="text-border-default">•</span>
+<span class="inline-flex items-center px-space-2xs py-0.5 rounded-full font-label text-label bg-status-warning-bg text-status-warning-fg">Moderate-Aggressive</span>
+</div>
+<div class="flex items-center gap-space-2xs pt-1 font-caption text-caption text-text-muted">
+<span>Mandate: <strong class="text-text-primary font-medium">#HNW-VKM-842</strong></span>
+<span class="text-border-default">•</span>
+<span>Lead Auditor: Arjun Sen, CFA, CFP®</span>
+<span class="text-border-default">•</span>
+<span class="text-secondary font-medium flex items-center gap-1">
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-secondary"></span>
+            Deliverable Finalized
+          </span>
+</div>
+</div>
+</div>
+<!-- Toolbar: Print & Evidence Toggle -->
+<div class="flex items-center gap-space-sm flex-shrink-0">
+<div class="inline-flex rounded bg-surface-subtle p-0.5" id="viewModeToggle">
+<button class="px-space-sm py-1 rounded font-label text-label text-text-muted hover:text-text-primary transition-colors" id="compactModeBtn" onclick="toggleEvidenceMode('compact')" type="button">
+          Compact View
+        </button>
+<button class="px-space-sm py-1 rounded font-label text-label bg-surface text-text-primary shadow-sm font-medium transition-all" id="fullModeBtn" onclick="toggleEvidenceMode('full')" type="button">
+          Full Evidence Mode
+        </button>
+</div>
+<button class="inline-flex items-center gap-space-2xs px-space-md py-space-xs rounded bg-primary text-on-primary font-body-medium text-body-medium hover:bg-primary-container transition-colors shadow-sm" onclick="window.print()" type="button">
+<span class="material-symbols-outlined text-[18px]">print</span>
+<span>Print Report</span>
+</button>
+</div>
+</div>
+<!-- Formal Deliverable Document Canvas (Paper Presentation Sheet) -->
+<div class="w-full max-w-container-max mx-auto bg-surface shadow-md p-space-xl sm:p-space-2xl rounded mb-space-2xl" id="printableAuditReport">
+<!-- Document Header & Fiduciary Metadata -->
+<div class="pb-space-lg mb-space-lg bg-surface">
+<div class="flex flex-col md:flex-row md:items-start justify-between gap-space-md">
+<div>
+<div class="inline-flex items-center gap-space-2xs px-space-xs py-0.5 rounded bg-surface-subtle text-text-muted font-label text-label uppercase tracking-wider mb-space-2xs">
+<span class="material-symbols-outlined text-[14px] text-secondary">verified</span>
+            Official Regulatory Deliverable
+          </div>
+<h1 class="font-headline-lg text-headline-lg text-text-primary tracking-tight">
+            Comprehensive Financial Health Audit &amp; Advisory Deliverable
+          </h1>
+<p class="font-body-default text-body-default text-text-secondary mt-1 max-w-2xl">
+            Independent forensic evaluation of asset allocation, longevity solvency, liability structure, and capital adequacy under SEBI (Investment Advisers) Regulations.
+          </p>
+</div>
+<div class="bg-surface-subtle p-space-md rounded min-w-[280px] self-start">
+<div class="font-label text-label uppercase tracking-wider text-text-muted pb-space-2xs">Audit Ledger Metadata</div>
+<div class="space-y-1 font-caption text-caption">
+<div class="flex justify-between">
+<span class="text-text-muted">Doc Reference:</span>
+<span class="font-medium text-text-primary font-mono">FAX-AUD-2026-0906-842</span>
+</div>
+<div class="flex justify-between">
+<span class="text-text-muted">Audit Date:</span>
+<span class="text-text-primary">06 September 2026</span>
+</div>
+<div class="flex justify-between">
+<span class="text-text-muted">Prepared By:</span>
+<span class="text-text-primary">Arjun Sen, CFA, CFP®</span>
+</div>
+<div class="flex justify-between">
+<span class="text-text-muted">SEBI RIA Reg:</span>
+<span class="text-text-primary font-mono">INA000008412</span>
+</div>
+<div class="flex justify-between">
+<span class="text-text-muted">Fiduciary Code:</span>
+<span class="text-secondary font-medium">SEBI Clause 15(1)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 1: Executive Fiduciary Summary & Score -->
+<section class="mb-space-xl">
+<div class="flex items-center gap-space-2xs mb-space-sm">
+<span class="font-label text-label uppercase tracking-widest text-text-muted font-mono">01 //</span>
+<h2 class="font-section-title text-section-title text-text-primary uppercase tracking-wider">Executive Fiduciary Summary &amp; Score</h2>
+</div>
+<!-- Composite Index Banner -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-md mb-space-md">
+<!-- Metric Dial Card -->
+<div class="lg:col-span-4 bg-primary-container text-on-primary p-space-lg rounded flex flex-col justify-between relative overflow-hidden">
+<div class="absolute -right-8 -bottom-8 w-36 h-36 rounded-full bg-secondary/10 pointer-events-none"></div>
+<div>
+<div class="flex items-center justify-between">
+<span class="font-label text-label uppercase tracking-wider text-on-primary-container">Composite Health Index</span>
+<span class="inline-flex items-center px-space-2xs py-0.5 rounded font-label text-label bg-status-critical-bg text-status-critical-fg">
+                Breaches Present
+              </span>
+</div>
+<div class="mt-space-md flex items-baseline gap-space-2xs">
+<span class="font-metric-value text-[48px] leading-tight font-bold tracking-tight text-on-primary">64</span>
+<span class="font-headline-sm text-headline-sm text-on-primary-container">/ 100</span>
+</div>
+<p class="font-caption text-caption text-on-primary-container mt-1">
+              Action Required: 3 Critical Breaches Flagged across Solvency, Insurance, and Growth.
+            </p>
+</div>
+<!-- Mini Inline Bar Visualization -->
+<div class="mt-space-lg pt-space-sm bg-primary-container">
+<div class="flex justify-between font-caption text-caption text-on-primary-container mb-1">
+<span>Risk Threshold Index</span>
+<span>Min Viable: 75/100</span>
+</div>
+<div class="w-full h-2 bg-on-primary-container/20 rounded-full overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 64%;"></div>
+</div>
+<div class="flex justify-between font-caption text-caption text-on-primary-container mt-1.5">
+<span>Current (64)</span>
+<span class="text-secondary font-medium">Post-Plan Target (78)</span>
+</div>
+</div>
+</div>
+<!-- Core Diagnostic Synthesis Narrative -->
+<div class="lg:col-span-8 bg-surface-subtle p-space-lg rounded flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-space-xs">
+<h3 class="font-section-title text-section-title text-text-primary">Diagnostic Synthesis &amp; Primary Vulnerabilities</h3>
+<span class="font-caption text-caption text-text-muted">Monte Carlo Reliability: 94.8%</span>
+</div>
+<p class="font-body-default text-body-default text-text-secondary leading-relaxed">
+              Based on the comprehensive baseline audit of Mandate #HNW-VKM-842, Vikram Malhotra demonstrates strong primary cash-flow generation, yet the capital structure exhibits critical structural vulnerabilities that threaten family solvency and long-term capital preservation:
+            </p>
+<div class="mt-space-sm space-y-2">
+<div class="flex items-start gap-space-2xs">
+<span class="material-symbols-outlined text-status-critical-fg text-[18px] flex-shrink-0 mt-0.5">crisis_alert</span>
+<p class="font-body-default text-body-default text-text-primary">
+<strong class="font-body-medium">Catastrophic Life Protection Gap (₹1.80 Cr):</strong> Existing pure term cover of ₹75L leaves outstanding liabilities (₹46.5L) and daughter’s higher education exposed to immediate capital insolvency in the event of premature demise.
+                </p>
+</div>
+<div class="flex items-start gap-space-2xs">
+<span class="material-symbols-outlined text-status-critical-fg text-[18px] flex-shrink-0 mt-0.5">timelapse</span>
+<p class="font-body-default text-body-default text-text-primary">
+<strong class="font-body-medium">Longevity Deficit at Age 71:</strong> At current ₹25,000/mo SIP contributions and inflation parameters (6.0%), retirement liquid capital depletes prematurely at Age 71—generating a 9-year terminal deficit.
+                </p>
+</div>
+<div class="flex items-start gap-space-2xs">
+<span class="material-symbols-outlined text-status-warning-fg text-[18px] flex-shrink-0 mt-0.5">credit_card_off</span>
+<p class="font-body-default text-body-default text-text-primary">
+<strong class="font-body-medium">Inefficient Unsecured Liability (13.5% APR):</strong> ₹8.50L personal loan imposes a ₹24,200/month recurring friction while ₹18.0L rests in low-yielding savings instruments (3.5% post-tax).
+                </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Key Baseline Snapshot (4-Pillar Metric Strip) -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-space-sm">
+<div class="bg-surface-subtle p-space-md rounded">
+<div class="font-caption text-caption text-text-muted uppercase tracking-wider">Audited Net Worth</div>
+<div class="font-metric-value text-metric-value text-text-primary mt-1 font-mono">₹1.84 Cr</div>
+<div class="font-caption text-caption text-secondary mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">account_balance</span>
+<span>Liquid: ₹42.5 L (23.1%)</span>
+</div>
+</div>
+<div class="bg-surface-subtle p-space-md rounded">
+<div class="font-caption text-caption text-text-muted uppercase tracking-wider">Monthly Free Surplus</div>
+<div class="font-metric-value text-metric-value text-text-primary mt-1 font-mono">₹78,000</div>
+<div class="font-caption text-caption text-text-secondary mt-1">
+            44.5% of ₹1.75L net income
+          </div>
+</div>
+<div class="bg-surface-subtle p-space-md rounded">
+<div class="font-caption text-caption text-text-muted uppercase tracking-wider">Active Debt Burden</div>
+<div class="font-metric-value text-metric-value text-text-primary mt-1 font-mono">₹46.50 L</div>
+<div class="font-caption text-caption text-status-warning-fg mt-1 font-medium">
+            DTI Ratio: 30.4% (Elevated)
+          </div>
+</div>
+<div class="bg-surface-subtle p-space-md rounded">
+<div class="font-caption text-caption text-text-muted uppercase tracking-wider">Solvency Runway</div>
+<div class="font-metric-value text-metric-value text-text-primary mt-1 font-mono">4.1 Months</div>
+<div class="font-caption text-caption text-status-warning-fg mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">warning</span>
+<span>Target: 6.0 Months</span>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 2: Audited Findings & Severity Matrix -->
+<section class="mb-space-xl">
+<div class="flex items-center justify-between mb-space-sm">
+<div class="flex items-center gap-space-2xs">
+<span class="font-label text-label uppercase tracking-widest text-text-muted font-mono">02 //</span>
+<h2 class="font-section-title text-section-title text-text-primary uppercase tracking-wider">Audited Findings &amp; Severity Matrix</h2>
+</div>
+<span class="font-caption text-caption text-text-muted">5 Recorded Exceptions Found</span>
+</div>
+<div class="overflow-x-auto rounded shadow-sm">
+<table class="w-full text-left bg-surface">
+<thead>
+<tr class="bg-surface-subtle font-label text-label text-text-muted uppercase tracking-wider">
+<th class="py-space-sm px-space-md">Severity / Code</th>
+<th class="py-space-sm px-space-md">Pillar &amp; Description</th>
+<th class="py-space-sm px-space-md">Current Baseline</th>
+<th class="py-space-sm px-space-md">Mandate Benchmark</th>
+<th class="py-space-sm px-space-md text-right">Fiduciary Impact</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-subtle font-body-default text-body-default">
+<!-- Finding 1 -->
+<tr class="hover:bg-surface-subtle/50 transition-colors">
+<td class="py-space-sm px-space-md align-top">
+<span class="inline-flex items-center gap-1 px-space-2xs py-0.5 rounded font-label text-label bg-status-critical-bg text-status-critical-fg font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-status-critical-fg"></span>
+                  Critical Breach
+                </span>
+<div class="font-mono text-[11px] text-text-muted mt-1">SEC-HLV-01</div>
+</td>
+<td class="py-space-sm px-space-md align-top">
+<div class="font-body-medium text-body-medium text-text-primary">Pure Term Cover Deficit</div>
+<div class="font-caption text-caption text-text-secondary mt-0.5">Severe protection shortfall under SEBI Human Life Value (HLV) standard.</div>
+<div class="evidence-detail text-caption font-caption text-text-muted mt-2 hidden">
+                  Outstanding home loan ₹38.0L + personal loan ₹8.5L consumes existing ₹75L payout, leaving family with negligible income replacement.
+                </div>
+</td>
+<td class="py-space-sm px-space-md align-top font-mono">₹75.0 L</td>
+<td class="py-space-sm px-space-md align-top font-mono text-text-primary font-medium">₹2.55 Cr</td>
+<td class="py-space-sm px-space-md align-top text-right font-mono font-medium text-status-critical-fg">-₹1.80 Cr Gap</td>
+</tr>
+<!-- Finding 2 -->
+<tr class="hover:bg-surface-subtle/50 transition-colors">
+<td class="py-space-sm px-space-md align-top">
+<span class="inline-flex items-center gap-1 px-space-2xs py-0.5 rounded font-label text-label bg-status-critical-bg text-status-critical-fg font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-status-critical-fg"></span>
+                  Critical Breach
+                </span>
+<div class="font-mono text-[11px] text-text-muted mt-1">RET-LON-04</div>
+</td>
+<td class="py-space-sm px-space-md align-top">
+<div class="font-body-medium text-body-medium text-text-primary">Retirement Longevity Depletion</div>
+<div class="font-caption text-caption text-text-secondary mt-0.5">Corpus zero-balance projected at Age 71 against 80+ longevity standard.</div>
+<div class="evidence-detail text-caption font-caption text-text-muted mt-2 hidden">
+                  Projected accumulation at Age 60 is ₹2.05 Cr vs ₹3.50 Cr required corpus. 9-year unhedged senior living exposure.
+                </div>
+</td>
+<td class="py-space-sm px-space-md align-top font-mono">Age 71 Depletion</td>
+<td class="py-space-sm px-space-md align-top font-mono text-text-primary font-medium">Age 80+ Runway</td>
+<td class="py-space-sm px-space-md align-top text-right font-mono font-medium text-status-critical-fg">-₹1.45 Cr Terminal</td>
+</tr>
+<!-- Finding 3 -->
+<tr class="hover:bg-surface-subtle/50 transition-colors">
+<td class="py-space-sm px-space-md align-top">
+<span class="inline-flex items-center gap-1 px-space-2xs py-0.5 rounded font-label text-label bg-status-warning-bg text-status-warning-fg font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-status-warning-fg"></span>
+                  Policy Warning
+                </span>
+<div class="font-mono text-[11px] text-text-muted mt-1">AST-VOL-02</div>
+</td>
+<td class="py-space-sm px-space-md align-top">
+<div class="font-body-medium text-body-medium text-text-primary">Mid/Small-Cap Volatility Skew</div>
+<div class="font-caption text-caption text-text-secondary mt-0.5">Equity sub-allocation exceeds IPS mandate limit; portfolio Beta is 1.38.</div>
+<div class="evidence-detail text-caption font-caption text-text-muted mt-2 hidden">
+                  Mid/Small Cap constitutes 48.0% of active equity against IPS cap of 25.0%. Exposes core savings to excessive drawdowns.
+                </div>
+</td>
+<td class="py-space-sm px-space-md align-top font-mono">48.0% Alloc.</td>
+<td class="py-space-sm px-space-md align-top font-mono text-text-primary font-medium">25.0% Ceiling</td>
+<td class="py-space-sm px-space-md align-top text-right font-mono font-medium text-status-warning-fg">+23.0% Overweight</td>
+</tr>
+<!-- Finding 4 -->
+<tr class="hover:bg-surface-subtle/50 transition-colors">
+<td class="py-space-sm px-space-md align-top">
+<span class="inline-flex items-center gap-1 px-space-2xs py-0.5 rounded font-label text-label bg-status-warning-bg text-status-warning-fg font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-status-warning-fg"></span>
+                  Policy Warning
+                </span>
+<div class="font-mono text-[11px] text-text-muted mt-1">LIA-APR-03</div>
+</td>
+<td class="py-space-sm px-space-md align-top">
+<div class="font-body-medium text-body-medium text-text-primary">High-Cost Personal Loan Drag</div>
+<div class="font-caption text-caption text-text-secondary mt-0.5">Unsecured loan carries 13.5% APR, eroding ₹24,200/mo in investable surplus.</div>
+<div class="evidence-detail text-caption font-caption text-text-muted mt-2 hidden">
+                  Carrying ₹8.5L personal loan balance while ₹18.0L liquid cash sits idle in low-yield savings accounts is negative carry.
+                </div>
+</td>
+<td class="py-space-sm px-space-md align-top font-mono">13.5% Cost</td>
+<td class="py-space-sm px-space-md align-top font-mono text-text-primary font-medium">0% Unsecured</td>
+<td class="py-space-sm px-space-md align-top text-right font-mono font-medium text-status-warning-fg">₹24,200 / Mo Drag</td>
+</tr>
+<!-- Finding 5 -->
+<tr class="hover:bg-surface-subtle/50 transition-colors">
+<td class="py-space-sm px-space-md align-top">
+<span class="inline-flex items-center gap-1 px-space-2xs py-0.5 rounded font-label text-label bg-status-opportunity-bg text-status-opportunity-fg font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-status-opportunity-fg"></span>
+                  Optimization
+                </span>
+<div class="font-mono text-[11px] text-text-muted mt-1">TAX-NPS-05</div>
+</td>
+<td class="py-space-sm px-space-md align-top">
+<div class="font-body-medium text-body-medium text-text-primary">Unutilized Sec 80CCD(1B) Deductions</div>
+<div class="font-caption text-caption text-text-secondary mt-0.5">Forfeiting ₹50,000 exclusive tier-1 deduction and parental health insurance credits.</div>
+<div class="evidence-detail text-caption font-caption text-text-muted mt-2 hidden">
+                  Marginal 31.2% slab client pays avoidable ₹15,600 tax on NPS plus ₹12,480 on Sec 80D parents' policy.
+                </div>
+</td>
+<td class="py-space-sm px-space-md align-top font-mono">₹0 Claimed</td>
+<td class="py-space-sm px-space-md align-top font-mono text-text-primary font-medium">₹50,000 Max</td>
+<td class="py-space-sm px-space-md align-top text-right font-mono font-medium text-status-opportunity-fg">₹62,400/yr Leakage</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- SECTION 3: Goals & Trajectory Evaluation -->
+<section class="mb-space-xl">
+<div class="flex items-center justify-between mb-space-sm">
+<div class="flex items-center gap-space-2xs">
+<span class="font-label text-label uppercase tracking-widest text-text-muted font-mono">03 //</span>
+<h2 class="font-section-title text-section-title text-text-primary uppercase tracking-wider">Goals &amp; Trajectory Evaluation</h2>
+</div>
+<span class="font-caption text-caption text-text-muted">Horizon: 2026 – 2055</span>
+</div>
+<!-- Mandate Goals Table -->
+<div class="overflow-x-auto rounded shadow-sm mb-space-md">
+<table class="w-full text-left bg-surface">
+<thead>
+<tr class="bg-surface-subtle font-label text-label text-text-muted uppercase tracking-wider">
+<th class="py-space-sm px-space-md">Goal Specification</th>
+<th class="py-space-sm px-space-md">Target Horizon</th>
+<th class="py-space-sm px-space-md">Required Corpus</th>
+<th class="py-space-sm px-space-md">Current Funded</th>
+<th class="py-space-sm px-space-md">Funded %</th>
+<th class="py-space-sm px-space-md text-right">Projected Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-subtle font-body-default text-body-default">
+<tr>
+<td class="py-space-sm px-space-md">
+<div class="font-body-medium text-body-medium text-text-primary">Retirement Solvency (Age 60)</div>
+<div class="font-caption text-caption text-text-secondary">Assumes ₹1.2L/mo current living cost adjusted at 6.0% infl.</div>
+</td>
+<td class="py-space-sm px-space-md font-mono">2044 (18 yrs)</td>
+<td class="py-space-sm px-space-md font-mono font-medium">₹3.50 Cr</td>
+<td class="py-space-sm px-space-md font-mono">₹52.0 L</td>
+<td class="py-space-sm px-space-md font-mono">14.9%</td>
+<td class="py-space-sm px-space-md text-right">
+<span class="inline-flex items-center px-space-2xs py-0.5 rounded font-label text-label bg-status-critical-bg text-status-critical-fg font-medium">
+                  Critical Deficit (-₹1.45 Cr)
+                </span>
+</td>
+</tr>
+<tr>
+<td class="py-space-sm px-space-md">
+<div class="font-body-medium text-body-medium text-text-primary">Daughter's Overseas Education</div>
+<div class="font-caption text-caption text-text-secondary">Undergraduate degree (US/UK) with 7.5% edu inflation</div>
+</td>
+<td class="py-space-sm px-space-md font-mono">2030 (4 yrs)</td>
+<td class="py-space-sm px-space-md font-mono font-medium">₹85.0 L</td>
+<td class="py-space-sm px-space-md font-mono">₹38.5 L</td>
+<td class="py-space-sm px-space-md font-mono">45.3%</td>
+<td class="py-space-sm px-space-md text-right">
+<span class="inline-flex items-center px-space-2xs py-0.5 rounded font-label text-label bg-status-warning-bg text-status-warning-fg font-medium">
+                  Policy Warning (-₹24.0 L)
+                </span>
+</td>
+</tr>
+<tr>
+<td class="py-space-sm px-space-md">
+<div class="font-body-medium text-body-medium text-text-primary">Indiranagar Property Renovation</div>
+<div class="font-caption text-caption text-text-secondary">Structural overhaul and solar roof installation</div>
+</td>
+<td class="py-space-sm px-space-md font-mono">2027 (1 yr)</td>
+<td class="py-space-sm px-space-md font-mono font-medium">₹20.0 L</td>
+<td class="py-space-sm px-space-md font-mono">₹19.2 L</td>
+<td class="py-space-sm px-space-md font-mono">96.0%</td>
+<td class="py-space-sm px-space-md text-right">
+<span class="inline-flex items-center px-space-2xs py-0.5 rounded font-label text-label bg-status-healthy-bg text-status-healthy-fg font-medium">
+                  On Track (-₹0.8 L)
+                </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Longevity Trajectory Milestone Callout -->
+<div class="bg-surface-subtle p-space-md rounded">
+<div class="font-label text-label uppercase tracking-wider text-text-muted mb-space-xs">
+          Baseline Longevity Trajectory Milestone Trace
+        </div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+<div class="bg-surface p-space-sm rounded">
+<div class="flex items-center justify-between text-text-muted font-caption text-caption">
+<span>Phase I: Current Age 42</span>
+<span class="material-symbols-outlined text-[16px] text-secondary">trending_up</span>
+</div>
+<div class="font-headline-sm text-headline-sm text-text-primary font-mono mt-1">₹52.0 L</div>
+<p class="font-caption text-caption text-text-secondary mt-0.5">Total dedicated liquid retirement portfolio.</p>
+</div>
+<div class="bg-surface p-space-sm rounded">
+<div class="flex items-center justify-between text-text-muted font-caption text-caption">
+<span>Phase II: Retirement Age 60</span>
+<span class="material-symbols-outlined text-[16px] text-status-warning-fg">crisis_alert</span>
+</div>
+<div class="font-headline-sm text-headline-sm text-status-warning-fg font-mono mt-1">₹2.05 Cr</div>
+<p class="font-caption text-caption text-text-secondary mt-0.5">Shortfall of ₹1.45 Cr against ₹3.50 Cr target.</p>
+</div>
+<div class="bg-surface p-space-sm rounded">
+<div class="flex items-center justify-between text-text-muted font-caption text-caption">
+<span>Phase III: Premature Depletion</span>
+<span class="material-symbols-outlined text-[16px] text-status-critical-fg">block</span>
+</div>
+<div class="font-headline-sm text-headline-sm text-status-critical-fg font-mono mt-1">Age 71 (₹0 Exhausted)</div>
+<p class="font-caption text-caption text-text-secondary mt-0.5">Portfolio hits 0 balance with 9 years unprotected.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 4: Prioritized Action Plan & Advisory Recommendations -->
+<section class="mb-space-xl">
+<div class="flex items-center justify-between mb-space-sm">
+<div class="flex items-center gap-space-2xs">
+<span class="font-label text-label uppercase tracking-widest text-text-muted font-mono">04 //</span>
+<h2 class="font-section-title text-section-title text-text-primary uppercase tracking-wider">Prioritized Action Plan &amp; Advisory Recommendations</h2>
+</div>
+<span class="font-caption text-caption text-text-muted">Sequenced Remediation Path</span>
+</div>
+<div class="space-y-space-sm">
+<!-- Rec 1 -->
+<div class="p-space-md rounded bg-surface-subtle">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-xs">
+<div class="flex items-center gap-space-sm">
+<span class="w-7 h-7 rounded bg-primary-container text-on-primary font-mono font-bold text-caption flex items-center justify-center">1</span>
+<div>
+<span class="inline-flex items-center px-space-2xs py-0.5 rounded font-label text-label bg-status-critical-bg text-status-critical-fg font-medium mb-1">
+                  Immediate Priority
+                </span>
+<h3 class="font-section-title text-section-title text-text-primary">
+                  Procure ₹1.80 Cr 25-Year Pure Term Life Policy
+                </h3>
+</div>
+</div>
+<div class="text-right">
+<span class="font-mono text-body-medium font-medium text-text-primary">~₹28,500 / year</span>
+<div class="font-caption text-caption text-text-muted">Est. Annual Premium</div>
+</div>
+</div>
+<p class="font-body-default text-body-default text-text-secondary mt-space-xs">
+            Immediately close the ₹1.80 Cr human life value gap. Guarantees mortgage liquidation (₹46.5L debt) and fully insulates daughter’s higher education trajectory in an adverse contingency.
+          </p>
+</div>
+<!-- Rec 2 -->
+<div class="p-space-md rounded bg-surface-subtle">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-xs">
+<div class="flex items-center gap-space-sm">
+<span class="w-7 h-7 rounded bg-primary-container text-on-primary font-mono font-bold text-caption flex items-center justify-center">2</span>
+<div>
+<span class="inline-flex items-center px-space-2xs py-0.5 rounded font-label text-label bg-status-critical-bg text-status-critical-fg font-medium mb-1">
+                  High Priority
+                </span>
+<h3 class="font-section-title text-section-title text-text-primary">
+                  Step-Up Monthly Retirement SIP by ₹23,500 / month
+                </h3>
+</div>
+</div>
+<div class="text-right">
+<span class="font-mono text-body-medium font-medium text-text-primary">₹25K ➔ ₹48,500 / mo</span>
+<div class="font-caption text-caption text-text-muted">With 10% Annual Step-Up</div>
+</div>
+</div>
+<p class="font-body-default text-body-default text-text-secondary mt-space-xs">
+            Rechannel surplus into diversified equity index funds. Compounding bridges the ₹1.45 Cr retirement deficit and completely eliminates early depletion at Age 71.
+          </p>
+</div>
+<!-- Rec 3 -->
+<div class="p-space-md rounded bg-surface-subtle">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-xs">
+<div class="flex items-center gap-space-sm">
+<span class="w-7 h-7 rounded bg-primary-container text-on-primary font-mono font-bold text-caption flex items-center justify-center">3</span>
+<div>
+<span class="inline-flex items-center px-space-2xs py-0.5 rounded font-label text-label bg-status-warning-bg text-status-warning-fg font-medium mb-1">
+                  Moderate Priority
+                </span>
+<h3 class="font-section-title text-section-title text-text-primary">
+                  Prepay ₹8.50 L High-Interest Personal Loan
+                </h3>
+</div>
+</div>
+<div class="text-right">
+<span class="font-mono text-body-medium font-medium text-secondary">+₹24,200 / month</span>
+<div class="font-caption text-caption text-text-muted">Freed Investable Surplus</div>
+</div>
+</div>
+<p class="font-body-default text-body-default text-text-secondary mt-space-xs">
+            Deploy ₹8.5L from idle savings account reserves (currently ₹18.0L) to extinguish the 13.5% APR loan. Eliminates guaranteed negative carry and frees cashflow for the retirement step-up.
+          </p>
+</div>
+<!-- Rec 4 -->
+<div class="p-space-md rounded bg-surface-subtle">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-xs">
+<div class="flex items-center gap-space-sm">
+<span class="w-7 h-7 rounded bg-primary-container text-on-primary font-mono font-bold text-caption flex items-center justify-center">4</span>
+<div>
+<span class="inline-flex items-center px-space-2xs py-0.5 rounded font-label text-label bg-status-warning-bg text-status-warning-fg font-medium mb-1">
+                  Moderate Priority
+                </span>
+<h3 class="font-section-title text-section-title text-text-primary">
+                  Rebalance Mid/Small-Cap Volatility Skew
+                </h3>
+</div>
+</div>
+<div class="text-right">
+<span class="font-mono text-body-medium font-medium text-text-primary">₹19.8 L Reallocation</span>
+<div class="font-caption text-caption text-text-muted">Target Beta: 1.02</div>
+</div>
+</div>
+<p class="font-body-default text-body-default text-text-secondary mt-space-xs">
+            Trim 48% exposure to 25% mandate ceiling. Shift proceeds into Nifty 50 Index and Sovereign Green Bonds to lower portfolio standard deviation from 16.8% to 11.2%.
+          </p>
+</div>
+<!-- Rec 5 -->
+<div class="p-space-md rounded bg-surface-subtle">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-xs">
+<div class="flex items-center gap-space-sm">
+<span class="w-7 h-7 rounded bg-primary-container text-on-primary font-mono font-bold text-caption flex items-center justify-center">5</span>
+<div>
+<span class="inline-flex items-center px-space-2xs py-0.5 rounded font-label text-label bg-status-opportunity-bg text-status-opportunity-fg font-medium mb-1">
+                  Tax Optimization
+                </span>
+<h3 class="font-section-title text-section-title text-text-primary">
+                  Activate NPS Tier-1 &amp; Section 80CCD(1B)
+                </h3>
+</div>
+</div>
+<div class="text-right">
+<span class="font-mono text-body-medium font-medium text-text-primary">₹62,400 / year</span>
+<div class="font-caption text-caption text-text-muted">Direct Tax Savings</div>
+</div>
+</div>
+<p class="font-body-default text-body-default text-text-secondary mt-space-xs">
+            Enroll in NPS Tier-1 auto-choice with maximum ₹50,000 yearly allocation and restructure parents' health coverage under Sec 80D. Recaptures leakage for long-term compounding.
+          </p>
+</div>
+</div>
+<!-- Expected Post-Remediation Outcome Summary Banner -->
+<div class="mt-space-md bg-status-healthy-bg p-space-md rounded flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded bg-status-healthy-fg text-surface flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[24px]">verified</span>
+</div>
+<div>
+<div class="font-section-title text-section-title text-status-healthy-fg font-bold">
+              Projected Post-Remediation Status: Fiduciary Compliant
+            </div>
+<p class="font-caption text-caption text-text-secondary mt-0.5">
+              Executing these 5 actions resolves 3 of 3 Critical Breaches, expands longevity runway to Age 84+, and closes the protection deficit entirely.
+            </p>
+</div>
+</div>
+<div class="flex items-center gap-space-md flex-shrink-0">
+<div class="text-right">
+<div class="font-caption text-caption text-text-muted uppercase tracking-wider">Health Index Delta</div>
+<div class="font-metric-value text-metric-value text-status-healthy-fg font-mono">64 ➔ 78/100</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 5: Fiduciary Sign-Off, Assumptions & Regulatory Disclaimers -->
+<section class="pt-space-md">
+<div class="flex items-center gap-space-2xs mb-space-sm">
+<span class="font-label text-label uppercase tracking-widest text-text-muted font-mono">05 //</span>
+<h2 class="font-section-title text-section-title text-text-primary uppercase tracking-wider">Fiduciary Sign-Off &amp; Regulatory Disclosures</h2>
+</div>
+<!-- Formal Signatures Box -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-lg p-space-lg rounded bg-surface-subtle mb-space-md">
+<!-- Advisor Endorsement -->
+<div class="flex flex-col justify-between">
+<div>
+<div class="font-label text-label uppercase tracking-wider text-text-muted mb-space-2xs">
+              Supervising RIA Principal Sign-Off
+            </div>
+<div class="font-section-title text-section-title text-text-primary">Arjun Sen, CFA, CFP®</div>
+<div class="font-caption text-caption text-text-muted">SEBI Registered Investment Adviser (INA000008412)</div>
+<p class="font-caption text-caption text-text-secondary mt-space-xs italic">
+              "I hereby certify that this audit was performed strictly adhering to the fiduciary mandate under SEBI Clause 15(1), prioritizing capital preservation and client interest above all institutional consideration."
+            </p>
+</div>
+<div class="pt-space-md mt-space-md bg-surface-subtle flex items-center justify-between">
+<div>
+<div class="font-mono text-[11px] text-text-muted">DIGITALLY SIGNED &amp; VERIFIED</div>
+<div class="font-mono text-caption text-text-primary">06-SEP-2026 09:30:14 IST</div>
+</div>
+<span class="material-symbols-outlined text-[28px] text-secondary">approval_delegation</span>
+</div>
+</div>
+<!-- Client Acceptance -->
+<div class="flex flex-col justify-between">
+<div>
+<div class="font-label text-label uppercase tracking-wider text-text-muted mb-space-2xs">
+              Client Review &amp; Implementation Acknowledgement
+            </div>
+<div class="font-section-title text-section-title text-text-primary">Vikram Malhotra</div>
+<div class="font-caption text-caption text-text-muted">Account ID: HNW-VKM-842</div>
+<p class="font-caption text-caption text-text-secondary mt-space-xs">
+              I acknowledge receipt of this formal audit deliverable and have reviewed the findings, life insurance gap disclosures, and retirement allocation assumptions stated herein.
+            </p>
+</div>
+<div class="pt-space-md mt-space-md bg-surface-subtle flex items-end justify-between">
+<div>
+<div class="font-mono text-[11px] text-text-muted">CLIENT SIGNATURE / DATE</div>
+<div class="w-48 h-6 bg-surface-emphasis/50 rounded mt-1"></div>
+</div>
+<span class="material-symbols-outlined text-[24px] text-text-muted">draw</span>
+</div>
+</div>
+</div>
+<!-- Legal Footnote & Audit Hash -->
+<div class="p-space-md rounded bg-surface text-text-muted space-y-2 text-[11px] leading-relaxed">
+<p>
+<strong class="font-medium text-text-primary">Statutory Disclaimer:</strong> This deliverable is strictly confidential and generated for certified wealth manager analysis under SEBI (Investment Advisers) Regulations, 2013. Projected future corpus valuations rely on deterministic Monte Carlo stochastic modeling (10,000 runs) and do not constitute a warranty of returns. Past performance of securities is not indicative of future results.
+        </p>
+<div class="flex flex-wrap items-center justify-between pt-space-xs text-text-muted">
+<span>Calculation Methodology: SEBI RIA-Compliant Monte Carlo (v4.2.1-prod)</span>
+<span class="font-mono text-text-primary">Audit Hash: #0F172A-89F5E7-VKM842</span>
+</div>
+</div>
+</section>
+</div>
+</div>
+<script>
+  function toggleEvidenceMode(mode) {
+    const compactBtn = document.getElementById('compactModeBtn');
+    const fullBtn = document.getElementById('fullModeBtn');
+    const evidenceDetails = document.querySelectorAll('.evidence-detail');
+
+    if (mode === 'compact') {
+      compactBtn.classList.add('bg-surface', 'text-text-primary', 'shadow-sm', 'font-medium');
+      compactBtn.classList.remove('text-text-muted');
+      
+      fullBtn.classList.remove('bg-surface', 'text-text-primary', 'shadow-sm', 'font-medium');
+      fullBtn.classList.add('text-text-muted');
+
+      evidenceDetails.forEach(el => el.classList.add('hidden'));
+    } else {
+      fullBtn.classList.add('bg-surface', 'text-text-primary', 'shadow-sm', 'font-medium');
+      fullBtn.classList.remove('text-text-muted');
+
+      compactBtn.classList.remove('bg-surface', 'text-text-primary', 'shadow-sm', 'font-medium');
+      compactBtn.classList.add('text-text-muted');
+
+      evidenceDetails.forEach(el => el.classList.remove('hidden'));
+    }
+  }
+
+  // Ensure default full evidence mode on load
+  document.addEventListener('DOMContentLoaded', () => {
+    toggleEvidenceMode('full');
+  });
+</script></main><footer class="w-full bg-surface py-space-xs px-space-lg shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="w-full flex flex-col md:flex-row items-center justify-between gap-space-xs"><div class="flex items-center gap-space-xs font-caption text-caption text-text-muted"><span class="material-symbols-outlined text-[16px] text-secondary">sync_alt</span><span>Calculation Methodology: SEBI RIA-Compliant Monte Carlo (v4.2.1-prod)</span><span class="text-border-default">|</span><span>Audit Hash: #0F172A-89F5</span></div><div class="font-caption text-caption text-text-muted text-right">Disclaimer: For certified financial advisor analysis only. Not an investment solicitation or warranty of future yields.</div></div></footer></div></body></html>

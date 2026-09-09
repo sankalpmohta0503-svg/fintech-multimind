@@ -1,6 +1,7 @@
 import React from 'react';
 import { ChevronRight } from 'lucide-react';
-import { getSeverityIcon, getSeverityColor } from '../utils/formatters';
+import { getSeverityColor } from '../utils/formatters';
+import StatusBadge from './StatusBadge';
 
 const InsightCard = ({ severity, title, description, onClick }) => {
   return (
@@ -13,8 +14,8 @@ const InsightCard = ({ severity, title, description, onClick }) => {
       onClick={onClick}
     >
       <div className="flex items-start gap-3">
-        <span className="text-xl flex-shrink-0">{getSeverityIcon(severity)}</span>
         <div className="flex-1 min-w-0">
+          <StatusBadge status={severity} className="mb-2" />
           <h4 className="font-semibold text-sm leading-snug">{title}</h4>
           {description && (
             <p className="text-xs mt-1 opacity-90 line-clamp-2">{description}</p>

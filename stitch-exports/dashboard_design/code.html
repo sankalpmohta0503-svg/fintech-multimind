@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;font-family:'Inter',sans-serif;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={"darkMode":"class","theme":{"extend":{"colors":{"tertiary-fixed-dim":"#dec29a","status-critical-fg":"#991B1B","outline-variant":"#c6c6cd","surface-dim":"#dcd9db","status-warning-bg":"#FFFBEB","surface-container-highest":"#e4e2e4","status-healthy-bg":"#F0FDF4","surface-variant":"#e4e2e4","on-primary":"#ffffff","border-default":"#CBD5E1","on-secondary":"#ffffff","primary-container":"#131b2e","secondary-fixed":"#89f5e7","status-healthy-fg":"#166534","surface-emphasis":"#E2E8F0","border-strong":"#94A3B8","border-subtle":"#E2E8F0","inverse-on-surface":"#f3f0f2","surface-container-low":"#f6f3f5","inverse-surface":"#303032","primary-fixed-dim":"#bec6e0","error":"#ba1a1a","background":"#fcf8fa","secondary-container":"#86f2e4","on-error":"#ffffff","on-primary-fixed":"#131b2e","text-muted":"#64748B","text-primary":"#0F172A","primary":"#000000","primary-fixed":"#dae2fd","tertiary-fixed":"#fcdeb5","outline":"#76777d","on-surface-variant":"#45464d","on-primary-fixed-variant":"#3f465c","on-secondary-fixed-variant":"#005049","on-tertiary":"#ffffff","on-primary-container":"#7c839b","surface-container-lowest":"#ffffff","surface-bright":"#fcf8fa","status-opportunity-fg":"#1E40AF","on-secondary-fixed":"#00201d","canvas":"#F8FAFC","status-opportunity-bg":"#EFF6FF","tertiary":"#000000","surface-container":"#f0edef","on-secondary-container":"#006f66","on-tertiary-container":"#98805d","error-container":"#ffdad6","secondary":"#006a61","text-secondary":"#475569","surface-tint":"#565e74","surface":"#FFFFFF","on-error-container":"#93000a","secondary-fixed-dim":"#6bd8cb","tertiary-container":"#271901","on-surface":"#1b1b1d","status-critical-bg":"#FEF2F2","inverse-primary":"#bec6e0","surface-container-high":"#eae7e9","on-tertiary-fixed":"#271901","on-background":"#1b1b1d","status-warning-fg":"#92400E","surface-subtle":"#F1F5F9","on-tertiary-fixed-variant":"#574425"},"borderRadius":{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},"spacing":{"space-xs":"8px","space-3xs":"2px","space-md":"16px","space-2xs":"4px","space-lg":"24px","space-xl":"32px","space-sm":"12px","container-max":"1280px","space-2xl":"48px"},"fontFamily":{"body-medium":["Inter"],"headline-sm":["Inter"],"body-default":["Inter"],"caption":["Inter"],"headline-lg":["Inter"],"label":["Inter"],"section-title":["Inter"],"headline-md":["Inter"],"metric-value":["Inter"]},"fontSize":{"body-medium":["14px",{"lineHeight":"20px","fontWeight":"500"}],"headline-sm":["18px",{"lineHeight":"24px","fontWeight":"600"}],"body-default":["14px",{"lineHeight":"20px","fontWeight":"400"}],"caption":["12px",{"lineHeight":"16px","fontWeight":"400"}],"headline-lg":["28px",{"lineHeight":"36px","letterSpacing":"-0.02em","fontWeight":"600"}],"label":["12px",{"lineHeight":"16px","fontWeight":"500"}],"section-title":["15px",{"lineHeight":"20px","fontWeight":"600"}],"headline-md":["22px",{"lineHeight":"28px","letterSpacing":"-0.01em","fontWeight":"600"}],"metric-value":["24px",{"lineHeight":"32px","letterSpacing":"-0.02em","fontWeight":"700"}]}}}}</script></head><body class="bg-canvas text-on-surface font-body-default text-body-default min-h-screen"><aside class="fixed left-0 top-0 h-full w-64 bg-surface z-50 flex flex-col shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-20 px-space-md flex items-center gap-space-xs bg-surface"><img alt="FinAuditX Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrcldw98GQN3w6z_lJYpbgwEGJ2tzLvEXLpkSAz-DxjkdQY3ZgBzTyRZvgxCDrqSEX5zsn7rdgk3Uf7XZhpdmx67ysG9BURFUW00HTWjLklSDc6UeMmd_PamuSyozSc4Ufn0aV98WgzWnIvgi_OzfT4DyruXEzr9-xiLW1sVPHDtFP4jRkPHeoiKi7sRRr5-eh8TOIn1b2lCE84kf4vezK7vJmaP88RuAp5wDJpWhNv8bLPajM2JFc9A"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm tracking-tight text-text-primary">FinAuditX</span><span class="font-caption text-caption text-text-muted">Decision Support Core</span></div></div><div class="flex-1 overflow-y-auto px-space-xs py-space-xs"><nav class="flex flex-col gap-space-3xs" data-active-classes="bg-primary-container text-on-primary font-body-medium"><div class="px-space-xs pt-space-xs pb-space-3xs font-label text-label uppercase tracking-wider text-text-muted">Overview</div><a aria-current="page" class="flex items-center justify-between px-space-xs py-space-xs rounded transition-colors bg-primary-container text-on-primary font-body-medium" data-path="dashboard" href="#"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[18px]">dashboard</span><span class="font-body-medium text-body-medium">Dashboard</span></div></a><div class="px-space-xs pt-space-sm pb-space-3xs font-label text-label uppercase tracking-wider text-text-muted">Understand</div><a class="flex items-center gap-space-xs px-space-xs py-space-xs rounded text-on-surface-variant hover:bg-surface-subtle hover:text-on-surface transition-colors" data-path="client-profile" href="#"><span class="material-symbols-outlined text-[18px]">person</span><span class="font-body-medium text-body-medium">Client Profile</span></a><a class="flex items-center gap-space-xs px-space-xs py-space-xs rounded text-on-surface-variant hover:bg-surface-subtle hover:text-on-surface transition-colors" data-path="goals" href="#"><span class="material-symbols-outlined text-[18px]">flag</span><span class="font-body-medium text-body-medium">Goals</span></a><a class="flex items-center gap-space-xs px-space-xs py-space-xs rounded text-on-surface-variant hover:bg-surface-subtle hover:text-on-surface transition-colors" data-path="portfolio" href="#"><span class="material-symbols-outlined text-[18px]">pie_chart</span><span class="font-body-medium text-body-medium">Portfolio</span></a><div class="px-space-xs pt-space-sm pb-space-3xs font-label text-label uppercase tracking-wider text-text-muted">Diagnose</div><a class="flex items-center justify-between px-space-xs py-space-xs rounded text-on-surface-variant hover:bg-surface-subtle hover:text-on-surface transition-colors" data-path="financial-audit" href="#"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[18px]">fact_check</span><span class="font-body-medium text-body-medium">Financial Audit</span></div><span class="px-space-2xs py-0.5 rounded-full font-label text-label bg-status-critical-bg text-status-critical-fg">3</span></a><a class="flex items-center justify-between px-space-xs py-space-xs rounded text-on-surface-variant hover:bg-surface-subtle hover:text-on-surface transition-colors" data-path="recommendations" href="#"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[18px]">assignment_turned_in</span><span class="font-body-medium text-body-medium">Recommendations</span></div><span class="px-space-2xs py-0.5 rounded-full font-label text-label bg-status-opportunity-bg text-status-opportunity-fg">2</span></a><div class="px-space-xs pt-space-sm pb-space-3xs font-label text-label uppercase tracking-wider text-text-muted">Explore</div><a class="flex items-center gap-space-xs px-space-xs py-space-xs rounded text-on-surface-variant hover:bg-surface-subtle hover:text-on-surface transition-colors" data-path="what-if-simulator" href="#"><span class="material-symbols-outlined text-[18px]">tune</span><span class="font-body-medium text-body-medium">What-If Simulator</span></a><div class="px-space-xs pt-space-sm pb-space-3xs font-label text-label uppercase tracking-wider text-text-muted">Deliver</div><a class="flex items-center gap-space-xs px-space-xs py-space-xs rounded text-on-surface-variant hover:bg-surface-subtle hover:text-on-surface transition-colors" data-path="advisor-report" href="#"><span class="material-symbols-outlined text-[18px]">article</span><span class="font-body-medium text-body-medium">Advisor Report</span></a></nav></div><div class="p-space-xs bg-surface-subtle mx-space-xs mb-space-xs rounded flex items-center justify-between"><div class="flex flex-col"><span class="font-label text-label text-text-muted">Workspace Mode</span><span class="font-body-medium text-body-medium text-text-primary">Advisory Suite v2.4</span></div><span class="material-symbols-outlined text-text-muted text-[18px]">verified_user</span></div></aside><div class="pl-64 flex flex-col min-h-screen"><header class="fixed top-0 left-64 right-0 h-20 bg-surface/90 backdrop-blur-xl z-40 shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-20 w-full px-space-lg flex items-center justify-between gap-space-md"><div class="flex flex-col justify-center"><div class="flex items-center gap-space-xs flex-wrap"><span class="font-section-title text-section-title text-text-primary">Vikram Malhotra, 42</span><span class="text-border-default">|</span><span class="font-body-default text-body-default text-text-secondary">Bengaluru</span><span class="text-border-default">|</span><span class="inline-flex items-center px-space-2xs py-0.5 rounded-full font-label text-label bg-status-warning-bg text-status-warning-fg">Moderate Risk</span><span class="text-border-default">|</span><div class="flex items-center gap-1 font-caption text-caption text-text-muted"><span class="inline-block w-1.5 h-1.5 rounded-full bg-secondary"></span><span>Updated Today 09:30 AM</span></div></div><div class="flex items-center gap-space-2xs pt-1 font-caption text-caption text-text-muted"><span class="hover:text-on-surface transition-colors cursor-pointer">Accounts</span><span>/</span><span class="hover:text-on-surface transition-colors cursor-pointer">HNW Retail</span><span>/</span><span class="text-text-primary font-medium">Portfolio Diagnostics</span></div></div><div class="flex items-center gap-space-sm flex-shrink-0"><button class="relative p-space-xs rounded hover:bg-surface-subtle text-text-secondary hover:text-text-primary transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-status-critical-fg"></span></button><button class="inline-flex items-center gap-space-2xs px-space-sm py-space-xs rounded bg-primary text-on-primary font-body-medium text-body-medium hover:bg-primary-container hover:text-on-primary transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">download</span><span>Generate Report</span></button><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDo44UB7LRy5mXHBxu5aovci1Q4T_Al3jXtdOjv3Q0mVpPisTsgJwsOEX27OJovFuUXLwohVnzWBl3dKqgR9was6UiCR7M_EwkBqIuPNRAf0tJOLqpCDW346IAQ5_aOgrRKA-8M9rY13STbLHIpiUgTsPMEd7fo0c4cUZhxbw4hu8J6Byxy2aR-zKZPRDmUs9d1oXwnCCW9FU4HwGdoo1K6qJ8DHd_imTf-xCOUrysFjXxw227JcJhfw"/></div></div></header><main class="flex-1 w-full pt-20 pb-12 bg-canvas px-space-lg"><div class="flex flex-col w-full">
+<!-- Top Command & Action Bar -->
+<section class="w-full bg-surface py-space-md px-space-lg rounded-lg shadow-sm mb-space-lg">
+<div class="flex flex-col xl:flex-row xl:items-center justify-between gap-space-md">
+<div class="flex flex-col gap-space-3xs">
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-headline-md text-headline-md text-text-primary tracking-tight">Financial Overview</span>
+<span class="px-space-2xs py-0.5 rounded font-label text-label bg-surface-subtle text-text-muted">ID: #VM-70942</span>
+<span class="px-space-2xs py-0.5 rounded font-label text-label bg-status-healthy-bg text-status-healthy-fg inline-flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-status-healthy-fg"></span> Verified Live
+          </span>
+</div>
+<p class="font-body-default text-body-default text-text-secondary">
+          Vikram Malhotra, 42 • Bengaluru, Karnataka • Moderate Aggressive • Engine V2.4 (Deterministic Audit)
+        </p>
+<div class="flex items-center gap-space-xs text-text-muted font-caption text-caption pt-0.5">
+<span class="material-symbols-outlined text-[15px] text-secondary">verified</span>
+<span>Audited today at 09:30 AM IST (All 8 dimensions verified against SEBI RIA framework)</span>
+</div>
+</div>
+<!-- Advisor Rapid Triage Controls -->
+<div class="flex items-center gap-space-xs flex-wrap">
+<button class="inline-flex items-center gap-space-2xs px-space-md py-space-xs rounded bg-status-critical-bg text-status-critical-fg hover:bg-red-100 font-body-medium text-body-medium shadow-sm transition-all focus:outline-none" type="button">
+<span class="material-symbols-outlined text-[18px]">warning</span>
+<span>Review 3 Critical Issues</span>
+</button>
+<button class="inline-flex items-center gap-space-2xs px-space-md py-space-xs rounded bg-surface-subtle text-text-primary hover:bg-surface-emphasis font-body-medium text-body-medium transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">tune</span>
+<span>Run Scenario</span>
+</button>
+<button class="inline-flex items-center gap-space-2xs px-space-md py-space-xs rounded bg-surface-subtle text-text-primary hover:bg-surface-emphasis font-body-medium text-body-medium transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">description</span>
+<span>Open Report</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Health Score & Dimensions Matrix Bento -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-space-md mb-space-lg">
+<!-- Main Institutional Score Card -->
+<div class="lg:col-span-5 bg-surface rounded-lg p-space-lg shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between pb-space-xs">
+<span class="font-label text-label uppercase tracking-wider text-text-muted">Composite Financial Health</span>
+<span class="inline-flex items-center gap-1 font-caption text-caption text-status-healthy-fg bg-status-healthy-bg px-space-2xs py-0.5 rounded">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> +3 pts vs Q3
+          </span>
+</div>
+<div class="flex items-center gap-space-lg my-space-md">
+<!-- Circular Score SVG -->
+<div class="relative w-28 h-28 flex items-center justify-center flex-shrink-0">
+<svg class="w-28 h-28 transform -rotate-90" viewbox="0 0 100 100">
+<circle class="text-surface-subtle" cx="50" cy="50" fill="transparent" r="42" stroke="currentColor" stroke-width="8"></circle>
+<!-- 64% perimeter: 263.89 * 0.64 = 168.89, dasharray = 168.89 263.89 -->
+<circle class="text-secondary" cx="50" cy="50" fill="transparent" r="42" stroke="currentColor" stroke-dasharray="168.9 263.9" stroke-linecap="round" stroke-width="8"></circle>
+</svg>
+<div class="absolute flex flex-col items-center justify-center">
+<span class="font-metric-value text-metric-value text-text-primary leading-none">64</span>
+<span class="font-caption text-caption text-text-muted mt-0.5">/ 100</span>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="font-section-title text-section-title text-text-primary">Fair / Action Required</span>
+<span class="font-caption text-caption text-text-muted mt-1 leading-relaxed">
+              Institutional benchmark suggests 78+ for Vikram's wealth cohort (Top 15% HNW).
+            </span>
+<div class="mt-space-xs inline-flex items-center gap-1 font-label text-label text-status-critical-fg bg-status-critical-bg px-space-xs py-0.5 rounded w-fit">
+<span class="material-symbols-outlined text-[14px]">error</span> 2 Breaches Unresolved
+            </div>
+</div>
+</div>
+<div class="p-space-xs bg-status-warning-bg rounded mt-space-xs text-status-warning-fg font-body-default text-body-default leading-snug">
+<strong>Advisor Synthesis:</strong> Severe retirement corpus shortfall and term life gap require immediate reallocation of Vikram's ₹78,000 monthly surplus.
+        </div>
+</div>
+<div class="pt-space-md flex items-center justify-between">
+<a class="font-label text-label text-secondary hover:underline inline-flex items-center gap-1" href="#">
+<span>View methodology &amp; audit logs</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+<span class="font-caption text-caption text-text-muted">SEBI RIA Benchmark: 2024.1</span>
+</div>
+</div>
+<!-- 8 Dimensions Ranked Matrix -->
+<div class="lg:col-span-7 bg-surface rounded-lg p-space-lg shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between mb-space-sm">
+<div>
+<h2 class="font-section-title text-section-title text-text-primary">Eight Core Dimensions Audit</h2>
+<p class="font-caption text-caption text-text-muted">Ranked from highest adherence to critical vulnerability</p>
+</div>
+<div class="flex items-center gap-space-xs font-caption text-caption text-text-muted">
+<span class="w-2 h-2 rounded-full bg-secondary"></span> <span>Optimal (≥70)</span>
+<span class="w-2 h-2 rounded-full bg-status-warning-fg"></span> <span>Moderate (&lt;70)</span>
+<span class="w-2 h-2 rounded-full bg-status-critical-fg"></span> <span>Vulnerable (&lt;50)</span>
+</div>
+</div>
+<!-- Dimensions Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-x-space-lg gap-y-space-xs">
+<!-- 1. Cash Flow -->
+<div class="p-space-xs rounded hover:bg-surface-subtle transition-colors">
+<div class="flex items-center justify-between font-label text-label mb-1">
+<span class="text-text-primary font-medium">1. Cash Flow &amp; Savings</span>
+<span class="font-body-medium text-body-medium text-status-healthy-fg font-semibold">82/100</span>
+</div>
+<div class="w-full bg-surface-subtle h-2 rounded-full overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 82%;"></div>
+</div>
+</div>
+<!-- 2. Debt Management -->
+<div class="p-space-xs rounded hover:bg-surface-subtle transition-colors">
+<div class="flex items-center justify-between font-label text-label mb-1">
+<span class="text-text-primary font-medium">2. Debt Management</span>
+<span class="font-body-medium text-body-medium text-status-healthy-fg font-semibold">75/100</span>
+</div>
+<div class="w-full bg-surface-subtle h-2 rounded-full overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 75%;"></div>
+</div>
+</div>
+<!-- 3. Tax Efficiency -->
+<div class="p-space-xs rounded hover:bg-surface-subtle transition-colors">
+<div class="flex items-center justify-between font-label text-label mb-1">
+<span class="text-text-primary font-medium">3. Tax Efficiency</span>
+<span class="font-body-medium text-body-medium text-text-primary font-semibold">68/100</span>
+</div>
+<div class="w-full bg-surface-subtle h-2 rounded-full overflow-hidden">
+<div class="bg-primary-container h-full rounded-full" style="width: 68%;"></div>
+</div>
+</div>
+<!-- 4. Liquidity -->
+<div class="p-space-xs rounded hover:bg-surface-subtle transition-colors">
+<div class="flex items-center justify-between font-label text-label mb-1">
+<span class="text-text-primary font-medium">4. Liquidity Coverage</span>
+<span class="font-body-medium text-body-medium text-text-primary font-semibold">60/100</span>
+</div>
+<div class="w-full bg-surface-subtle h-2 rounded-full overflow-hidden">
+<div class="bg-primary-container h-full rounded-full" style="width: 60%;"></div>
+</div>
+</div>
+<!-- 5. Asset Allocation -->
+<div class="p-space-xs rounded hover:bg-surface-subtle transition-colors">
+<div class="flex items-center justify-between font-label text-label mb-1">
+<span class="text-text-primary font-medium">5. Asset Allocation</span>
+<span class="font-body-medium text-body-medium text-text-primary font-semibold">58/100</span>
+</div>
+<div class="w-full bg-surface-subtle h-2 rounded-full overflow-hidden">
+<div class="bg-primary-container h-full rounded-full" style="width: 58%;"></div>
+</div>
+</div>
+<!-- 6. Retirement Planning (VULNERABLE) -->
+<div class="p-space-xs rounded bg-status-critical-bg/40">
+<div class="flex items-center justify-between font-label text-label mb-1">
+<span class="text-status-critical-fg font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">priority_high</span> 6. Retirement Planning
+            </span>
+<span class="font-body-medium text-body-medium text-status-critical-fg font-bold">44/100</span>
+</div>
+<div class="w-full bg-surface-subtle h-2 rounded-full overflow-hidden">
+<div class="bg-status-critical-fg h-full rounded-full" style="width: 44%;"></div>
+</div>
+</div>
+<!-- 7. Insurance & Protection (CRITICAL GAP) -->
+<div class="p-space-xs rounded bg-status-critical-bg">
+<div class="flex items-center justify-between font-label text-label mb-1">
+<span class="text-status-critical-fg font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">crisis_alert</span> 7. Insurance &amp; Protection
+            </span>
+<span class="font-body-medium text-body-medium text-status-critical-fg font-bold">40/100</span>
+</div>
+<div class="w-full bg-red-200 h-2 rounded-full overflow-hidden">
+<div class="bg-status-critical-fg h-full rounded-full" style="width: 40%;"></div>
+</div>
+</div>
+<!-- 8. Estate Readiness -->
+<div class="p-space-xs rounded hover:bg-surface-subtle transition-colors">
+<div class="flex items-center justify-between font-label text-label mb-1">
+<span class="text-text-secondary font-medium">8. Estate Readiness</span>
+<span class="font-body-medium text-body-medium text-status-warning-fg font-semibold">35/100</span>
+</div>
+<div class="w-full bg-surface-subtle h-2 rounded-full overflow-hidden">
+<div class="bg-status-warning-fg h-full rounded-full" style="width: 35%;"></div>
+</div>
+</div>
+</div>
+<div class="mt-space-xs pt-space-xs flex items-center justify-between text-text-muted font-caption text-caption">
+<span>*Scores calibrated using 144 regulatory stress scenarios</span>
+<button class="text-text-secondary hover:text-text-primary font-label text-label inline-flex items-center gap-1" type="button">
+<span>Expand Stress Tests</span>
+<span class="material-symbols-outlined text-[14px]">unfold_more</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Priority Attention Panel (Advisor Action Queue) -->
+<section class="bg-surface rounded-lg p-space-lg shadow-sm mb-space-lg">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-sm mb-space-md">
+<div>
+<div class="flex items-center gap-space-xs">
+<h2 class="font-section-title text-section-title text-text-primary">Priority Attention Engine</h2>
+<span class="font-caption text-caption px-space-2xs py-0.5 rounded bg-surface-subtle text-text-muted">Real-time Rule Triage</span>
+</div>
+<p class="font-caption text-caption text-text-muted mt-0.5">Automated SEBI audit flagged 9 total items requiring advisor sign-off</p>
+</div>
+<!-- Severity Filter Counter Chips -->
+<div class="flex items-center gap-space-xs flex-wrap">
+<button class="inline-flex items-center gap-1 px-space-xs py-1 rounded-full font-label text-label bg-status-critical-bg text-status-critical-fg font-semibold" type="button">
+<span class="material-symbols-outlined text-[16px]">cancel</span>
+<span>3 Critical</span>
+</button>
+<button class="inline-flex items-center gap-1 px-space-xs py-1 rounded-full font-label text-label bg-status-warning-bg text-status-warning-fg font-medium" type="button">
+<span class="material-symbols-outlined text-[16px]">warning</span>
+<span>4 Warnings</span>
+</button>
+<button class="inline-flex items-center gap-1 px-space-xs py-1 rounded-full font-label text-label bg-status-opportunity-bg text-status-opportunity-fg font-medium" type="button">
+<span class="material-symbols-outlined text-[16px]">lightbulb</span>
+<span>2 Opportunities</span>
+</button>
+<button class="inline-flex items-center gap-1 px-space-xs py-1 rounded-full font-label text-label bg-status-healthy-bg text-status-healthy-fg font-medium" type="button">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span>5 Healthy</span>
+</button>
+</div>
+</div>
+<!-- Top 3 Urgent Findings Cards -->
+<div class="space-y-space-xs">
+<!-- Item 1: Term Insurance Deficit -->
+<div class="p-space-md rounded bg-surface-subtle hover:bg-surface-container-high transition-colors flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<div class="flex items-start gap-space-sm max-w-3xl">
+<div class="mt-0.5 p-space-2xs rounded bg-status-critical-bg text-status-critical-fg flex-shrink-0">
+<span class="material-symbols-outlined text-[20px]">shield</span>
+</div>
+<div>
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-label text-label uppercase tracking-wider px-space-2xs py-0.5 rounded bg-status-critical-bg text-status-critical-fg font-bold">Critical</span>
+<span class="font-section-title text-section-title text-text-primary">Term Life Protection Gap: ₹1.8 Cr Deficit</span>
+<span class="text-text-muted font-caption text-caption">• Insurance &amp; Protection</span>
+</div>
+<p class="font-body-default text-body-default text-text-secondary mt-1">
+<strong>Audit Evidence:</strong> Vikram holds ₹75 Lakh pure term coverage. Dependent coverage ratio stands at only <span class="text-status-critical-fg font-semibold">4.2x annual income</span> versus recommended conservative threshold of 15x (₹2.55 Cr required).
+            </p>
+</div>
+</div>
+<div class="flex items-center gap-space-xs flex-shrink-0 self-end md:self-center">
+<button class="px-space-sm py-space-xs rounded bg-primary text-on-primary hover:bg-primary-container font-body-medium text-body-medium transition-colors" type="button">
+            Inspect Coverage Gap
+          </button>
+</div>
+</div>
+<!-- Item 2: Retirement Shortfall -->
+<div class="p-space-md rounded bg-surface-subtle hover:bg-surface-container-high transition-colors flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<div class="flex items-start gap-space-sm max-w-3xl">
+<div class="mt-0.5 p-space-2xs rounded bg-status-critical-bg text-status-critical-fg flex-shrink-0">
+<span class="material-symbols-outlined text-[20px]">hourglass_empty</span>
+</div>
+<div>
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-label text-label uppercase tracking-wider px-space-2xs py-0.5 rounded bg-status-critical-bg text-status-critical-fg font-bold">Critical</span>
+<span class="font-section-title text-section-title text-text-primary">Retirement Corpus Off-Track by 41%</span>
+<span class="text-text-muted font-caption text-caption">• Retirement Planning</span>
+</div>
+<p class="font-body-default text-body-default text-text-secondary mt-1">
+<strong>Audit Evidence:</strong> Existing monthly equity SIP of ₹25,000 against retirement target projects <span class="text-status-critical-fg font-semibold">₹1.45 Cr shortfall</span> by age 60, under 11.5% CAGR assumption with 6.5% inflation.
+            </p>
+</div>
+</div>
+<div class="flex items-center gap-space-xs flex-shrink-0 self-end md:self-center">
+<button class="px-space-sm py-space-xs rounded bg-primary text-on-primary hover:bg-primary-container font-body-medium text-body-medium transition-colors" type="button">
+            Adjust Trajectory
+          </button>
+</div>
+</div>
+<!-- Item 3: Equity Over-concentration -->
+<div class="p-space-md rounded bg-surface-subtle hover:bg-surface-container-high transition-colors flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<div class="flex items-start gap-space-sm max-w-3xl">
+<div class="mt-0.5 p-space-2xs rounded bg-status-warning-bg text-status-warning-fg flex-shrink-0">
+<span class="material-symbols-outlined text-[20px]">pie_chart</span>
+</div>
+<div>
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-label text-label uppercase tracking-wider px-space-2xs py-0.5 rounded bg-status-warning-bg text-status-warning-fg font-semibold">Warning</span>
+<span class="font-section-title text-section-title text-text-primary">Equity Over-Concentration in Small-Cap Funds</span>
+<span class="text-text-muted font-caption text-caption">• Asset Allocation</span>
+</div>
+<p class="font-body-default text-body-default text-text-secondary mt-1">
+<strong>Audit Evidence:</strong> 48% of Vikram's mutual fund equity book is clustered into volatile small-cap schemes, breaching his approved Moderate Aggressive policy mandate limit (max 25%).
+            </p>
+</div>
+</div>
+<div class="flex items-center gap-space-xs flex-shrink-0 self-end md:self-center">
+<button class="px-space-sm py-space-xs rounded bg-surface text-text-primary hover:bg-surface-emphasis font-body-medium text-body-medium shadow-sm transition-colors" type="button">
+            Review Rebalance
+          </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Financial Snapshot Grid (6 Institutional Metric Tiles) -->
+<section class="mb-space-lg">
+<div class="flex items-center justify-between mb-space-sm">
+<h2 class="font-section-title text-section-title text-text-primary">Client Financial Position Snapshot</h2>
+<span class="font-caption text-caption text-text-muted">Values reconciled from CAMS, Karvy &amp; Bank Integrations</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-space-sm">
+<!-- Net Worth -->
+<div class="bg-surface rounded-lg p-space-md shadow-sm flex flex-col justify-between">
+<div class="text-text-muted font-label text-label uppercase tracking-wider">Net Worth</div>
+<div class="my-space-xs">
+<span class="font-metric-value text-metric-value text-text-primary">₹1.84 Cr</span>
+</div>
+<div class="flex items-center gap-1 font-caption text-caption text-status-healthy-fg">
+<span class="material-symbols-outlined text-[15px]">trending_up</span>
+<span>+12.4% YoY</span>
+</div>
+</div>
+<!-- Monthly Surplus -->
+<div class="bg-surface rounded-lg p-space-md shadow-sm flex flex-col justify-between">
+<div class="text-text-muted font-label text-label uppercase tracking-wider">Monthly Surplus</div>
+<div class="my-space-xs">
+<span class="font-metric-value text-metric-value text-text-primary">₹78,000</span>
+</div>
+<div class="flex items-center gap-1 font-caption text-caption text-text-secondary">
+<span class="material-symbols-outlined text-[15px] text-secondary">savings</span>
+<span>Savings Rate: 32%</span>
+</div>
+</div>
+<!-- Total Liabilities -->
+<div class="bg-surface rounded-lg p-space-md shadow-sm flex flex-col justify-between">
+<div class="text-text-muted font-label text-label uppercase tracking-wider">Total Liabilities</div>
+<div class="my-space-xs">
+<span class="font-metric-value text-metric-value text-text-primary">₹46.5 L</span>
+</div>
+<div class="flex items-center gap-1 font-caption text-caption text-status-healthy-fg">
+<span class="material-symbols-outlined text-[15px]">check_circle</span>
+<span>EMI Burden: 24% (Safe)</span>
+</div>
+</div>
+<!-- Emergency Fund -->
+<div class="bg-surface rounded-lg p-space-md shadow-sm flex flex-col justify-between">
+<div class="text-text-muted font-label text-label uppercase tracking-wider">Emergency Fund</div>
+<div class="my-space-xs">
+<span class="font-metric-value text-metric-value text-text-primary">₹9.2 L</span>
+</div>
+<div class="flex items-center gap-1 font-caption text-caption text-status-warning-fg">
+<span class="material-symbols-outlined text-[15px]">timelapse</span>
+<span>4.1 mos (Target: 6.0)</span>
+</div>
+</div>
+<!-- Total Invested Corpus -->
+<div class="bg-surface rounded-lg p-space-md shadow-sm flex flex-col justify-between">
+<div class="text-text-muted font-label text-label uppercase tracking-wider">Invested Corpus</div>
+<div class="my-space-xs">
+<span class="font-metric-value text-metric-value text-text-primary">₹1.28 Cr</span>
+</div>
+<div class="flex items-center gap-1 font-caption text-caption text-text-muted">
+<span>Eq: 62% • Debt: 25%</span>
+</div>
+</div>
+<!-- Term Insurance Cover -->
+<div class="bg-surface rounded-lg p-space-md shadow-sm flex flex-col justify-between">
+<div class="text-text-muted font-label text-label uppercase tracking-wider">Life Insurance</div>
+<div class="my-space-xs">
+<span class="font-metric-value text-metric-value text-text-primary">₹75 L</span>
+</div>
+<div class="flex items-center gap-1 font-caption text-caption text-status-critical-fg font-semibold">
+<span class="material-symbols-outlined text-[15px]">crisis_alert</span>
+<span>Adequacy: 28%</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Two-Column Section: Compact Goal Health & Portfolio Allocation -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
+<!-- Left Column: Compact Goal Health Table -->
+<div class="lg:col-span-7 bg-surface rounded-lg p-space-lg shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between pb-space-sm">
+<div>
+<h2 class="font-section-title text-section-title text-text-primary">Priority Financial Goals</h2>
+<p class="font-caption text-caption text-text-muted">Horizon feasibility calibrated with inflations &amp; target year</p>
+</div>
+<button class="font-label text-label text-secondary hover:underline inline-flex items-center gap-1" type="button">
+<span>View All Goals (5)</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</div>
+<!-- Goals Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left font-body-default text-body-default">
+<thead>
+<tr class="text-text-muted font-label text-label uppercase tracking-wider bg-surface-subtle">
+<th class="py-space-xs px-space-xs rounded-l">Goal Objective</th>
+<th class="py-space-xs px-space-xs">Target &amp; Horizon</th>
+<th class="py-space-xs px-space-xs">Funded</th>
+<th class="py-space-xs px-space-xs">Deficit</th>
+<th class="py-space-xs px-space-xs text-right rounded-r">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-transparent">
+<!-- Goal 1 -->
+<tr class="hover:bg-surface-subtle transition-colors">
+<td class="py-space-sm px-space-xs">
+<div class="font-body-medium text-body-medium text-text-primary">Retirement at Age 60</div>
+<div class="font-caption text-caption text-text-muted">Primary Lifestyle Goal</div>
+</td>
+<td class="py-space-sm px-space-xs">
+<div class="font-body-default text-body-default">₹3.50 Cr</div>
+<div class="font-caption text-caption text-text-muted">18 yrs remaining</div>
+</td>
+<td class="py-space-sm px-space-xs">
+<div class="flex items-center gap-2">
+<span class="font-semibold text-text-primary">59%</span>
+<div class="w-16 bg-surface-subtle h-1.5 rounded-full overflow-hidden">
+<div class="bg-status-critical-fg h-full" style="width: 59%;"></div>
+</div>
+</div>
+</td>
+<td class="py-space-sm px-space-xs font-semibold text-status-critical-fg">
+                  -₹1.45 Cr
+                </td>
+<td class="py-space-sm px-space-xs text-right">
+<span class="inline-flex items-center gap-1 px-space-2xs py-0.5 rounded font-label text-label bg-status-critical-bg text-status-critical-fg">
+<span class="material-symbols-outlined text-[13px]">warning</span> Critical
+                  </span>
+</td>
+</tr>
+<!-- Goal 2 -->
+<tr class="hover:bg-surface-subtle transition-colors">
+<td class="py-space-sm px-space-xs">
+<div class="font-body-medium text-body-medium text-text-primary">Child's Higher Education</div>
+<div class="font-caption text-caption text-text-muted">Aarav (Age 14, College at 18)</div>
+</td>
+<td class="py-space-sm px-space-xs">
+<div class="font-body-default text-body-default">₹85.0 L</div>
+<div class="font-caption text-caption text-text-muted">4 yrs remaining</div>
+</td>
+<td class="py-space-sm px-space-xs">
+<div class="flex items-center gap-2">
+<span class="font-semibold text-text-primary">72%</span>
+<div class="w-16 bg-surface-subtle h-1.5 rounded-full overflow-hidden">
+<div class="bg-status-warning-fg h-full" style="width: 72%;"></div>
+</div>
+</div>
+</td>
+<td class="py-space-sm px-space-xs font-semibold text-status-warning-fg">
+                  -₹24.0 L
+                </td>
+<td class="py-space-sm px-space-xs text-right">
+<span class="inline-flex items-center gap-1 px-space-2xs py-0.5 rounded font-label text-label bg-status-warning-bg text-status-warning-fg">
+<span class="material-symbols-outlined text-[13px]">info</span> Warning
+                  </span>
+</td>
+</tr>
+<!-- Goal 3 -->
+<tr class="hover:bg-surface-subtle transition-colors">
+<td class="py-space-sm px-space-xs">
+<div class="font-body-medium text-body-medium text-text-primary">House Renovation</div>
+<div class="font-caption text-caption text-text-muted">Indiranagar Property</div>
+</td>
+<td class="py-space-sm px-space-xs">
+<div class="font-body-default text-body-default">₹20.0 L</div>
+<div class="font-caption text-caption text-text-muted">1 yr remaining</div>
+</td>
+<td class="py-space-sm px-space-xs">
+<div class="flex items-center gap-2">
+<span class="font-semibold text-text-primary">96%</span>
+<div class="w-16 bg-surface-subtle h-1.5 rounded-full overflow-hidden">
+<div class="bg-status-healthy-fg h-full" style="width: 96%;"></div>
+</div>
+</div>
+</td>
+<td class="py-space-sm px-space-xs font-semibold text-status-healthy-fg">
+                  -₹80,000
+                </td>
+<td class="py-space-sm px-space-xs text-right">
+<span class="inline-flex items-center gap-1 px-space-2xs py-0.5 rounded font-label text-label bg-status-healthy-bg text-status-healthy-fg">
+<span class="material-symbols-outlined text-[13px]">check_circle</span> On Track
+                  </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="pt-space-sm flex items-center justify-between font-caption text-caption text-text-muted">
+<span>Combined Monthly Goal Outflow: ₹47,000 / mo</span>
+<button class="text-text-primary font-body-medium text-body-medium hover:underline inline-flex items-center gap-1" type="button">
+<span>Inspect Goal Portfolios</span>
+<span class="material-symbols-outlined text-[15px]">arrow_outward</span>
+</button>
+</div>
+</div>
+<!-- Right Column: Asset Allocation Breakdown -->
+<div class="lg:col-span-5 bg-surface rounded-lg p-space-lg shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between pb-space-sm">
+<div>
+<h2 class="font-section-title text-section-title text-text-primary">Portfolio Allocation Snapshot</h2>
+<p class="font-caption text-caption text-text-muted">Aggregated ₹1.28 Cr Active Assets</p>
+</div>
+<span class="px-space-2xs py-0.5 rounded font-label text-label bg-surface-subtle text-text-muted">Target Drift: ±9%</span>
+</div>
+<!-- Donut & Legend Visualization -->
+<div class="flex items-center gap-space-lg py-space-sm">
+<!-- Donut SVG -->
+<div class="relative w-32 h-32 flex-shrink-0">
+<svg class="w-32 h-32 transform -rotate-90" viewbox="0 0 100 100">
+<!-- Equity 62%: 251.32 * 0.62 = 155.8 -->
+<circle cx="50" cy="50" fill="transparent" r="40" stroke="#000000" stroke-dasharray="155.8 251.3" stroke-width="12"></circle>
+<!-- Debt 25%: 251.32 * 0.25 = 62.8 -->
+<circle cx="50" cy="50" fill="transparent" r="40" stroke="#006a61" stroke-dasharray="62.8 251.3" stroke-dashoffset="-155.8" stroke-width="12"></circle>
+<!-- Gold 8%: 251.32 * 0.08 = 20.1 -->
+<circle cx="50" cy="50" fill="transparent" r="40" stroke="#dec29a" stroke-dasharray="20.1 251.3" stroke-dashoffset="-218.6" stroke-width="12"></circle>
+<!-- Cash 5%: 251.32 * 0.05 = 12.6 -->
+<circle cx="50" cy="50" fill="transparent" r="40" stroke="#CBD5E1" stroke-dasharray="12.6 251.3" stroke-dashoffset="-238.7" stroke-width="12"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+<span class="font-label text-label text-text-muted">Total</span>
+<span class="font-body-medium text-body-medium text-text-primary font-bold">100%</span>
+</div>
+</div>
+<!-- Legend Table -->
+<div class="flex-1 space-y-space-xs font-label text-label">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-sm bg-primary"></span>
+<span class="text-text-primary font-medium">Domestic Equity</span>
+</div>
+<span class="text-text-primary font-semibold">62% (₹79.3L)</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-sm bg-secondary"></span>
+<span class="text-text-primary font-medium">Debt &amp; Hybrid</span>
+</div>
+<span class="text-text-primary font-semibold">25% (₹32.0L)</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-sm bg-tertiary-fixed-dim"></span>
+<span class="text-text-primary font-medium">Sovereign Gold</span>
+</div>
+<span class="text-text-primary font-semibold">8% (₹10.2L)</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-sm bg-border-default"></span>
+<span class="text-text-primary font-medium">Liquid Cash</span>
+</div>
+<span class="text-text-primary font-semibold">5% (₹6.5L)</span>
+</div>
+</div>
+</div>
+<!-- Concentration Alert Banner -->
+<div class="mt-space-xs p-space-xs rounded bg-status-warning-bg text-status-warning-fg font-caption text-caption flex items-start gap-space-2xs">
+<span class="material-symbols-outlined text-[16px] flex-shrink-0 mt-0.5">warning</span>
+<span><strong>Concentration Alert:</strong> Small-Cap exposure within Domestic Equity sits at 48%, significantly above the advisor guideline max of 25%.</span>
+</div>
+</div>
+<!-- Action Footer -->
+<div class="pt-space-md flex items-center justify-between">
+<button class="px-space-sm py-space-xs rounded bg-surface-subtle text-text-primary hover:bg-surface-emphasis font-body-medium text-body-medium transition-colors" type="button">
+          Open Rebalancer
+        </button>
+<button class="px-space-sm py-space-xs rounded bg-primary text-on-primary hover:bg-primary-container font-body-medium text-body-medium transition-colors inline-flex items-center gap-1" type="button">
+<span>Simulator</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</section>
+</div></main><footer class="w-full bg-surface py-space-xs px-space-lg shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="w-full flex flex-col md:flex-row items-center justify-between gap-space-xs"><div class="flex items-center gap-space-xs font-caption text-caption text-text-muted"><span class="material-symbols-outlined text-[16px] text-secondary">sync_alt</span><span>Calculation Methodology: SEBI RIA-Compliant Monte Carlo (v4.2.1-prod)</span><span class="text-border-default">|</span><span>Audit Hash: #0F172A-89F5</span></div><div class="font-caption text-caption text-text-muted text-right">Disclaimer: For certified financial advisor analysis only. Not an investment solicitation or warranty of future yields.</div></div></footer></div></body></html>

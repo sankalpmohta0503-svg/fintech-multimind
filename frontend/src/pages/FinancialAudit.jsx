@@ -1,393 +1,613 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  AlertCircle, 
-  AlertTriangle, 
-  Lightbulb, 
-  CheckCircle, 
-  ChevronDown,
-  ChevronUp,
-  Info
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  AlertCircle,
+  AlertTriangle,
+  ArrowDownUp,
+  BookOpen,
+  CheckCircle2,
+  FileSearch,
+  Filter,
+  HelpCircle,
+  Lightbulb,
+  RefreshCw,
+  Search,
+  Shield,
+  ShieldAlert,
+  ShieldCheck,
+  TrendingDown,
 } from 'lucide-react';
 import api from '../services/api';
-import { formatCurrency, getSeverityColor, getSeverityIcon } from '../utils/formatters';
+import AuditFindingCard, { formatEvidenceLabel, formatEvidenceValue } from '../components/AuditFindingCard';
+import Dialog from '../components/Dialog';
+import EmptyState from '../components/EmptyState';
+import ErrorState from '../components/ErrorState';
+import Skeleton from '../components/Skeleton';
+import StatusBadge from '../components/StatusBadge';
+import { formatCurrency, getHealthScoreStatus } from '../utils/formatters';
+
+const severityOrder = { critical: 0, warning: 1, opportunity: 2, healthy: 3 };
+
+const severityTabs = [
+  { id: 'all', label: 'All Findings' },
+  { id: 'critical', label: 'Critical Breaches' },
+  { id: 'warning', label: 'Warnings' },
+  { id: 'opportunity', label: 'Opportunities' },
+  { id: 'healthy', label: 'Resolved / Healthy' },
+];
 
 const FinancialAudit = () => {
-  const [loading, setLoading] = useState(true);
   const [audit, setAudit] = useState(null);
+  const [healthScore, setHealthScore] = useState(null);
+  const [client, setClient] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [expandedFindings, setExpandedFindings] = useState(new Set());
+  const [selectedSeverity, setSelectedSeverity] = useState('all');
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sortBy, setSortBy] = useState('severity');
+  const [dialogFinding, setDialogFinding] = useState(null);
+  const [showMethodologyDialog, setShowMethodologyDialog] = useState(false);
 
-  useEffect(() => {
-    loadAuditData();
-  }, []);
-
-  const loadAuditData = async () => {
+  const loadAuditData = useCallback(async () => {
+    setLoading(true);
+    setError(null);
     try {
-      setLoading(true);
-      const response = await api.getAudit();
-      setAudit(response.data);
-      // Auto-expand critical findings
-      const criticalIds = response.data.categorized.critical.map(f => f.id);
-      setExpandedFindings(new Set(criticalIds));
-    } catch (error) {
-      console.error('Failed to load audit data:', error);
+      const [auditRes, healthRes, clientRes] = await Promise.allSettled([
+        api.getAudit(),
+        api.getHealthScore(),
+        api.getClient(),
+      ]);
+
+      if (auditRes.status === 'fulfilled') {
+        setAudit(auditRes.value.data);
+        // Expand the first critical finding by default
+        const firstCritical = auditRes.value.data.categorized?.critical?.[0];
+        setExpandedFindings(firstCritical ? new Set([firstCritical.id]) : new Set());
+      } else {
+        throw auditRes.reason;
+      }
+
+      if (healthRes.status === 'fulfilled') {
+        setHealthScore(healthRes.value.data);
+      }
+      if (clientRes.status === 'fulfilled') {
+        setClient(clientRes.value.data);
+      }
+    } catch (requestError) {
+      console.error('Failed to load audit data:', requestError);
+      setError('The financial audit findings could not be loaded. Please check your connection and retry.');
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    loadAuditData();
+  }, [loadAuditData]);
+
+  // Extract all unique categories present in findings
+  const uniqueCategories = useMemo(() => {
+    if (!audit?.findings) return [];
+    const set = new Set(audit.findings.map((f) => f.category).filter(Boolean));
+    return Array.from(set);
+  }, [audit]);
+
+  // Calculate Total Deficit Exposure across all findings
+  const totalDeficitExposure = useMemo(() => {
+    if (!audit?.findings) return 0;
+    return audit.findings.reduce((sum, f) => {
+      const gap = f.evidence?.gap || f.evidence?.shortfall || 0;
+      return sum + (gap > 0 ? gap : 0);
+    }, 0);
+  }, [audit]);
+
+  // Compute adherence rate
+  const adherenceRate = useMemo(() => {
+    if (!audit?.totalFindings) return 100;
+    const compliant = (audit.categorized.healthy?.length || 0) + (audit.categorized.opportunity?.length || 0);
+    return Math.round((compliant / audit.totalFindings) * 100);
+  }, [audit]);
+
+  // Filtered & Sorted Findings
+  const filteredFindings = useMemo(() => {
+    if (!audit?.findings) return [];
+
+    const query = searchQuery.trim().toLowerCase();
+    let list = selectedSeverity === 'all'
+      ? audit.findings
+      : (audit.categorized[selectedSeverity] || []);
+
+    if (selectedCategory !== 'all') {
+      list = list.filter((f) => f.category === selectedCategory);
+    }
+
+    if (query) {
+      list = list.filter((f) => {
+        return (
+          f.title?.toLowerCase().includes(query) ||
+          f.category?.toLowerCase().includes(query) ||
+          f.description?.toLowerCase().includes(query) ||
+          f.impact?.toLowerCase().includes(query) ||
+          f.recommendation?.toLowerCase().includes(query)
+        );
+      });
+    }
+
+    return [...list].sort((a, b) => {
+      if (sortBy === 'gap') {
+        const gapA = a.evidence?.gap || a.evidence?.shortfall || 0;
+        const gapB = b.evidence?.gap || b.evidence?.shortfall || 0;
+        return gapB - gapA;
+      }
+      if (sortBy === 'category') {
+        return a.category.localeCompare(b.category);
+      }
+      return severityOrder[a.severity] - severityOrder[b.severity];
+    });
+  }, [audit, searchQuery, selectedSeverity, selectedCategory, sortBy]);
 
   const toggleFinding = (id) => {
-    setExpandedFindings(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(id)) {
-        newSet.delete(id);
-      } else {
-        newSet.add(id);
-      }
-      return newSet;
+    setExpandedFindings((current) => {
+      const next = new Set(current);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
     });
   };
 
-  const getCategoryIcon = (severity) => {
-    switch (severity) {
-      case 'critical':
-        return <AlertCircle className="text-red-600" size={24} />;
-      case 'warning':
-        return <AlertTriangle className="text-amber-600" size={24} />;
-      case 'opportunity':
-        return <Lightbulb className="text-yellow-600" size={24} />;
-      case 'healthy':
-        return <CheckCircle className="text-green-600" size={24} />;
-      default:
-        return <Info className="text-gray-600" size={24} />;
-    }
+  const getSeverityCount = (tabId) => {
+    if (!audit) return 0;
+    if (tabId === 'all') return audit.totalFindings;
+    return audit.categorized[tabId]?.length || 0;
   };
 
-  const getCategoryTitle = (severity) => {
-    switch (severity) {
-      case 'critical':
-        return 'Critical Issues';
-      case 'warning':
-        return 'Attention Required';
-      case 'opportunity':
-        return 'Opportunities';
-      case 'healthy':
-        return 'Strengths';
-      default:
-        return 'Findings';
-    }
-  };
+  const clientInfo = client?.personalInfo;
+  const criticalCount = audit?.categorized?.critical?.length || 0;
+  const warningCount = audit?.categorized?.warning?.length || 0;
+  const opportunityCount = audit?.categorized?.opportunity?.length || 0;
+  const overallScore = healthScore?.overallScore ?? (criticalCount > 0 ? 64 : 85);
+  const healthStatus = getHealthScoreStatus(overallScore);
 
-  const getCategoryDescription = (severity) => {
-    switch (severity) {
-      case 'critical':
-        return 'Immediate action required to address significant financial risks';
-      case 'warning':
-        return 'Important areas requiring attention for financial improvement';
-      case 'opportunity':
-        return 'Optimization opportunities to enhance financial health';
-      case 'healthy':
-        return 'Areas where the financial plan is performing well';
-      default:
-        return '';
-    }
-  };
-
-  const getFilteredFindings = () => {
-    if (!audit) return [];
-    
-    if (selectedCategory === 'all') {
-      return audit.findings;
-    }
-    
-    return audit.categorized[selectedCategory] || [];
-  };
-
-  if (loading) {
+  if (loading && !audit) {
     return (
-      <div className="flex items-center justify-center h-full">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Running financial audit...</p>
+      <div className="space-y-6">
+        <Skeleton className="h-28" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <Skeleton className="h-28" />
+          <Skeleton className="h-28" />
+          <Skeleton className="h-28" />
+          <Skeleton className="h-28" />
         </div>
+        <Skeleton className="h-16" />
+        <Skeleton className="h-96" />
       </div>
     );
   }
 
-  const filteredFindings = getFilteredFindings();
+  if (error && !audit) {
+    return (
+      <ErrorState
+        title="Financial audit unavailable"
+        message={error}
+        onRetry={loadAuditData}
+      />
+    );
+  }
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900">Financial Plan Audit</h1>
-        <p className="text-gray-600 mt-2">
-          Automated analysis of financial gaps, risks, inefficiencies and opportunities
-        </p>
-      </div>
-
-      {/* Audit Summary */}
-      <div className="card bg-gradient-to-br from-blue-50 to-indigo-50">
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-xl font-bold text-gray-900 mb-2">
-              {audit.totalFindings} Findings Detected
-            </h2>
-            <p className="text-gray-700 mb-4">{audit.summary.message}</p>
-            
-            <div className="flex items-center gap-6">
-              <div className="flex items-center gap-2">
-                {getCategoryIcon('critical')}
-                <div>
-                  <div className="text-2xl font-bold text-red-600">
-                    {audit.categorized.critical.length}
-                  </div>
-                  <div className="text-xs text-gray-600">Critical</div>
-                </div>
-              </div>
-              
-              <div className="flex items-center gap-2">
-                {getCategoryIcon('warning')}
-                <div>
-                  <div className="text-2xl font-bold text-amber-600">
-                    {audit.categorized.warning.length}
-                  </div>
-                  <div className="text-xs text-gray-600">Warnings</div>
-                </div>
-              </div>
-              
-              <div className="flex items-center gap-2">
-                {getCategoryIcon('opportunity')}
-                <div>
-                  <div className="text-2xl font-bold text-yellow-600">
-                    {audit.categorized.opportunity.length}
-                  </div>
-                  <div className="text-xs text-gray-600">Opportunities</div>
-                </div>
-              </div>
-              
-              <div className="flex items-center gap-2">
-                {getCategoryIcon('healthy')}
-                <div>
-                  <div className="text-2xl font-bold text-green-600">
-                    {audit.categorized.healthy.length}
-                  </div>
-                  <div className="text-xs text-gray-600">Healthy</div>
-                </div>
-              </div>
+      {/* 1. TOP OPERATIONAL CONTROL BANNER */}
+      <section className="card bg-white p-5 border border-slate-200">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
+          <div className="min-w-0">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 text-xs font-semibold tracking-wide uppercase mb-2">
+              <ShieldCheck size={14} className="text-teal-700" />
+              <span>Engine V2.4 (Deterministic RIA Protocol)</span>
             </div>
+
+            <h1 className="text-2xl font-semibold tracking-tight text-slate-950">
+              Financial Audit Findings & Evidence Engine
+            </h1>
+
+            <p className="mt-1 text-sm text-slate-600">
+              {audit?.totalFindings || 0} Total Findings (
+              <span className="font-semibold text-red-700">{criticalCount} Critical</span>
+              {`, `}
+              <span className="font-semibold text-amber-700">{warningCount} Warnings</span>
+              {`, `}
+              <span className="font-semibold text-blue-700">{opportunityCount} Opportunities</span>
+              ) across 8 fiduciary dimensions.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 shrink-0">
+            <button
+              type="button"
+              onClick={() => setShowMethodologyDialog(true)}
+              className="btn-secondary text-xs px-3 py-2 inline-flex items-center gap-1.5"
+            >
+              <BookOpen size={15} />
+              <span>Audit Methodology</span>
+            </button>
+            <button
+              type="button"
+              onClick={loadAuditData}
+              disabled={loading}
+              className="btn-primary text-xs px-3.5 py-2 inline-flex items-center gap-1.5"
+            >
+              <RefreshCw size={15} className={loading ? 'animate-spin' : ''} />
+              <span>Re-run Audit Engine</span>
+            </button>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Category Filter */}
-      <div className="flex gap-2 flex-wrap">
-        <button
-          onClick={() => setSelectedCategory('all')}
-          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-            selectedCategory === 'all'
-              ? 'bg-primary-600 text-white'
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-          }`}
-        >
-          All ({audit.totalFindings})
-        </button>
-        <button
-          onClick={() => setSelectedCategory('critical')}
-          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-            selectedCategory === 'critical'
-              ? 'bg-red-600 text-white'
-              : 'bg-red-50 text-red-700 hover:bg-red-100'
-          }`}
-        >
-          Critical ({audit.categorized.critical.length})
-        </button>
-        <button
-          onClick={() => setSelectedCategory('warning')}
-          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-            selectedCategory === 'warning'
-              ? 'bg-amber-600 text-white'
-              : 'bg-amber-50 text-amber-700 hover:bg-amber-100'
-          }`}
-        >
-          Warnings ({audit.categorized.warning.length})
-        </button>
-        <button
-          onClick={() => setSelectedCategory('opportunity')}
-          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-            selectedCategory === 'opportunity'
-              ? 'bg-yellow-600 text-white'
-              : 'bg-yellow-50 text-yellow-700 hover:bg-yellow-100'
-          }`}
-        >
-          Opportunities ({audit.categorized.opportunity.length})
-        </button>
-      </div>
-
-      {/* Findings List */}
-      <div className="space-y-4">
-        {filteredFindings.map((finding) => {
-          const isExpanded = expandedFindings.has(finding.id);
-          
-          return (
-            <div
-              key={finding.id}
-              className={`card border-2 transition-all ${getSeverityColor(finding.severity)}`}
-            >
-              {/* Finding Header */}
-              <button
-                onClick={() => toggleFinding(finding.id)}
-                className="w-full flex items-start gap-4 text-left"
-              >
-                <div className="flex-shrink-0 mt-1">
-                  {getCategoryIcon(finding.severity)}
-                </div>
-                
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-xs font-semibold uppercase tracking-wide opacity-75">
-                          {finding.category}
-                        </span>
-                      </div>
-                      <h3 className="text-lg font-bold mb-1">{finding.title}</h3>
-                      <p className="text-sm opacity-90">{finding.description}</p>
-                    </div>
-                    
-                    {isExpanded ? (
-                      <ChevronUp className="flex-shrink-0 mt-1" size={20} />
-                    ) : (
-                      <ChevronDown className="flex-shrink-0 mt-1" size={20} />
-                    )}
-                  </div>
-                </div>
-              </button>
-
-              {/* Expanded Details */}
-              {isExpanded && (
-                <div className="mt-4 pt-4 border-t border-current border-opacity-20">
-                  {/* Evidence */}
-                  {finding.evidence && Object.keys(finding.evidence).length > 0 && (
-                    <div className="mb-4">
-                      <h4 className="font-semibold text-sm mb-2 flex items-center gap-2">
-                        <span>📊</span>
-                        Evidence
-                      </h4>
-                      <div className="grid grid-cols-2 gap-3">
-                        {Object.entries(finding.evidence).map(([key, value]) => (
-                          <div key={key} className="bg-white bg-opacity-50 rounded p-2">
-                            <div className="text-xs opacity-75 capitalize">
-                              {key.replace(/([A-Z])/g, ' $1').trim()}
-                            </div>
-                            <div className="font-semibold">
-                              {typeof value === 'number' && key.toLowerCase().includes('amount')
-                                ? formatCurrency(value)
-                                : typeof value === 'number' && (key.toLowerCase().includes('percentage') || key.toLowerCase().includes('ratio'))
-                                ? `${value}%`
-                                : typeof value === 'number' && value > 1000
-                                ? formatCurrency(value)
-                                : value}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Impact */}
-                  {finding.impact && (
-                    <div className="mb-4">
-                      <h4 className="font-semibold text-sm mb-2 flex items-center gap-2">
-                        <span>⚠️</span>
-                        Impact
-                      </h4>
-                      <p className="text-sm bg-white bg-opacity-50 rounded p-3">
-                        {finding.impact}
-                      </p>
-                    </div>
-                  )}
-
-                  {/* Recommendation */}
-                  {finding.recommendation && (
-                    <div className="mb-4">
-                      <h4 className="font-semibold text-sm mb-2 flex items-center gap-2">
-                        <span>💡</span>
-                        Recommendation
-                      </h4>
-                      <p className="text-sm bg-white bg-opacity-50 rounded p-3">
-                        {finding.recommendation}
-                      </p>
-                    </div>
-                  )}
-
-                  {/* Disclaimer */}
-                  {finding.disclaimer && (
-                    <div className="text-xs italic opacity-75 bg-white bg-opacity-30 rounded p-2">
-                      ℹ️ {finding.disclaimer}
-                    </div>
-                  )}
-
-                  {/* Why am I seeing this */}
-                  <button 
-                    className="mt-3 text-xs font-medium underline hover:no-underline"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      alert(`This finding was detected because:\n\nThreshold: The audit engine detected values that fall outside recommended ranges.\n\nRule Applied: ${finding.category} analysis rule\n\nImpact Assessment: ${finding.impact}\n\nThis is part of the automated financial health audit that analyzes your complete financial profile.`);
-                    }}
-                  >
-                    Why am I seeing this? →
-                  </button>
-                </div>
-              )}
+      {/* 2. HEALTH AUDIT METRIC MATRIX (4 TILES) */}
+      {audit && (
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Card 1: Audit Health Index */}
+          <div className="card p-4 flex flex-col justify-between">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                Audit Health Index
+              </span>
+              <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${
+                overallScore < 70 ? 'bg-red-50 text-red-800 border border-red-200' : 'bg-teal-50 text-teal-800 border border-teal-200'
+              }`}>
+                {healthStatus.label}
+              </span>
             </div>
-          );
-        })}
-      </div>
 
-      {/* No findings message */}
-      {filteredFindings.length === 0 && (
-        <div className="card text-center py-12">
-          <div className="text-4xl mb-3">✨</div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">
-            No findings in this category
-          </h3>
-          <p className="text-gray-600">
-            Select a different category to view other audit findings
-          </p>
-        </div>
+            <div className="my-2">
+              <div className="flex items-baseline gap-1">
+                <span className="text-2xl font-bold tracking-tight text-slate-950 tabular-nums">
+                  {overallScore}
+                </span>
+                <span className="text-xs font-medium text-slate-500">/ 100</span>
+              </div>
+              <p className="text-xs text-red-700 mt-1 flex items-center gap-1">
+                <AlertCircle size={13} />
+                <span>{criticalCount} Critical breaches flagged</span>
+              </p>
+            </div>
+
+            <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
+              <div
+                className={`h-full rounded-full ${overallScore >= 70 ? 'bg-teal-600' : overallScore >= 50 ? 'bg-amber-500' : 'bg-red-600'}`}
+                style={{ width: `${Math.min(overallScore, 100)}%` }}
+              />
+            </div>
+          </div>
+
+          {/* Card 2: Total Deficit Exposure */}
+          <div className="card p-4 flex flex-col justify-between">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                Total Deficit Exposure
+              </span>
+              <TrendingDown size={16} className="text-red-600" />
+            </div>
+
+            <div className="my-2">
+              <span className="text-2xl font-bold tracking-tight text-slate-950 tabular-nums">
+                {totalDeficitExposure > 0 ? formatCurrency(totalDeficitExposure) : '₹0.00'}
+              </span>
+              <p className="text-xs text-slate-500 mt-1">
+                Cumulative capital shortfall across goals & life cover
+              </p>
+            </div>
+
+            <div className="text-[11px] font-medium text-slate-700 bg-slate-50 px-2 py-0.5 rounded border border-slate-100">
+              Impacts Wealth Solvency Horizon
+            </div>
+          </div>
+
+          {/* Card 3: Policy Rule Adherence */}
+          <div className="card p-4 flex flex-col justify-between">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                Policy Rule Adherence
+              </span>
+              <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${
+                adherenceRate >= 70 ? 'bg-teal-50 text-teal-800' : 'bg-amber-50 text-amber-800'
+              }`}>
+                {adherenceRate >= 70 ? 'Satisfactory' : 'Action Needed'}
+              </span>
+            </div>
+
+            <div className="my-2">
+              <span className="text-2xl font-bold tracking-tight text-slate-950 tabular-nums">
+                {adherenceRate}%
+              </span>
+              <p className="text-xs text-slate-500 mt-1">
+                {(audit.categorized.healthy?.length || 0) + (audit.categorized.opportunity?.length || 0)} of {audit.totalFindings} criteria compliant
+              </p>
+            </div>
+
+            <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
+              <div
+                className={`h-full rounded-full ${adherenceRate >= 70 ? 'bg-teal-600' : 'bg-amber-500'}`}
+                style={{ width: `${Math.min(adherenceRate, 100)}%` }}
+              />
+            </div>
+          </div>
+
+          {/* Card 4: Remediation Mandate */}
+          <div className="card p-4 flex flex-col justify-between">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                Remediation Mandate
+              </span>
+              <AlertTriangle size={16} className={criticalCount > 0 ? 'text-red-700' : 'text-teal-700'} />
+            </div>
+
+            <div className="my-2">
+              <span className={`text-2xl font-bold tracking-tight ${criticalCount > 0 ? 'text-red-700' : 'text-teal-700'}`}>
+                {criticalCount > 0 ? 'Immediate Action' : 'Standard Routine'}
+              </span>
+              <p className="text-xs text-slate-500 mt-1">
+                {criticalCount > 0
+                  ? 'Fiduciary plan adjustments recommended'
+                  : 'All primary solvency thresholds satisfied'}
+              </p>
+            </div>
+
+            <div className={`text-[11px] font-medium px-2 py-0.5 rounded ${
+              criticalCount > 0 ? 'bg-red-50 text-red-800 border border-red-100' : 'bg-teal-50 text-teal-800 border border-teal-100'
+            }`}>
+              {criticalCount > 0 ? 'Remediation Window Active' : 'Compliant Status'}
+            </div>
+          </div>
+        </section>
       )}
 
-      {/* Audit Methodology */}
-      <div className="card bg-gray-50">
-        <h3 className="font-semibold text-gray-900 mb-3">Audit Methodology</h3>
-        <div className="grid md:grid-cols-2 gap-4 text-sm text-gray-700">
-          <div>
-            <h4 className="font-semibold mb-1">Automated Analysis</h4>
-            <p className="text-gray-600">
-              Rule-based engine analyzes your complete financial profile across 8 dimensions
-            </p>
+      {/* 3. METHODOLOGY BANNER */}
+      <section className="rounded-lg border border-slate-200 bg-slate-50/70 p-3.5 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <div className="h-8 w-8 rounded-full bg-slate-200 flex items-center justify-center text-slate-700 shrink-0">
+            <FileSearch size={16} />
           </div>
           <div>
-            <h4 className="font-semibold mb-1">Evidence-Based</h4>
-            <p className="text-gray-600">
-              Every finding is backed by specific financial data and calculations
-            </p>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-1">Categories Analyzed</h4>
-            <p className="text-gray-600">
-              Goal Funding, Emergency Fund, Debt, Risk, Portfolio, Insurance, Liquidity, Tax
-            </p>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-1">Explainable Results</h4>
-            <p className="text-gray-600">
-              Each finding includes why it matters and recommended actions
+            <h2 className="text-xs font-semibold text-slate-950 uppercase tracking-wider">
+              Deterministic Fiduciary Audit Protocol
+            </h2>
+            <p className="text-xs text-slate-600">
+              Mathematical diagnostics with deterministic triggers. Rules evaluated against client financial data.
             </p>
           </div>
         </div>
-      </div>
+
+        <button
+          type="button"
+          onClick={() => setShowMethodologyDialog(true)}
+          className="text-xs font-medium text-slate-700 hover:text-slate-900 bg-white border border-slate-200 px-3 py-1.5 rounded transition-colors shrink-0"
+        >
+          View Methodology Breakdown
+        </button>
+      </section>
+
+      {/* 4. FILTER, SEARCH, AND SORTING TOOLBAR */}
+      <section className="space-y-3">
+        {/* Severity Tabs */}
+        <div className="flex flex-wrap items-center gap-1.5 bg-white p-1.5 rounded-lg border border-slate-200">
+          {severityTabs.map((tab) => {
+            const count = getSeverityCount(tab.id);
+            const isActive = selectedSeverity === tab.id;
+
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => setSelectedSeverity(tab.id)}
+                className={`px-3 py-1.5 rounded text-xs font-medium transition-colors flex items-center gap-1.5 ${
+                  isActive
+                    ? 'bg-slate-950 text-white shadow-sm'
+                    : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                }`}
+              >
+                <span>{tab.label}</span>
+                <span
+                  className={`px-1.5 py-0.5 rounded-full text-[10px] tabular-nums ${
+                    isActive
+                      ? 'bg-white/20 text-white'
+                      : tab.id === 'critical'
+                      ? 'bg-red-50 text-red-700 font-semibold'
+                      : tab.id === 'warning'
+                      ? 'bg-amber-50 text-amber-700 font-semibold'
+                      : 'bg-slate-100 text-slate-600'
+                  }`}
+                >
+                  {count}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Search, Category & Sorting Bar */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
+          {/* Search Input */}
+          <div className="md:col-span-6 relative">
+            <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search findings, evidence, impact, or recommendations..."
+              className="w-full rounded border border-slate-300 bg-white py-2 pl-9 pr-3 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-600"
+            />
+          </div>
+
+          {/* Category Dropdown */}
+          <div className="md:col-span-3">
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="w-full rounded border border-slate-300 bg-white py-2 px-3 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-600"
+            >
+              <option value="all">All Categories ({uniqueCategories.length})</option>
+              {uniqueCategories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Sort Dropdown */}
+          <div className="md:col-span-3">
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="w-full rounded border border-slate-300 bg-white py-2 px-3 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-600"
+            >
+              <option value="severity">Sort by: Severity (Highest First)</option>
+              <option value="gap">Sort by: Deficit Amount (Largest)</option>
+              <option value="category">Sort by: Category Name</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. FINDINGS STACK */}
+      <section aria-live="polite" className="space-y-3">
+        {filteredFindings.length > 0 ? (
+          filteredFindings.map((finding) => (
+            <AuditFindingCard
+              key={finding.id}
+              finding={finding}
+              expanded={expandedFindings.has(finding.id)}
+              onToggle={() => toggleFinding(finding.id)}
+              onExplain={() => setDialogFinding(finding)}
+            />
+          ))
+        ) : (
+          <EmptyState
+            title="No audit findings match your filters"
+            message="Try switching severity tabs, resetting the category filter, or clearing your search term."
+            action={
+              selectedSeverity !== 'all' || selectedCategory !== 'all' || searchQuery ? (
+                <button
+                  type="button"
+                  className="btn-secondary text-xs"
+                  onClick={() => {
+                    setSelectedSeverity('all');
+                    setSelectedCategory('all');
+                    setSearchQuery('');
+                  }}
+                >
+                  Reset all filters
+                </button>
+              ) : null
+            }
+          />
+        )}
+      </section>
+
+      {/* 6. FINDING EXPLANATION DETAIL DIALOG */}
+      <Dialog
+        open={Boolean(dialogFinding)}
+        onClose={() => setDialogFinding(null)}
+        title={dialogFinding ? dialogFinding.title : 'Audit Finding Details'}
+      >
+        {dialogFinding && (
+          <div className="space-y-4 text-xs">
+            <div className="flex flex-wrap items-center gap-2 pb-2 border-b border-slate-100">
+              <StatusBadge status={dialogFinding.severity} />
+              <span className="font-semibold text-slate-900">{dialogFinding.category}</span>
+            </div>
+
+            {dialogFinding.description && (
+              <div>
+                <h3 className="font-semibold text-slate-950 mb-1">Finding Description</h3>
+                <p className="text-slate-700 leading-relaxed bg-slate-50 p-2.5 rounded border border-slate-200">
+                  {dialogFinding.description}
+                </p>
+              </div>
+            )}
+
+            {dialogFinding.evidence && Object.keys(dialogFinding.evidence).length > 0 && (
+              <div>
+                <h3 className="font-semibold text-slate-950 mb-1">Audited Baseline Evidence</h3>
+                <div className="divide-y divide-slate-200 rounded border border-slate-200 bg-white px-3 py-1">
+                  {Object.entries(dialogFinding.evidence).map(([key, value]) => (
+                    <div key={key} className="flex items-center justify-between py-1.5">
+                      <span className="text-slate-500">{formatEvidenceLabel(key)}</span>
+                      <span className="font-semibold text-slate-900 tabular-nums">
+                        {formatEvidenceValue(key, value)}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {dialogFinding.impact && (
+              <div>
+                <h3 className="font-semibold text-slate-950 mb-1">Fiduciary Impact</h3>
+                <p className="text-slate-700 leading-relaxed bg-slate-50 p-2.5 rounded border border-slate-200">
+                  {dialogFinding.impact}
+                </p>
+              </div>
+            )}
+
+            {dialogFinding.recommendation && (
+              <div>
+                <h3 className="font-semibold text-slate-950 mb-1">Recommended Action</h3>
+                <p className="text-teal-950 font-medium leading-relaxed bg-teal-50 p-2.5 rounded border border-teal-200">
+                  {dialogFinding.recommendation}
+                </p>
+              </div>
+            )}
+
+            {dialogFinding.disclaimer && (
+              <div className="pt-2 border-t border-slate-200 text-slate-400 text-[11px]">
+                ℹ️ {dialogFinding.disclaimer}
+              </div>
+            )}
+          </div>
+        )}
+      </Dialog>
+
+      {/* 7. METHODOLOGY EXPLANATION DIALOG */}
+      <Dialog
+        open={showMethodologyDialog}
+        onClose={() => setShowMethodologyDialog(false)}
+        title="Deterministic Financial Audit Methodology"
+      >
+        <div className="space-y-4 text-xs text-slate-700">
+          <p className="leading-relaxed">
+            The FinAuditX Audit Engine applies mathematical rules and fiduciary benchmarks to evaluate client financial health across 8 core dimensions.
+          </p>
+
+          <div className="space-y-2">
+            <div className="p-2.5 rounded border border-slate-200 bg-slate-50">
+              <strong className="text-slate-950 block mb-0.5">1. Solvency & Debt Health</strong>
+              <span>Evaluates EMI-to-income ratio (threshold ≤35%) and loan tenure exposure to prevent liquidity traps.</span>
+            </div>
+
+            <div className="p-2.5 rounded border border-slate-200 bg-slate-50">
+              <strong className="text-slate-950 block mb-0.5">2. Protection Adequacy (Human Life Value)</strong>
+              <span>Compares pure term cover against 10-15x annual income plus outstanding liabilities to safeguard dependents.</span>
+            </div>
+
+            <div className="p-2.5 rounded border border-slate-200 bg-slate-50">
+              <strong className="text-slate-950 block mb-0.5">3. Goal Trajectory & Inflation Indexing</strong>
+              <span>Simulates target accumulation with compound growth and inflation to isolate funding shortfalls early.</span>
+            </div>
+
+            <div className="p-2.5 rounded border border-slate-200 bg-slate-50">
+              <strong className="text-slate-950 block mb-0.5">4. Asset Allocation & Risk Alignment</strong>
+              <span>Checks portfolio concentration against client risk profile mandate limits (e.g. Moderate vs Aggressive).</span>
+            </div>
+          </div>
+
+          <p className="text-[11px] text-slate-500 pt-2 border-t border-slate-200">
+            All calculations are deterministic and explainable without black-box machine learning models.
+          </p>
+        </div>
+      </Dialog>
     </div>
   );
 };
