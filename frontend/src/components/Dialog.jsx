@@ -35,9 +35,9 @@ const Dialog = ({ open, onClose, title, children, className = '' }) => {
   if (!open) return null;
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="presentation">
-      <button type="button" className="absolute inset-0 cursor-default bg-slate-950/35" onClick={onClose} aria-label="Close dialog" />
-      <section ref={dialogRef} className={`relative z-10 max-h-[calc(100vh-2rem)] w-full max-w-2xl overflow-y-auto rounded border border-slate-200 bg-white shadow-xl ${className}`} role="dialog" aria-modal="true" aria-labelledby={headingId}>
-        <header className="flex items-center justify-between gap-4 border-b border-slate-200 px-5 py-4"><h2 id={headingId} className="text-base font-semibold text-slate-950">{title}</h2><button ref={closeButtonRef} type="button" onClick={onClose} className="rounded p-1.5 text-slate-500 hover:bg-slate-100 hover:text-slate-950" aria-label="Close dialog"><X size={18} aria-hidden="true" /></button></header>
+      <button type="button" className="absolute inset-0 cursor-default bg-[#0A1D3B]/35" onClick={onClose} aria-label="Close dialog" />
+      <section ref={dialogRef} className={`relative z-10 max-h-[calc(100vh-2rem)] w-full max-w-2xl overflow-y-auto rounded border border-[#BFDBFE] bg-white shadow-xl ${className}`} role="dialog" aria-modal="true" aria-labelledby={headingId}>
+        <header className="flex items-center justify-between gap-4 border-b border-[#BFDBFE] px-5 py-4"><h2 id={headingId} className="text-xs sm:text-sm font-semibold text-[#1B3A6B]">{title}</h2><button ref={closeButtonRef} type="button" onClick={onClose} className="rounded p-1.5 text-[#4B6080] hover:bg-[#EFF6FF] hover:text-[#1B3A6B]" aria-label="Close dialog"><X size={18} aria-hidden="true" /></button></header>
         <div className="p-5">{children}</div>
       </section>
     </div>

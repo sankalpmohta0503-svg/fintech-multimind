@@ -1,21 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import {
-  AlertCircle,
-  AlertTriangle,
-  ArrowDownUp,
-  BookOpen,
-  CheckCircle2,
-  FileSearch,
-  Filter,
-  HelpCircle,
-  Lightbulb,
-  RefreshCw,
-  Search,
-  Shield,
-  ShieldAlert,
-  ShieldCheck,
-  TrendingDown,
-} from 'lucide-react';
+import { ArrowDownUp, BookOpen, FileSearch, Filter, RefreshCw, Search, Shield, SlidersHorizontal } from 'lucide-react';
 import api from '../services/api';
 import AuditFindingCard, { formatEvidenceLabel, formatEvidenceValue } from '../components/AuditFindingCard';
 import Dialog from '../components/Dialog';
@@ -23,16 +7,14 @@ import EmptyState from '../components/EmptyState';
 import ErrorState from '../components/ErrorState';
 import Skeleton from '../components/Skeleton';
 import StatusBadge from '../components/StatusBadge';
-import { formatCurrency, getHealthScoreStatus } from '../utils/formatters';
 
 const severityOrder = { critical: 0, warning: 1, opportunity: 2, healthy: 3 };
-
 const severityTabs = [
-  { id: 'all', label: 'All Findings' },
-  { id: 'critical', label: 'Critical Breaches' },
+  { id: 'all', label: 'All findings' },
+  { id: 'critical', label: 'Critical' },
   { id: 'warning', label: 'Warnings' },
   { id: 'opportunity', label: 'Opportunities' },
-  { id: 'healthy', label: 'Resolved / Healthy' },
+  { id: 'healthy', label: 'Healthy' },
 ];
 
 const FinancialAudit = () => {
@@ -58,22 +40,12 @@ const FinancialAudit = () => {
         api.getHealthScore(),
         api.getClient(),
       ]);
-
-      if (auditRes.status === 'fulfilled') {
-        setAudit(auditRes.value.data);
-        // Expand the first critical finding by default
-        const firstCritical = auditRes.value.data.categorized?.critical?.[0];
-        setExpandedFindings(firstCritical ? new Set([firstCritical.id]) : new Set());
-      } else {
-        throw auditRes.reason;
-      }
-
-      if (healthRes.status === 'fulfilled') {
-        setHealthScore(healthRes.value.data);
-      }
-      if (clientRes.status === 'fulfilled') {
-        setClient(clientRes.value.data);
-      }
+      if (auditRes.status !== 'fulfilled') throw auditRes.reason;
+      setAudit(auditRes.value.data);
+      const firstCritical = auditRes.value.data.categorized?.critical?.[0];
+      setExpandedFindings(firstCritical ? new Set([firstCritical.id]) : new Set());
+      if (healthRes.status === 'fulfilled') setHealthScore(healthRes.value.data);
+      if (clientRes.status === 'fulfilled') setClient(clientRes.value.data);
     } catch (requestError) {
       console.error('Failed to load audit data:', requestError);
       setError('The financial audit findings could not be loaded. Please check your connection and retry.');
@@ -86,401 +58,248 @@ const FinancialAudit = () => {
     loadAuditData();
   }, [loadAuditData]);
 
-  // Extract all unique categories present in findings
   const uniqueCategories = useMemo(() => {
     if (!audit?.findings) return [];
-    const set = new Set(audit.findings.map((f) => f.category).filter(Boolean));
-    return Array.from(set);
+    return Array.from(new Set(audit.findings.map((finding) => finding.category).filter(Boolean))).sort();
   }, [audit]);
 
-  // Calculate Total Deficit Exposure across all findings
-  const totalDeficitExposure = useMemo(() => {
-    if (!audit?.findings) return 0;
-    return audit.findings.reduce((sum, f) => {
-      const gap = f.evidence?.gap || f.evidence?.shortfall || 0;
-      return sum + (gap > 0 ? gap : 0);
-    }, 0);
-  }, [audit]);
-
-  // Compute adherence rate
-  const adherenceRate = useMemo(() => {
-    if (!audit?.totalFindings) return 100;
-    const compliant = (audit.categorized.healthy?.length || 0) + (audit.categorized.opportunity?.length || 0);
-    return Math.round((compliant / audit.totalFindings) * 100);
-  }, [audit]);
-
-  // Filtered & Sorted Findings
   const filteredFindings = useMemo(() => {
     if (!audit?.findings) return [];
-
     const query = searchQuery.trim().toLowerCase();
-    let list = selectedSeverity === 'all'
-      ? audit.findings
-      : (audit.categorized[selectedSeverity] || []);
-
-    if (selectedCategory !== 'all') {
-      list = list.filter((f) => f.category === selectedCategory);
-    }
-
+    let list = selectedSeverity === 'all' ? audit.findings : audit.categorized[selectedSeverity] || [];
+    if (selectedCategory !== 'all') list = list.filter((finding) => finding.category === selectedCategory);
     if (query) {
-      list = list.filter((f) => {
-        return (
-          f.title?.toLowerCase().includes(query) ||
-          f.category?.toLowerCase().includes(query) ||
-          f.description?.toLowerCase().includes(query) ||
-          f.impact?.toLowerCase().includes(query) ||
-          f.recommendation?.toLowerCase().includes(query)
-        );
-      });
+      list = list.filter((finding) =>
+        [finding.title, finding.category, finding.description, finding.impact, finding.recommendation].some((value) =>
+          value?.toLowerCase().includes(query)
+        )
+      );
     }
-
     return [...list].sort((a, b) => {
+      if (sortBy === 'category') return (a.category || '').localeCompare(b.category || '');
       if (sortBy === 'gap') {
-        const gapA = a.evidence?.gap || a.evidence?.shortfall || 0;
-        const gapB = b.evidence?.gap || b.evidence?.shortfall || 0;
-        return gapB - gapA;
+        return (b.evidence?.gap || b.evidence?.shortfall || 0) - (a.evidence?.gap || a.evidence?.shortfall || 0);
       }
-      if (sortBy === 'category') {
-        return a.category.localeCompare(b.category);
-      }
-      return severityOrder[a.severity] - severityOrder[b.severity];
+      return (severityOrder[a.severity] ?? 9) - (severityOrder[b.severity] ?? 9);
     });
   }, [audit, searchQuery, selectedSeverity, selectedCategory, sortBy]);
 
-  const toggleFinding = (id) => {
+  const toggleFinding = (id) =>
     setExpandedFindings((current) => {
       const next = new Set(current);
       if (next.has(id)) next.delete(id);
       else next.add(id);
       return next;
     });
-  };
 
-  const getSeverityCount = (tabId) => {
-    if (!audit) return 0;
-    if (tabId === 'all') return audit.totalFindings;
-    return audit.categorized[tabId]?.length || 0;
-  };
-
-  const clientInfo = client?.personalInfo;
+  const getCount = (tab) => (!audit ? 0 : tab === 'all' ? audit.totalFindings : audit.categorized[tab]?.length || 0);
   const criticalCount = audit?.categorized?.critical?.length || 0;
   const warningCount = audit?.categorized?.warning?.length || 0;
   const opportunityCount = audit?.categorized?.opportunity?.length || 0;
-  const overallScore = healthScore?.overallScore ?? (criticalCount > 0 ? 64 : 85);
-  const healthStatus = getHealthScoreStatus(overallScore);
+  const healthyCount = audit?.categorized?.healthy?.length || 0;
+  const score = healthScore?.overallScore;
 
   if (loading && !audit) {
     return (
       <div className="space-y-6">
+        <Skeleton className="h-36" />
         <Skeleton className="h-28" />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Skeleton className="h-28" />
-          <Skeleton className="h-28" />
-          <Skeleton className="h-28" />
-          <Skeleton className="h-28" />
-        </div>
-        <Skeleton className="h-16" />
-        <Skeleton className="h-96" />
+        <Skeleton className="h-20" />
+        <Skeleton className="h-48" />
+        <Skeleton className="h-48" />
       </div>
     );
   }
 
   if (error && !audit) {
     return (
-      <ErrorState
-        title="Financial audit unavailable"
-        message={error}
-        onRetry={loadAuditData}
-      />
+      <div>
+        <ErrorState title="Financial audit unavailable" message={error} onRetry={loadAuditData} />
+      </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      {/* 1. TOP OPERATIONAL CONTROL BANNER */}
-      <section className="card bg-white p-5 border border-slate-200">
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
-          <div className="min-w-0">
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 text-xs font-semibold tracking-wide uppercase mb-2">
-              <ShieldCheck size={14} className="text-teal-700" />
-              <span>Engine V2.4 (Deterministic RIA Protocol)</span>
+    <div className="animate-enter space-y-6">
+      {/* 1. Header with Eyebrow and Actions */}
+      <header className="card bg-white p-5">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div className="max-w-3xl">
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#1B3A6B]">
+              <FileSearch size={15} /> Diagnose · Fiduciary Evidence Audit
             </div>
-
-            <h1 className="text-2xl font-semibold tracking-tight text-slate-950">
-              Financial Audit Findings & Evidence Engine
+            <h1 className="mt-1.5 text-lg sm:text-2xl font-bold tracking-tight text-[#1B3A6B]">
+              Financial Audit & Findings
             </h1>
-
-            <p className="mt-1 text-sm text-slate-600">
-              {audit?.totalFindings || 0} Total Findings (
-              <span className="font-semibold text-red-700">{criticalCount} Critical</span>
-              {`, `}
-              <span className="font-semibold text-amber-700">{warningCount} Warnings</span>
-              {`, `}
-              <span className="font-semibold text-blue-700">{opportunityCount} Opportunities</span>
-              ) across 8 fiduciary dimensions.
+            <p className="mt-1 text-xs sm:text-sm text-[#374151]">
+              A deterministic rule-based evaluation of {client?.personalInfo?.name || 'the client'}’s balance sheet, insurance, tax status, and cash flows against SEBI RIA fiduciary benchmarks.
             </p>
+            <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-[#4B6080]">
+              <span className="font-semibold text-[#1B3A6B]">{client?.personalInfo?.name || 'Client Profile'}</span>
+              <span className="text-[#DBEAFE]">/</span>
+              <span>{audit?.totalFindings || 0} Total Findings Detected</span>
+              <span className="text-[#DBEAFE]">/</span>
+              <span className="text-[#14532D] font-semibold">Engine V2.4 Deterministic Rule Base</span>
+            </div>
           </div>
-
-          <div className="flex flex-wrap items-center gap-2 shrink-0">
+          <div className="flex shrink-0 flex-wrap gap-2.5">
             <button
               type="button"
               onClick={() => setShowMethodologyDialog(true)}
-              className="btn-secondary text-xs px-3 py-2 inline-flex items-center gap-1.5"
+              className="btn-secondary rounded-lg text-xs"
             >
-              <BookOpen size={15} />
-              <span>Audit Methodology</span>
+              <BookOpen size={15} /> Methodology
             </button>
             <button
               type="button"
               onClick={loadAuditData}
               disabled={loading}
-              className="btn-primary text-xs px-3.5 py-2 inline-flex items-center gap-1.5"
+              className="btn-primary rounded-lg text-xs"
             >
-              <RefreshCw size={15} className={loading ? 'animate-spin' : ''} />
-              <span>Re-run Audit Engine</span>
+              <RefreshCw size={15} className={loading ? 'animate-spin' : ''} /> Refresh Audit
             </button>
           </div>
         </div>
-      </section>
+      </header>
 
-      {/* 2. HEALTH AUDIT METRIC MATRIX (4 TILES) */}
-      {audit && (
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {/* Card 1: Audit Health Index */}
-          <div className="card p-4 flex flex-col justify-between">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-                Audit Health Index
-              </span>
-              <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${
-                overallScore < 70 ? 'bg-red-50 text-red-800 border border-red-200' : 'bg-teal-50 text-teal-800 border border-teal-200'
-              }`}>
-                {healthStatus.label}
-              </span>
-            </div>
-
-            <div className="my-2">
-              <div className="flex items-baseline gap-1">
-                <span className="text-2xl font-bold tracking-tight text-slate-950 tabular-nums">
-                  {overallScore}
-                </span>
-                <span className="text-xs font-medium text-slate-500">/ 100</span>
-              </div>
-              <p className="text-xs text-red-700 mt-1 flex items-center gap-1">
-                <AlertCircle size={13} />
-                <span>{criticalCount} Critical breaches flagged</span>
-              </p>
-            </div>
-
-            <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
-              <div
-                className={`h-full rounded-full ${overallScore >= 70 ? 'bg-teal-600' : overallScore >= 50 ? 'bg-amber-500' : 'bg-red-600'}`}
-                style={{ width: `${Math.min(overallScore, 100)}%` }}
-              />
-            </div>
-          </div>
-
-          {/* Card 2: Total Deficit Exposure */}
-          <div className="card p-4 flex flex-col justify-between">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-                Total Deficit Exposure
-              </span>
-              <TrendingDown size={16} className="text-red-600" />
-            </div>
-
-            <div className="my-2">
-              <span className="text-2xl font-bold tracking-tight text-slate-950 tabular-nums">
-                {totalDeficitExposure > 0 ? formatCurrency(totalDeficitExposure) : '₹0.00'}
-              </span>
-              <p className="text-xs text-slate-500 mt-1">
-                Cumulative capital shortfall across goals & life cover
-              </p>
-            </div>
-
-            <div className="text-[11px] font-medium text-slate-700 bg-slate-50 px-2 py-0.5 rounded border border-slate-100">
-              Impacts Wealth Solvency Horizon
-            </div>
-          </div>
-
-          {/* Card 3: Policy Rule Adherence */}
-          <div className="card p-4 flex flex-col justify-between">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-                Policy Rule Adherence
-              </span>
-              <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${
-                adherenceRate >= 70 ? 'bg-teal-50 text-teal-800' : 'bg-amber-50 text-amber-800'
-              }`}>
-                {adherenceRate >= 70 ? 'Satisfactory' : 'Action Needed'}
-              </span>
-            </div>
-
-            <div className="my-2">
-              <span className="text-2xl font-bold tracking-tight text-slate-950 tabular-nums">
-                {adherenceRate}%
-              </span>
-              <p className="text-xs text-slate-500 mt-1">
-                {(audit.categorized.healthy?.length || 0) + (audit.categorized.opportunity?.length || 0)} of {audit.totalFindings} criteria compliant
-              </p>
-            </div>
-
-            <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
-              <div
-                className={`h-full rounded-full ${adherenceRate >= 70 ? 'bg-teal-600' : 'bg-amber-500'}`}
-                style={{ width: `${Math.min(adherenceRate, 100)}%` }}
-              />
-            </div>
-          </div>
-
-          {/* Card 4: Remediation Mandate */}
-          <div className="card p-4 flex flex-col justify-between">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-                Remediation Mandate
-              </span>
-              <AlertTriangle size={16} className={criticalCount > 0 ? 'text-red-700' : 'text-teal-700'} />
-            </div>
-
-            <div className="my-2">
-              <span className={`text-2xl font-bold tracking-tight ${criticalCount > 0 ? 'text-red-700' : 'text-teal-700'}`}>
-                {criticalCount > 0 ? 'Immediate Action' : 'Standard Routine'}
-              </span>
-              <p className="text-xs text-slate-500 mt-1">
-                {criticalCount > 0
-                  ? 'Fiduciary plan adjustments recommended'
-                  : 'All primary solvency thresholds satisfied'}
-              </p>
-            </div>
-
-            <div className={`text-[11px] font-medium px-2 py-0.5 rounded ${
-              criticalCount > 0 ? 'bg-red-50 text-red-800 border border-red-100' : 'bg-teal-50 text-teal-800 border border-teal-100'
-            }`}>
-              {criticalCount > 0 ? 'Remediation Window Active' : 'Compliant Status'}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* 3. METHODOLOGY BANNER */}
-      <section className="rounded-lg border border-slate-200 bg-slate-50/70 p-3.5 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <div className="h-8 w-8 rounded-full bg-slate-200 flex items-center justify-center text-slate-700 shrink-0">
-            <FileSearch size={16} />
-          </div>
+      {/* 2. Overall State & Severity Breakdown */}
+      <section className="grid grid-cols-1 gap-4 lg:grid-cols-12">
+        <div className="lg:col-span-5 card bg-white p-5 flex flex-col justify-between">
           <div>
-            <h2 className="text-xs font-semibold text-slate-950 uppercase tracking-wider">
-              Deterministic Fiduciary Audit Protocol
-            </h2>
-            <p className="text-xs text-slate-600">
-              Mathematical diagnostics with deterministic triggers. Rules evaluated against client financial data.
+            <div className="text-xs font-bold uppercase tracking-wider text-[#6B7280]">Overall Audit Health</div>
+            <div className="mt-2 flex items-baseline gap-3">
+              <span className="text-4xl sm:text-5xl font-black text-[#1B3A6B] leading-none">
+                {score ?? '—'}
+              </span>
+              {score !== undefined && <span className="text-xs font-bold uppercase tracking-wider text-[#4B6080]">/ 100 Health Score</span>}
+            </div>
+            <p className="mt-2 text-xs sm:text-sm text-[#374151]">
+              {audit?.summary?.message || 'Review categorized findings below to resolve coverage gaps and solvency risks.'}
             </p>
           </div>
+          <div className="mt-4 pt-3 border-t border-[#DBEAFE] flex items-center gap-2 text-xs text-[#2563EB]">
+            <Shield size={14} className="text-[#1B3A6B]" />
+            <span>Audited against SEBI RIA fiduciary planning framework</span>
+          </div>
         </div>
 
-        <button
-          type="button"
-          onClick={() => setShowMethodologyDialog(true)}
-          className="text-xs font-medium text-slate-700 hover:text-slate-900 bg-white border border-slate-200 px-3 py-1.5 rounded transition-colors shrink-0"
-        >
-          View Methodology Breakdown
-        </button>
+        <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="card bg-[#FEF2F2] border border-[#FECACA] p-4 flex flex-col justify-between rounded-xl">
+            <div className="text-[11px] font-bold uppercase tracking-wider text-[#DC2626]">Critical</div>
+            <div className="mt-2 text-2xl sm:text-3xl font-extrabold text-[#DC2626]">{criticalCount}</div>
+            <div className="text-[11px] font-medium text-[#DC2626]">Severe Deficit</div>
+          </div>
+          <div className="card bg-[#FFF7ED] border border-[#FFEDD5] p-4 flex flex-col justify-between rounded-xl">
+            <div className="text-[11px] font-bold uppercase tracking-wider text-[#EA580C]">Warnings</div>
+            <div className="mt-2 text-2xl sm:text-3xl font-extrabold text-[#EA580C]">{warningCount}</div>
+            <div className="text-[11px] font-medium text-[#EA580C]">Elevated Risk</div>
+          </div>
+          <div className="card bg-[#EFF6FF] border border-[#BFDBFE] p-4 flex flex-col justify-between rounded-xl">
+            <div className="text-[11px] font-bold uppercase tracking-wider text-[#1B3A6B]">Opportunities</div>
+            <div className="mt-2 text-2xl sm:text-3xl font-extrabold text-[#1B3A6B]">{opportunityCount}</div>
+            <div className="text-[11px] font-medium text-[#2563EB]">Optimization</div>
+          </div>
+          <div className="card bg-[#F0FDF4] border border-[#BBF7D0] p-4 flex flex-col justify-between rounded-xl">
+            <div className="text-[11px] font-bold uppercase tracking-wider text-[#14532D]">Healthy</div>
+            <div className="mt-2 text-2xl sm:text-3xl font-extrabold text-[#14532D]">{healthyCount}</div>
+            <div className="text-[11px] font-medium text-[#15803D]">Fully Compliant</div>
+          </div>
+        </div>
       </section>
 
-      {/* 4. FILTER, SEARCH, AND SORTING TOOLBAR */}
-      <section className="space-y-3">
-        {/* Severity Tabs */}
-        <div className="flex flex-wrap items-center gap-1.5 bg-white p-1.5 rounded-lg border border-slate-200">
-          {severityTabs.map((tab) => {
-            const count = getSeverityCount(tab.id);
-            const isActive = selectedSeverity === tab.id;
-
-            return (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => setSelectedSeverity(tab.id)}
-                className={`px-3 py-1.5 rounded text-xs font-medium transition-colors flex items-center gap-1.5 ${
-                  isActive
-                    ? 'bg-slate-950 text-white shadow-sm'
-                    : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
-                }`}
-              >
-                <span>{tab.label}</span>
-                <span
-                  className={`px-1.5 py-0.5 rounded-full text-[10px] tabular-nums ${
-                    isActive
-                      ? 'bg-white/20 text-white'
-                      : tab.id === 'critical'
-                      ? 'bg-red-50 text-red-700 font-semibold'
-                      : tab.id === 'warning'
-                      ? 'bg-amber-50 text-amber-700 font-semibold'
-                      : 'bg-slate-100 text-slate-600'
-                  }`}
-                >
-                  {count}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Search, Category & Sorting Bar */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
-          {/* Search Input */}
-          <div className="md:col-span-6 relative">
-            <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search findings, evidence, impact, or recommendations..."
-              className="w-full rounded border border-slate-300 bg-white py-2 pl-9 pr-3 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-600"
-            />
+      {/* 3. Review Controls & Filters */}
+      <section className="card bg-white p-5 rounded-xl border border-[#DBEAFE]">
+        <div className="flex items-center gap-2 border-b border-[#DBEAFE] pb-3">
+          <SlidersHorizontal size={16} className="text-[#1B3A6B]" />
+          <div>
+            <div className="text-xs font-bold uppercase tracking-wider text-[#1B3A6B]">Filter & Sort Findings</div>
+            <p className="text-xs text-[#4B6080]">Narrow audit findings by severity level, planning dimension, or financial gap.</p>
           </div>
-
-          {/* Category Dropdown */}
-          <div className="md:col-span-3">
+        </div>
+        <div className="mt-3.5 flex flex-wrap gap-1.5">
+          {severityTabs.map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              onClick={() => setSelectedSeverity(tab.id)}
+              className={`rounded-md border px-3 py-1.5 text-xs font-bold transition ${
+                selectedSeverity === tab.id
+                  ? 'border-[#1B3A6B] bg-[#1B3A6B] text-white shadow-sm'
+                  : 'border-[#DBEAFE] bg-white text-[#4B6080] hover:border-[#1B3A6B] hover:text-[#1B3A6B] hover:bg-[#EFF6FF]'
+              }`}
+            >
+              {tab.label}
+              <span className="ml-1.5 opacity-80">({getCount(tab.id)})</span>
+            </button>
+          ))}
+        </div>
+        <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-12">
+          <label className="relative md:col-span-6">
+            <Search size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#6B7280]" />
+            <span className="sr-only">Search findings</span>
+            <input
+              value={searchQuery}
+              onChange={(event) => setSearchQuery(event.target.value)}
+              placeholder="Search findings, evidence metrics, or recommendations..."
+              className="w-full rounded-md border border-[#DBEAFE] bg-[#F8FAFC] py-2 pl-9 pr-3 text-xs sm:text-sm text-[#111827] placeholder:text-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-[#1B3A6B]/20 focus:border-[#1B3A6B]"
+            />
+          </label>
+          <label className="relative md:col-span-3">
+            <Filter size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#6B7280]" />
+            <span className="sr-only">Filter by category</span>
             <select
               value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-              className="w-full rounded border border-slate-300 bg-white py-2 px-3 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-600"
+              onChange={(event) => setSelectedCategory(event.target.value)}
+              className="w-full rounded-md border border-[#DBEAFE] bg-[#F8FAFC] py-2 pl-8 pr-3 text-xs sm:text-sm text-[#111827] focus:outline-none focus:ring-2 focus:ring-[#1B3A6B]/20 focus:border-[#1B3A6B]"
             >
-              <option value="all">All Categories ({uniqueCategories.length})</option>
-              {uniqueCategories.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat}
+              <option value="all">All categories ({uniqueCategories.length})</option>
+              {uniqueCategories.map((category) => (
+                <option key={category} value={category}>
+                  {category}
                 </option>
               ))}
             </select>
-          </div>
-
-          {/* Sort Dropdown */}
-          <div className="md:col-span-3">
+          </label>
+          <label className="relative md:col-span-3">
+            <ArrowDownUp size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#6B7280]" />
+            <span className="sr-only">Sort findings</span>
             <select
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="w-full rounded border border-slate-300 bg-white py-2 px-3 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-600"
+              onChange={(event) => setSortBy(event.target.value)}
+              className="w-full rounded-md border border-[#DBEAFE] bg-[#F8FAFC] py-2 pl-8 pr-3 text-xs sm:text-sm text-[#111827] focus:outline-none focus:ring-2 focus:ring-[#1B3A6B]/20 focus:border-[#1B3A6B]"
             >
-              <option value="severity">Sort by: Severity (Highest First)</option>
-              <option value="gap">Sort by: Deficit Amount (Largest)</option>
-              <option value="category">Sort by: Category Name</option>
+              <option value="severity">Sort by severity</option>
+              <option value="gap">Sort by evidence gap</option>
+              <option value="category">Sort by category</option>
             </select>
-          </div>
+          </label>
         </div>
       </section>
 
-      {/* 5. FINDINGS STACK */}
-      <section aria-live="polite" className="space-y-3">
+      {/* 4. Findings List */}
+      <section aria-live="polite" className="space-y-3.5">
+        <div className="flex items-center justify-between pb-2 border-b border-[#DBEAFE]">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-[#1B3A6B]">
+            Audited Findings & Evidence
+          </h2>
+          <span className="rounded bg-[#EFF6FF] px-2 py-0.5 text-xs font-bold text-[#1B3A6B] border border-[#BFDBFE]">
+            {filteredFindings.length} Shown
+          </span>
+        </div>
         {filteredFindings.length > 0 ? (
-          filteredFindings.map((finding) => (
-            <AuditFindingCard
+          filteredFindings.map((finding, index) => (
+            <div
               key={finding.id}
-              finding={finding}
-              expanded={expandedFindings.has(finding.id)}
-              onToggle={() => toggleFinding(finding.id)}
-              onExplain={() => setDialogFinding(finding)}
-            />
+              className={index === 0 ? 'animate-enter' : ''}
+              style={{ animationDelay: `${Math.min(index, 4) * 45}ms` }}
+            >
+              <AuditFindingCard
+                finding={finding}
+                expanded={expandedFindings.has(finding.id)}
+                onToggle={() => toggleFinding(finding.id)}
+                onExplain={() => setDialogFinding(finding)}
+              />
+            </div>
           ))
         ) : (
           <EmptyState
@@ -490,7 +309,7 @@ const FinancialAudit = () => {
               selectedSeverity !== 'all' || selectedCategory !== 'all' || searchQuery ? (
                 <button
                   type="button"
-                  className="btn-secondary text-xs"
+                  className="btn-secondary text-xs rounded-md"
                   onClick={() => {
                     setSelectedSeverity('all');
                     setSelectedCategory('all');
@@ -505,36 +324,53 @@ const FinancialAudit = () => {
         )}
       </section>
 
-      {/* 6. FINDING EXPLANATION DETAIL DIALOG */}
+      {/* 5. Bottom Context Bar */}
+      <section className="card bg-white p-4 rounded-xl border border-[#DBEAFE] flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <div className="flex items-start gap-3">
+          <Shield size={18} className="mt-0.5 text-[#1B3A6B] shrink-0" />
+          <div>
+            <div className="text-xs sm:text-sm font-bold text-[#1B3A6B]">Deterministic Evidence Architecture</div>
+            <p className="mt-0.5 max-w-2xl text-xs leading-relaxed text-[#4B6080]">
+              Every audit item is generated through strict mathematical rules and ratios defined under the SEBI RIA framework.
+            </p>
+          </div>
+        </div>
+        <button
+          type="button"
+          onClick={() => setShowMethodologyDialog(true)}
+          className="btn-secondary text-xs rounded-md shrink-0"
+        >
+          <BookOpen size={14} /> About the Analysis
+        </button>
+      </section>
+
+      {/* 6. Finding Detail Dialog */}
       <Dialog
         open={Boolean(dialogFinding)}
         onClose={() => setDialogFinding(null)}
-        title={dialogFinding ? dialogFinding.title : 'Audit Finding Details'}
+        title={dialogFinding ? dialogFinding.title : 'Audit finding details'}
+        className="manus-dialog"
       >
         {dialogFinding && (
-          <div className="space-y-4 text-xs">
-            <div className="flex flex-wrap items-center gap-2 pb-2 border-b border-slate-100">
+          <div className="space-y-4 text-xs sm:text-sm">
+            <div className="flex flex-wrap items-center gap-2 border-b border-[#DBEAFE] pb-3">
               <StatusBadge status={dialogFinding.severity} />
-              <span className="font-semibold text-slate-900">{dialogFinding.category}</span>
+              <span className="text-[#4B6080] font-semibold">{dialogFinding.category}</span>
             </div>
-
             {dialogFinding.description && (
               <div>
-                <h3 className="font-semibold text-slate-950 mb-1">Finding Description</h3>
-                <p className="text-slate-700 leading-relaxed bg-slate-50 p-2.5 rounded border border-slate-200">
-                  {dialogFinding.description}
-                </p>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-[#6B7280]">Description</h3>
+                <p className="mt-1 leading-relaxed text-[#374151]">{dialogFinding.description}</p>
               </div>
             )}
-
             {dialogFinding.evidence && Object.keys(dialogFinding.evidence).length > 0 && (
               <div>
-                <h3 className="font-semibold text-slate-950 mb-1">Audited Baseline Evidence</h3>
-                <div className="divide-y divide-slate-200 rounded border border-slate-200 bg-white px-3 py-1">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-[#1B3A6B]">Numerical Evidence</h3>
+                <div className="mt-1.5 divide-y divide-[#DBEAFE] rounded-lg border border-[#DBEAFE] bg-[#F8FAFC] px-3.5">
                   {Object.entries(dialogFinding.evidence).map(([key, value]) => (
-                    <div key={key} className="flex items-center justify-between py-1.5">
-                      <span className="text-slate-500">{formatEvidenceLabel(key)}</span>
-                      <span className="font-semibold text-slate-900 tabular-nums">
+                    <div key={key} className="flex items-center justify-between gap-4 py-2">
+                      <span className="text-xs text-[#4B6080]">{formatEvidenceLabel(key)}</span>
+                      <span className="font-bold tabular-nums text-[#1B3A6B]">
                         {formatEvidenceValue(key, value)}
                       </span>
                     </div>
@@ -542,69 +378,52 @@ const FinancialAudit = () => {
                 </div>
               </div>
             )}
-
             {dialogFinding.impact && (
               <div>
-                <h3 className="font-semibold text-slate-950 mb-1">Fiduciary Impact</h3>
-                <p className="text-slate-700 leading-relaxed bg-slate-50 p-2.5 rounded border border-slate-200">
-                  {dialogFinding.impact}
-                </p>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-[#6B7280]">Impact</h3>
+                <p className="mt-1 leading-relaxed text-[#374151]">{dialogFinding.impact}</p>
               </div>
             )}
-
             {dialogFinding.recommendation && (
               <div>
-                <h3 className="font-semibold text-slate-950 mb-1">Recommended Action</h3>
-                <p className="text-teal-950 font-medium leading-relaxed bg-teal-50 p-2.5 rounded border border-teal-200">
-                  {dialogFinding.recommendation}
-                </p>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-[#14532D]">Recommendation</h3>
+                <p className="mt-1 leading-relaxed font-semibold text-[#14532D]">{dialogFinding.recommendation}</p>
               </div>
             )}
-
             {dialogFinding.disclaimer && (
-              <div className="pt-2 border-t border-slate-200 text-slate-400 text-[11px]">
-                ℹ️ {dialogFinding.disclaimer}
-              </div>
+              <p className="border-t border-[#DBEAFE] pt-3 text-[11px] italic text-[#6B7280]">
+                {dialogFinding.disclaimer}
+              </p>
             )}
           </div>
         )}
       </Dialog>
 
-      {/* 7. METHODOLOGY EXPLANATION DIALOG */}
+      {/* 7. Methodology Dialog */}
       <Dialog
         open={showMethodologyDialog}
         onClose={() => setShowMethodologyDialog(false)}
-        title="Deterministic Financial Audit Methodology"
+        title="SEBI RIA Audit Methodology"
+        className="manus-dialog"
       >
-        <div className="space-y-4 text-xs text-slate-700">
-          <p className="leading-relaxed">
-            The FinAuditX Audit Engine applies mathematical rules and fiduciary benchmarks to evaluate client financial health across 8 core dimensions.
+        <div className="space-y-3.5 text-xs sm:text-sm leading-relaxed text-[#374151]">
+          <p>
+            The FinAuditX audit engine performs deterministic calculations across 8 financial dimensions against standard Indian regulatory and fiduciary rules:
           </p>
-
           <div className="space-y-2">
-            <div className="p-2.5 rounded border border-slate-200 bg-slate-50">
-              <strong className="text-slate-950 block mb-0.5">1. Solvency & Debt Health</strong>
-              <span>Evaluates EMI-to-income ratio (threshold ≤35%) and loan tenure exposure to prevent liquidity traps.</span>
-            </div>
-
-            <div className="p-2.5 rounded border border-slate-200 bg-slate-50">
-              <strong className="text-slate-950 block mb-0.5">2. Protection Adequacy (Human Life Value)</strong>
-              <span>Compares pure term cover against 10-15x annual income plus outstanding liabilities to safeguard dependents.</span>
-            </div>
-
-            <div className="p-2.5 rounded border border-slate-200 bg-slate-50">
-              <strong className="text-slate-950 block mb-0.5">3. Goal Trajectory & Inflation Indexing</strong>
-              <span>Simulates target accumulation with compound growth and inflation to isolate funding shortfalls early.</span>
-            </div>
-
-            <div className="p-2.5 rounded border border-slate-200 bg-slate-50">
-              <strong className="text-slate-950 block mb-0.5">4. Asset Allocation & Risk Alignment</strong>
-              <span>Checks portfolio concentration against client risk profile mandate limits (e.g. Moderate vs Aggressive).</span>
-            </div>
+            {[
+              'Liquidity: Minimum 6 months of living expenses held in liquid instruments.',
+              'Protection: Term insurance coverage minimum 10–15x gross annual income.',
+              'Retirement: Corpus accumulation rate mapped to retirement age and inflation.',
+              'Asset Allocation: Equity/Debt/Gold ratio aligned with age and assessed risk tolerance.',
+            ].map((item) => (
+              <div key={item} className="border-l-2 border-[#1B3A6B] pl-3 text-xs text-[#4B6080]">
+                {item}
+              </div>
+            ))}
           </div>
-
-          <p className="text-[11px] text-slate-500 pt-2 border-t border-slate-200">
-            All calculations are deterministic and explainable without black-box machine learning models.
+          <p className="border-t border-[#DBEAFE] pt-3 text-[11px] text-[#6B7280]">
+            Deterministic audit decision-support surface. Always review primary financial statements with the client.
           </p>
         </div>
       </Dialog>

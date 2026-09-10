@@ -8,14 +8,14 @@ const StatCard = ({ label, value, sublabel, icon: Icon, trend, trendLabel, onCli
     >
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          <p className="text-sm text-gray-600 mb-1">{label}</p>
-          <p className="text-2xl font-bold text-gray-900">{value}</p>
+          <p className="text-xs sm:text-sm text-gray-600 mb-1">{label}</p>
+          <p className="text-lg sm:text-xl font-bold text-gray-900">{value}</p>
           {sublabel && (
             <p className="text-xs text-gray-500 mt-1">{sublabel}</p>
           )}
           {trend && (
-            <div className={`flex items-center gap-1 mt-2 text-sm ${
-              trend > 0 ? 'text-green-600' : trend < 0 ? 'text-red-600' : 'text-gray-600'
+            <div className={`flex items-center gap-1 mt-2 text-xs sm:text-sm ${
+              trend > 0 ? 'text-green-600' : trend < 0 ? 'text-[#DC2626]' : 'text-gray-600'
             }`}>
               {trend > 0 && '↑'}
               {trend < 0 && '↓'}

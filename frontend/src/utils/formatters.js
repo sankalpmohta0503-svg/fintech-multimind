@@ -50,9 +50,9 @@ export const formatPercent = (value, decimals = 0) => {
 export const getSeverityColor = (severity) => {
   switch (severity) {
     case 'critical':
-      return 'text-red-600 bg-red-50 border-red-200';
+      return 'text-[#DC2626] bg-[#FFF7ED] border-[#FED7AA]';
     case 'warning':
-      return 'text-amber-600 bg-amber-50 border-amber-200';
+      return 'text-[#EA580C] bg-[#FFF7ED] border-[#FED7AA]';
     case 'opportunity':
       return 'text-yellow-600 bg-yellow-50 border-yellow-200';
     case 'healthy':
@@ -85,10 +85,10 @@ export const getSeverityIcon = (severity) => {
  */
 export const getHealthScoreStatus = (score) => {
   if (score >= 80) return { label: 'Excellent', color: 'text-green-600' };
-  if (score >= 70) return { label: 'Good', color: 'text-blue-600' };
+  if (score >= 70) return { label: 'Good', color: 'text-[#2563EB]' };
   if (score >= 60) return { label: 'Fair', color: 'text-yellow-600' };
   if (score >= 50) return { label: 'Needs Improvement', color: 'text-orange-600' };
-  return { label: 'Critical', color: 'text-red-600' };
+  return { label: 'Critical', color: 'text-[#DC2626]' };
 };
 
 /**
@@ -99,7 +99,7 @@ export const getHealthScoreColor = (score) => {
   if (score >= 70) return 'bg-blue-500';
   if (score >= 60) return 'bg-yellow-500';
   if (score >= 50) return 'bg-orange-500';
-  return 'bg-red-500';
+  return 'bg-[#EA580C]';
 };
 
 /**
@@ -131,7 +131,7 @@ export const getGoalStatusColor = (status) => {
     case 'at-risk':
       return 'bg-orange-100 text-orange-700 border-orange-300';
     case 'critical':
-      return 'bg-red-100 text-red-700 border-red-300';
+      return 'bg-[#FFEDD5] text-[#C2410C] border-rose-300';
     default:
       return 'bg-gray-100 text-gray-700 border-gray-300';
   }

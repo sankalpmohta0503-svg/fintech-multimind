@@ -379,17 +379,17 @@ const Simulator = () => {
   return (
     <div className="space-y-6">
       {/* 1. TOP HEADER & OPERATIONAL CONTROLS */}
-      <section className="card bg-white p-5 border border-slate-200">
+      <section className="card bg-white p-5 border border-[#BFDBFE]">
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
           <div className="min-w-0">
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 text-xs font-semibold tracking-wide uppercase mb-2">
-              <Sparkles size={14} className="text-teal-700" />
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#EFF6FF] text-[#1F3555] text-xs font-semibold tracking-wide uppercase mb-2">
+              <Sparkles size={14} className="text-[#14532D]" />
               <span>Simulation Engine • Deterministic Scenario Testing</span>
             </div>
-            <h1 className="text-2xl font-semibold tracking-tight text-slate-950">
+            <h1 className="text-lg sm:text-xl font-semibold tracking-tight text-[#1B3A6B]">
               What-If Scenario Simulator
             </h1>
-            <p className="mt-1 text-sm text-slate-600">
+            <p className="mt-1 text-xs sm:text-sm text-[#2D4A6B]">
               Simulate parameter adjustments across systematic investments, pure risk protection, debt prepayment, and multi-asset rebalancing against audited baseline metrics in real time.
             </p>
           </div>
@@ -419,10 +419,10 @@ const Simulator = () => {
       {/* 2. PRESET REMEDIATION MODELS */}
       <section className="space-y-2">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+          <span className="text-xs font-semibold uppercase tracking-wider text-[#4B6080]">
             Preset Remediation Models
           </span>
-          <span className="text-xs text-slate-500">Select a model to auto-populate test parameters</span>
+          <span className="text-xs text-[#4B6080]">Select a model to auto-populate test parameters</span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
@@ -435,18 +435,18 @@ const Simulator = () => {
                 onClick={() => selectPreset(key)}
                 className={`p-3.5 rounded-lg border text-left transition-all ${
                   isSelected
-                    ? 'border-slate-950 bg-slate-950 text-white shadow-sm'
-                    : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50 text-slate-900'
+                    ? 'border-slate-950 bg-[#0A1D3B] text-white shadow-sm'
+                    : 'border-[#BFDBFE] bg-white hover:border-[#93C5FD] hover:bg-[#E2E8F0] text-[#111827]'
                 }`}
               >
                 <div className="flex items-center justify-between gap-1 mb-1">
-                  <span className={`text-xs font-bold uppercase tracking-wider ${isSelected ? 'text-teal-400' : 'text-slate-500'}`}>
+                  <span className={`text-xs font-bold uppercase tracking-wider ${isSelected ? 'text-emerald-400' : 'text-[#4B6080]'}`}>
                     {key.replace(/([A-Z])/g, ' $1')}
                   </span>
-                  {isSelected && <CheckCircle2 size={14} className="text-teal-400" />}
+                  {isSelected && <CheckCircle2 size={14} className="text-emerald-400" />}
                 </div>
-                <h3 className="text-sm font-semibold truncate" title={p.name}>{p.name}</h3>
-                <p className={`text-xs mt-1 leading-snug line-clamp-2 ${isSelected ? 'text-slate-300' : 'text-slate-500'}`}>
+                <h3 className="text-xs sm:text-sm font-semibold truncate" title={p.name}>{p.name}</h3>
+                <p className={`text-xs mt-1 leading-snug line-clamp-2 ${isSelected ? 'text-slate-300' : 'text-[#4B6080]'}`}>
                   {p.description}
                 </p>
               </button>
@@ -459,16 +459,16 @@ const Simulator = () => {
             onClick={() => setActivePreset(null)}
             className={`p-3.5 rounded-lg border text-left transition-all ${
               activePreset === null
-                ? 'border-teal-700 bg-teal-50/50 ring-1 ring-teal-700'
-                : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50'
+                ? 'border-emerald-700 bg-[#F0FDF4]/50 ring-1 ring-emerald-700'
+                : 'border-[#BFDBFE] bg-white hover:border-[#93C5FD] hover:bg-[#E2E8F0]'
             }`}
           >
             <div className="flex items-center justify-between gap-1 mb-1">
-              <span className="text-xs font-bold uppercase tracking-wider text-teal-800">Custom Mode</span>
-              {activePreset === null && <Sliders size={14} className="text-teal-700" />}
+              <span className="text-xs font-bold uppercase tracking-wider text-[#14532D]">Custom Mode</span>
+              {activePreset === null && <Sliders size={14} className="text-[#14532D]" />}
             </div>
-            <h3 className="text-sm font-semibold text-slate-950">Advisor Bespoke</h3>
-            <p className="text-xs mt-1 leading-snug text-slate-600">
+            <h3 className="text-xs sm:text-sm font-semibold text-[#1B3A6B]">Advisor Bespoke</h3>
+            <p className="text-xs mt-1 leading-snug text-[#2D4A6B]">
               Free-form parameter overrides with live delta checks.
             </p>
           </button>
@@ -479,11 +479,11 @@ const Simulator = () => {
       <section className="space-y-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Sliders size={16} className="text-slate-700" />
-            <h2 className="text-base font-semibold text-slate-950">Scenario Parameters & Capital Adjustments</h2>
+            <Sliders size={16} className="text-[#1F3555]" />
+            <h2 className="text-xs sm:text-sm font-semibold text-[#1B3A6B]">Scenario Parameters & Capital Adjustments</h2>
           </div>
           {!isAllocationValid && (
-            <span className="text-xs font-bold text-red-700 bg-red-50 px-2 py-0.5 rounded border border-red-200">
+            <span className="text-xs font-bold text-[#C2410C] bg-[#FFF7ED] px-2 py-0.5 rounded border border-[#FED7AA]">
               Allocation sum must equal 100% (currently {totalAllocation}%)
             </span>
           )}
@@ -493,18 +493,18 @@ const Simulator = () => {
           {/* Category A: Systematic Investment & Retirement */}
           <div className="card p-4 space-y-4 flex flex-col justify-between">
             <div>
-              <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-                <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Category A</span>
-                <Wallet size={16} className="text-slate-500" />
+              <div className="flex items-center justify-between pb-2 border-b border-[#DBEAFE]">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#4B6080]">Category A</span>
+                <Wallet size={16} className="text-[#4B6080]" />
               </div>
-              <h3 className="text-sm font-semibold text-slate-950 mt-2">Invest & Accumulate</h3>
-              <p className="text-xs text-slate-500 mt-0.5">Retirement corpus & goal SIP adjustments</p>
+              <h3 className="text-xs sm:text-sm font-semibold text-[#1B3A6B] mt-2">Invest & Accumulate</h3>
+              <p className="text-xs text-[#4B6080] mt-0.5">Retirement corpus & goal SIP adjustments</p>
 
               <div className="space-y-3 mt-4">
                 <div>
                   <div className="flex items-center justify-between text-xs mb-1">
-                    <span className="text-slate-700 font-medium">Additional Monthly SIP</span>
-                    <span className="font-bold text-slate-950 tabular-nums">
+                    <span className="text-[#1F3555] font-medium">Additional Monthly SIP</span>
+                    <span className="font-bold text-[#1B3A6B] tabular-nums">
                       +{formatCurrency(modifications.monthlyInvestment)}/mo
                     </span>
                   </div>
@@ -515,9 +515,9 @@ const Simulator = () => {
                     step="2500"
                     value={modifications.monthlyInvestment}
                     onChange={(e) => handleInputChange('monthlyInvestment', Number(e.target.value))}
-                    className="w-full accent-teal-600 h-1.5 bg-slate-200 rounded-lg cursor-pointer"
+                    className="w-full accent-emerald-600 h-1.5 bg-[#DBEAFE] rounded-lg cursor-pointer"
                   />
-                  <div className="flex justify-between text-[10px] text-slate-400 mt-0.5">
+                  <div className="flex justify-between text-[10px] text-blue-300 mt-0.5">
                     <span>₹0</span>
                     <span>₹50K</span>
                     <span>₹1.0L</span>
@@ -526,8 +526,8 @@ const Simulator = () => {
 
                 <div>
                   <div className="flex items-center justify-between text-xs mb-1">
-                    <span className="text-slate-700 font-medium">Target Retirement Age</span>
-                    <span className="font-bold text-slate-950 tabular-nums">{modifications.retirementAge} yrs</span>
+                    <span className="text-[#1F3555] font-medium">Target Retirement Age</span>
+                    <span className="font-bold text-[#1B3A6B] tabular-nums">{modifications.retirementAge} yrs</span>
                   </div>
                   <input
                     type="range"
@@ -536,9 +536,9 @@ const Simulator = () => {
                     step="1"
                     value={modifications.retirementAge}
                     onChange={(e) => handleInputChange('retirementAge', Number(e.target.value))}
-                    className="w-full accent-teal-600 h-1.5 bg-slate-200 rounded-lg cursor-pointer"
+                    className="w-full accent-emerald-600 h-1.5 bg-[#DBEAFE] rounded-lg cursor-pointer"
                   />
-                  <div className="flex justify-between text-[10px] text-slate-400 mt-0.5">
+                  <div className="flex justify-between text-[10px] text-blue-300 mt-0.5">
                     <span>50</span>
                     <span>60</span>
                     <span>70</span>
@@ -547,7 +547,7 @@ const Simulator = () => {
               </div>
             </div>
 
-            <div className="bg-slate-50 p-2.5 rounded border border-slate-100 text-xs text-slate-600">
+            <div className="bg-[#E2E8F0] p-2.5 rounded border border-[#DBEAFE] text-xs text-[#2D4A6B]">
               Allocated across {baseScenario?.goals?.goals?.length || 4} active goal portfolios.
             </div>
           </div>
@@ -555,18 +555,18 @@ const Simulator = () => {
           {/* Category B: Protection & Solvency */}
           <div className="card p-4 space-y-4 flex flex-col justify-between">
             <div>
-              <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-                <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Category B</span>
-                <Shield size={16} className="text-slate-500" />
+              <div className="flex items-center justify-between pb-2 border-b border-[#DBEAFE]">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#4B6080]">Category B</span>
+                <Shield size={16} className="text-[#4B6080]" />
               </div>
-              <h3 className="text-sm font-semibold text-slate-950 mt-2">Protection & Solvency</h3>
-              <p className="text-xs text-slate-500 mt-0.5">Pure term life cover & tax offsets</p>
+              <h3 className="text-xs sm:text-sm font-semibold text-[#1B3A6B] mt-2">Protection & Solvency</h3>
+              <p className="text-xs text-[#4B6080] mt-0.5">Pure term life cover & tax offsets</p>
 
               <div className="space-y-3 mt-4">
                 <div>
                   <div className="flex items-center justify-between text-xs mb-1">
-                    <span className="text-slate-700 font-medium">Pure Life Insurance Addition</span>
-                    <span className="font-bold text-slate-950 tabular-nums">
+                    <span className="text-[#1F3555] font-medium">Pure Life Insurance Addition</span>
+                    <span className="font-bold text-[#1B3A6B] tabular-nums">
                       +{formatCurrency(modifications.insuranceIncrease)}
                     </span>
                   </div>
@@ -577,9 +577,9 @@ const Simulator = () => {
                     step="1000000"
                     value={modifications.insuranceIncrease}
                     onChange={(e) => handleInputChange('insuranceIncrease', Number(e.target.value))}
-                    className="w-full accent-teal-600 h-1.5 bg-slate-200 rounded-lg cursor-pointer"
+                    className="w-full accent-emerald-600 h-1.5 bg-[#DBEAFE] rounded-lg cursor-pointer"
                   />
-                  <div className="flex justify-between text-[10px] text-slate-400 mt-0.5">
+                  <div className="flex justify-between text-[10px] text-blue-300 mt-0.5">
                     <span>₹0</span>
                     <span>₹1.0 Cr</span>
                     <span>₹2.5 Cr</span>
@@ -588,8 +588,8 @@ const Simulator = () => {
 
                 <div>
                   <div className="flex items-center justify-between text-xs mb-1">
-                    <span className="text-slate-700 font-medium">Tax-Saving Investments</span>
-                    <span className="font-bold text-slate-950 tabular-nums">
+                    <span className="text-[#1F3555] font-medium">Tax-Saving Investments</span>
+                    <span className="font-bold text-[#1B3A6B] tabular-nums">
                       {formatCurrency(modifications.taxSavingInvestments)}/yr
                     </span>
                   </div>
@@ -600,9 +600,9 @@ const Simulator = () => {
                     step="10000"
                     value={modifications.taxSavingInvestments}
                     onChange={(e) => handleInputChange('taxSavingInvestments', Number(e.target.value))}
-                    className="w-full accent-teal-600 h-1.5 bg-slate-200 rounded-lg cursor-pointer"
+                    className="w-full accent-emerald-600 h-1.5 bg-[#DBEAFE] rounded-lg cursor-pointer"
                   />
-                  <div className="flex justify-between text-[10px] text-slate-400 mt-0.5">
+                  <div className="flex justify-between text-[10px] text-blue-300 mt-0.5">
                     <span>₹0</span>
                     <span>₹75K</span>
                     <span>₹1.5L</span>
@@ -611,7 +611,7 @@ const Simulator = () => {
               </div>
             </div>
 
-            <div className="bg-slate-50 p-2.5 rounded border border-slate-100 text-xs text-slate-600">
+            <div className="bg-[#E2E8F0] p-2.5 rounded border border-[#DBEAFE] text-xs text-[#2D4A6B]">
               Estimated pure term premium: ~{formatCurrency(modifications.insuranceIncrease > 0 ? modifications.insuranceIncrease * 0.00015 * 12 : 0)}/yr
             </div>
           </div>
@@ -619,18 +619,18 @@ const Simulator = () => {
           {/* Category C: Debt & Emergency Reserve */}
           <div className="card p-4 space-y-4 flex flex-col justify-between">
             <div>
-              <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-                <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Category C</span>
-                <Landmark size={16} className="text-slate-500" />
+              <div className="flex items-center justify-between pb-2 border-b border-[#DBEAFE]">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#4B6080]">Category C</span>
+                <Landmark size={16} className="text-[#4B6080]" />
               </div>
-              <h3 className="text-sm font-semibold text-slate-950 mt-2">Debt & Emergency Fund</h3>
-              <p className="text-xs text-slate-500 mt-0.5">Liability reduction & cash runway</p>
+              <h3 className="text-xs sm:text-sm font-semibold text-[#1B3A6B] mt-2">Debt & Emergency Fund</h3>
+              <p className="text-xs text-[#4B6080] mt-0.5">Liability reduction & cash runway</p>
 
               <div className="space-y-3 mt-4">
                 <div>
                   <div className="flex items-center justify-between text-xs mb-1">
-                    <span className="text-slate-700 font-medium">Lump-Sum Debt Prepayment</span>
-                    <span className="font-bold text-slate-950 tabular-nums">
+                    <span className="text-[#1F3555] font-medium">Lump-Sum Debt Prepayment</span>
+                    <span className="font-bold text-[#1B3A6B] tabular-nums">
                       {formatCurrency(modifications.debtReduction)}
                     </span>
                   </div>
@@ -641,9 +641,9 @@ const Simulator = () => {
                     step="50000"
                     value={modifications.debtReduction}
                     onChange={(e) => handleInputChange('debtReduction', Number(e.target.value))}
-                    className="w-full accent-teal-600 h-1.5 bg-slate-200 rounded-lg cursor-pointer"
+                    className="w-full accent-emerald-600 h-1.5 bg-[#DBEAFE] rounded-lg cursor-pointer"
                   />
-                  <div className="flex justify-between text-[10px] text-slate-400 mt-0.5">
+                  <div className="flex justify-between text-[10px] text-blue-300 mt-0.5">
                     <span>₹0</span>
                     <span>₹9.0L</span>
                     <span>₹18.0L</span>
@@ -652,8 +652,8 @@ const Simulator = () => {
 
                 <div>
                   <div className="flex items-center justify-between text-xs mb-1">
-                    <span className="text-slate-700 font-medium">Emergency Fund Addition</span>
-                    <span className="font-bold text-slate-950 tabular-nums">
+                    <span className="text-[#1F3555] font-medium">Emergency Fund Addition</span>
+                    <span className="font-bold text-[#1B3A6B] tabular-nums">
                       +{formatCurrency(modifications.emergencyFundIncrease)}
                     </span>
                   </div>
@@ -664,9 +664,9 @@ const Simulator = () => {
                     step="50000"
                     value={modifications.emergencyFundIncrease}
                     onChange={(e) => handleInputChange('emergencyFundIncrease', Number(e.target.value))}
-                    className="w-full accent-teal-600 h-1.5 bg-slate-200 rounded-lg cursor-pointer"
+                    className="w-full accent-emerald-600 h-1.5 bg-[#DBEAFE] rounded-lg cursor-pointer"
                   />
-                  <div className="flex justify-between text-[10px] text-slate-400 mt-0.5">
+                  <div className="flex justify-between text-[10px] text-blue-300 mt-0.5">
                     <span>₹0</span>
                     <span>₹5.0L</span>
                     <span>₹10.0L</span>
@@ -675,7 +675,7 @@ const Simulator = () => {
               </div>
             </div>
 
-            <div className="bg-slate-50 p-2.5 rounded border border-slate-100 text-xs text-slate-600">
+            <div className="bg-[#E2E8F0] p-2.5 rounded border border-[#DBEAFE] text-xs text-[#2D4A6B]">
               Prepayment unleashes ~{formatCurrency(cashFlowMetrics.emiFreed)}/mo in cash flow capacity.
             </div>
           </div>
@@ -683,19 +683,19 @@ const Simulator = () => {
           {/* Category D: Asset Rebalancing */}
           <div className="card p-4 space-y-4 flex flex-col justify-between">
             <div>
-              <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-                <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Category D</span>
-                <span className={`text-xs font-bold ${isAllocationValid ? 'text-teal-700' : 'text-red-700'}`}>
+              <div className="flex items-center justify-between pb-2 border-b border-[#DBEAFE]">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#4B6080]">Category D</span>
+                <span className={`text-xs font-bold ${isAllocationValid ? 'text-[#14532D]' : 'text-[#C2410C]'}`}>
                   {totalAllocation}%
                 </span>
               </div>
-              <h3 className="text-sm font-semibold text-slate-950 mt-2">Asset Rebalancing</h3>
-              <p className="text-xs text-slate-500 mt-0.5">Target multi-asset allocation weights</p>
+              <h3 className="text-xs sm:text-sm font-semibold text-[#1B3A6B] mt-2">Asset Rebalancing</h3>
+              <p className="text-xs text-[#4B6080] mt-0.5">Target multi-asset allocation weights</p>
 
               <div className="space-y-2 mt-3 text-xs">
                 <div>
                   <div className="flex justify-between mb-0.5">
-                    <span className="text-slate-700">Equity</span>
+                    <span className="text-[#1F3555]">Equity</span>
                     <span className="font-semibold tabular-nums">{modifications.portfolio?.equity || 0}%</span>
                   </div>
                   <input
@@ -705,13 +705,13 @@ const Simulator = () => {
                     step="5"
                     value={modifications.portfolio?.equity || 0}
                     onChange={(e) => handlePortfolioChange('equity', e.target.value)}
-                    className="w-full accent-slate-900 h-1.5 bg-slate-200 rounded-lg cursor-pointer"
+                    className="w-full accent-slate-900 h-1.5 bg-[#DBEAFE] rounded-lg cursor-pointer"
                   />
                 </div>
 
                 <div>
                   <div className="flex justify-between mb-0.5">
-                    <span className="text-slate-700">Debt & Hybrid</span>
+                    <span className="text-[#1F3555]">Debt & Hybrid</span>
                     <span className="font-semibold tabular-nums">{modifications.portfolio?.debt || 0}%</span>
                   </div>
                   <input
@@ -721,13 +721,13 @@ const Simulator = () => {
                     step="5"
                     value={modifications.portfolio?.debt || 0}
                     onChange={(e) => handlePortfolioChange('debt', e.target.value)}
-                    className="w-full accent-teal-600 h-1.5 bg-slate-200 rounded-lg cursor-pointer"
+                    className="w-full accent-emerald-600 h-1.5 bg-[#DBEAFE] rounded-lg cursor-pointer"
                   />
                 </div>
 
                 <div>
                   <div className="flex justify-between mb-0.5">
-                    <span className="text-slate-700">Gold & Cash</span>
+                    <span className="text-[#1F3555]">Gold & Cash</span>
                     <span className="font-semibold tabular-nums">
                       {(modifications.portfolio?.gold || 0) + (modifications.portfolio?.cash || 0)}%
                     </span>
@@ -739,7 +739,7 @@ const Simulator = () => {
                       max="50"
                       value={modifications.portfolio?.gold || 0}
                       onChange={(e) => handlePortfolioChange('gold', e.target.value)}
-                      className="rounded border border-slate-300 px-2 py-1 text-xs"
+                      className="rounded border border-[#93C5FD] px-2 py-1 text-xs"
                       title="Gold %"
                     />
                     <input
@@ -748,7 +748,7 @@ const Simulator = () => {
                       max="50"
                       value={modifications.portfolio?.cash || 0}
                       onChange={(e) => handlePortfolioChange('cash', e.target.value)}
-                      className="rounded border border-slate-300 px-2 py-1 text-xs"
+                      className="rounded border border-[#93C5FD] px-2 py-1 text-xs"
                       title="Cash %"
                     />
                   </div>
@@ -756,7 +756,7 @@ const Simulator = () => {
               </div>
             </div>
 
-            <div className={`p-2 rounded text-xs ${isAllocationValid ? 'bg-teal-50 text-teal-800' : 'bg-red-50 text-red-800'}`}>
+            <div className={`p-2 rounded text-xs ${isAllocationValid ? 'bg-[#F0FDF4] text-[#14532D]' : 'bg-[#FFF7ED] text-[#9A3412]'}`}>
               {isAllocationValid ? '✓ Allocation constraints satisfied' : '⚠️ Adjust sliders to total 100%'}
             </div>
           </div>
@@ -764,15 +764,15 @@ const Simulator = () => {
       </section>
 
       {/* 4. SIMULATED FIDUCIARY IMPACT SUMMARY (Hero Banner) */}
-      <section className="rounded-xl bg-slate-950 text-white p-5 shadow-sm">
+      <section className="rounded-xl bg-[#0A1D3B] text-white p-5 shadow-sm">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-800">
           <div className="flex items-center gap-2">
-            <Sparkles size={18} className="text-teal-400" />
-            <h2 className="text-base font-semibold text-white tracking-tight">
+            <Sparkles size={18} className="text-emerald-400" />
+            <h2 className="text-xs sm:text-sm font-semibold text-white tracking-tight">
               Simulated Fiduciary Impact Summary
             </h2>
           </div>
-          <span className="text-xs text-slate-400">
+          <span className="text-xs text-blue-300">
             {simulatedResult ? 'Simulated Output Ready' : 'Baseline State (Run simulation to see projected uplift)'}
           </span>
         </div>
@@ -780,76 +780,76 @@ const Simulator = () => {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 pt-4">
           {/* Metric 1: Health Score */}
           <div className="space-y-1">
-            <span className="text-[11px] uppercase tracking-wider text-slate-400 font-medium">
+            <span className="text-[11px] uppercase tracking-wider text-blue-300 font-medium">
               Health Score
             </span>
             <div className="flex items-baseline gap-1.5">
-              <span className="text-2xl font-bold text-white tabular-nums">{simScore}</span>
-              <span className="text-xs text-slate-400">/ 100</span>
+              <span className="text-lg sm:text-xl font-bold text-white tabular-nums">{simScore}</span>
+              <span className="text-xs text-blue-300">/ 100</span>
             </div>
             <div className="flex items-center gap-1 text-xs">
               {scoreDelta > 0 ? (
-                <span className="text-teal-400 font-semibold inline-flex items-center gap-0.5">
+                <span className="text-emerald-400 font-semibold inline-flex items-center gap-0.5">
                   <TrendingUp size={13} /> +{scoreDelta} pts uplift
                 </span>
               ) : scoreDelta < 0 ? (
-                <span className="text-red-400 font-semibold inline-flex items-center gap-0.5">
+                <span className="text-rose-400 font-semibold inline-flex items-center gap-0.5">
                   <TrendingDown size={13} /> {scoreDelta} pts
                 </span>
               ) : (
-                <span className="text-slate-400">Baseline level</span>
+                <span className="text-blue-300">Baseline level</span>
               )}
             </div>
           </div>
 
           {/* Metric 2: Solvency Deficit */}
           <div className="space-y-1">
-            <span className="text-[11px] uppercase tracking-wider text-slate-400 font-medium">
+            <span className="text-[11px] uppercase tracking-wider text-blue-300 font-medium">
               Protection Deficit
             </span>
-            <div className="text-2xl font-bold text-white tabular-nums">
+            <div className="text-lg sm:text-xl font-bold text-white tabular-nums">
               {modifications.insuranceIncrease >= 18000000 ? '₹0.00' : formatCurrency(Math.max(0, 18000000 - modifications.insuranceIncrease))}
             </div>
-            <div className="text-xs text-teal-400 font-medium">
+            <div className="text-xs text-emerald-400 font-medium">
               {modifications.insuranceIncrease >= 18000000 ? '✓ 100% Hedged' : `+${formatCurrency(modifications.insuranceIncrease)} added`}
             </div>
           </div>
 
           {/* Metric 3: Goal Funding */}
           <div className="space-y-1">
-            <span className="text-[11px] uppercase tracking-wider text-slate-400 font-medium">
+            <span className="text-[11px] uppercase tracking-wider text-blue-300 font-medium">
               Avg Goal Funding
             </span>
-            <div className="text-2xl font-bold text-white tabular-nums">
+            <div className="text-lg sm:text-xl font-bold text-white tabular-nums">
               {simulatedScenario ? `${Math.round(simulatedScenario.goals?.summary?.avgFunding || 0)}%` : `${Math.round(baseScenario?.goals?.summary?.avgFunding || 76)}%`}
             </div>
-            <div className="text-xs text-teal-400 font-medium">
+            <div className="text-xs text-emerald-400 font-medium">
               {comparison?.goalReadiness?.delta ? `+${Math.round(comparison.goalReadiness.delta)}% readiness uplift` : 'Target: 95%+'}
             </div>
           </div>
 
           {/* Metric 4: Critical Breaches */}
           <div className="space-y-1">
-            <span className="text-[11px] uppercase tracking-wider text-slate-400 font-medium">
+            <span className="text-[11px] uppercase tracking-wider text-blue-300 font-medium">
               Critical Breaches
             </span>
-            <div className="text-2xl font-bold text-white tabular-nums">
+            <div className="text-lg sm:text-xl font-bold text-white tabular-nums">
               {simCriticalCount} Remaining
             </div>
-            <div className="text-xs text-teal-400 font-medium">
+            <div className="text-xs text-emerald-400 font-medium">
               {baseCriticalCount - simCriticalCount > 0 ? `✓ ${baseCriticalCount - simCriticalCount} resolved` : '3 Baseline breaches'}
             </div>
           </div>
 
           {/* Metric 5: Net Residual Surplus */}
           <div className="space-y-1">
-            <span className="text-[11px] uppercase tracking-wider text-slate-400 font-medium">
+            <span className="text-[11px] uppercase tracking-wider text-blue-300 font-medium">
               Residual Cushion
             </span>
-            <div className="text-2xl font-bold text-white tabular-nums">
+            <div className="text-lg sm:text-xl font-bold text-white tabular-nums">
               {formatCurrency(cashFlowMetrics.netResidual)}/mo
             </div>
-            <div className="text-xs text-slate-400">
+            <div className="text-xs text-blue-300">
               Monthly cash surplus
             </div>
           </div>
@@ -861,16 +861,16 @@ const Simulator = () => {
         {/* Left: Retirement Capital Trajectory Chart (7 cols) */}
         <div className="lg:col-span-7 card p-5 flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between pb-3 border-b border-slate-200 mb-4">
+            <div className="flex items-center justify-between pb-3 border-b border-[#BFDBFE] mb-4">
               <div>
-                <h2 className="text-base font-semibold text-slate-950">
+                <h2 className="text-xs sm:text-sm font-semibold text-[#1B3A6B]">
                   Retirement Capital Trajectory Comparison
                 </h2>
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-[#4B6080]">
                   Baseline projection vs. simulated strategy path
                 </p>
               </div>
-              <span className="rounded bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-700">
+              <span className="rounded bg-[#EFF6FF] px-2 py-0.5 text-xs font-medium text-[#1F3555]">
                 Retirement Goal
               </span>
             </div>
@@ -889,7 +889,7 @@ const Simulator = () => {
                     />
                     <Tooltip
                       formatter={(val) => [formatCurrency(val), '']}
-                      contentStyle={{ backgroundColor: '#ffffff', borderRadius: '8px', border: '1px solid #e2e8f0', fontSize: '12px' }}
+                      contentStyle={{ backgroundColor: '#ffffff', borderRadius: '0', border: '1px solid #e2e8f0', fontSize: '12px' }}
                     />
                     <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
                     <Line
@@ -923,27 +923,27 @@ const Simulator = () => {
                 </ResponsiveContainer>
               </div>
             ) : (
-              <div className="h-[280px] flex items-center justify-center text-xs text-slate-500">
+              <div className="h-[280px] flex items-center justify-center text-xs text-[#4B6080]">
                 Trajectory chart data will appear upon loading goal analyses.
               </div>
             )}
           </div>
 
-          <div className="pt-3 border-t border-slate-100 text-xs text-slate-500 flex items-center justify-between">
+          <div className="pt-3 border-t border-[#DBEAFE] text-xs text-[#4B6080] flex items-center justify-between">
             <span>Actuarial life horizon calibrated with compound returns</span>
-            <span className="font-medium text-teal-700">Deterministic Monte Carlo Baseline</span>
+            <span className="font-medium text-[#14532D]">Deterministic Monte Carlo Baseline</span>
           </div>
         </div>
 
         {/* Right: Advisor Fiduciary Takeaway & Cash Flow Deployment (5 cols) */}
         <div className="lg:col-span-5 card p-5 flex flex-col justify-between">
           <div>
-            <div className="flex items-center gap-2 pb-3 border-b border-slate-200 mb-3">
-              <ShieldCheck size={18} className="text-teal-700" />
-              <h2 className="text-base font-semibold text-slate-950">Advisor Fiduciary Takeaway</h2>
+            <div className="flex items-center gap-2 pb-3 border-b border-[#BFDBFE] mb-3">
+              <ShieldCheck size={18} className="text-[#14532D]" />
+              <h2 className="text-xs sm:text-sm font-semibold text-[#1B3A6B]">Advisor Fiduciary Takeaway</h2>
             </div>
 
-            <div className="text-xs leading-relaxed text-slate-700 space-y-2 bg-slate-50 p-3.5 rounded border border-slate-200 mb-4">
+            <div className="text-xs leading-relaxed text-[#1F3555] space-y-2 bg-[#E2E8F0] p-3.5 rounded border border-[#BFDBFE] mb-4">
               <p>
                 <strong>Strategy Synthesis: </strong>
                 {scoreDelta > 0
@@ -959,43 +959,43 @@ const Simulator = () => {
 
             {/* Monthly Surplus Deployment Waterfall */}
             <div className="space-y-1.5 text-xs">
-              <span className="font-semibold uppercase tracking-wider text-slate-500 text-[10px] block">
+              <span className="font-semibold uppercase tracking-wider text-[#4B6080] text-[10px] block">
                 Monthly Cash Flow Reconciliation
               </span>
-              <div className="flex justify-between py-1 border-b border-slate-100">
-                <span className="text-slate-600">Unallocated Base Surplus</span>
-                <span className="font-medium text-slate-900 tabular-nums">
+              <div className="flex justify-between py-1 border-b border-[#DBEAFE]">
+                <span className="text-[#2D4A6B]">Unallocated Base Surplus</span>
+                <span className="font-medium text-[#111827] tabular-nums">
                   {formatCurrency(cashFlowMetrics.baseSurplus)}/mo
                 </span>
               </div>
               {cashFlowMetrics.emiFreed > 0 && (
-                <div className="flex justify-between py-1 border-b border-slate-100 text-teal-700 font-medium">
+                <div className="flex justify-between py-1 border-b border-[#DBEAFE] text-[#14532D] font-medium">
                   <span>+ Freed Loan EMI Capacity</span>
                   <span className="tabular-nums">+{formatCurrency(cashFlowMetrics.emiFreed)}/mo</span>
                 </div>
               )}
               {cashFlowMetrics.addedSIP > 0 && (
-                <div className="flex justify-between py-1 border-b border-slate-100 text-slate-700">
+                <div className="flex justify-between py-1 border-b border-[#DBEAFE] text-[#1F3555]">
                   <span>- Additional Goal SIP</span>
                   <span className="tabular-nums">-{formatCurrency(cashFlowMetrics.addedSIP)}/mo</span>
                 </div>
               )}
               {cashFlowMetrics.monthlyInsuranceCost > 0 && (
-                <div className="flex justify-between py-1 border-b border-slate-100 text-slate-700">
+                <div className="flex justify-between py-1 border-b border-[#DBEAFE] text-[#1F3555]">
                   <span>- Term Life Premium</span>
                   <span className="tabular-nums">-{formatCurrency(cashFlowMetrics.monthlyInsuranceCost)}/mo</span>
                 </div>
               )}
-              <div className="flex justify-between pt-1.5 font-bold text-slate-950">
+              <div className="flex justify-between pt-1.5 font-bold text-[#1B3A6B]">
                 <span>Net Residual Surplus</span>
-                <span className={`tabular-nums ${cashFlowMetrics.netResidual >= 0 ? 'text-teal-700' : 'text-red-700'}`}>
+                <span className={`tabular-nums ${cashFlowMetrics.netResidual >= 0 ? 'text-[#14532D]' : 'text-[#C2410C]'}`}>
                   {formatCurrency(cashFlowMetrics.netResidual)}/mo
                 </span>
               </div>
             </div>
           </div>
 
-          <div className="pt-4 border-t border-slate-100 mt-4">
+          <div className="pt-4 border-t border-[#DBEAFE] mt-4">
             <button
               type="button"
               onClick={() => navigate('/recommendations')}
@@ -1010,16 +1010,16 @@ const Simulator = () => {
 
       {/* 6. AUDITED BASELINE VS. SIMULATED OUTCOME MATRIX (Detailed Table) */}
       <section className="card p-5">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-200 mb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-[#BFDBFE] mb-4">
           <div>
-            <h2 className="text-base font-semibold text-slate-950">
+            <h2 className="text-xs sm:text-sm font-semibold text-[#1B3A6B]">
               Audited Baseline vs. Simulated Outcome Matrix
             </h2>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-[#4B6080]">
               Granular metric comparison across all 8 fiduciary health dimensions
             </p>
           </div>
-          <span className="text-xs text-slate-500">
+          <span className="text-xs text-[#4B6080]">
             {simulatedResult ? 'Comparison Active' : 'Baseline Active'}
           </span>
         </div>
@@ -1027,7 +1027,7 @@ const Simulator = () => {
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead>
-              <tr className="border-b border-slate-200 bg-slate-50 text-slate-500 uppercase tracking-wider font-semibold">
+              <tr className="border-b border-[#BFDBFE] bg-[#E2E8F0] text-[#4B6080] uppercase tracking-wider font-semibold">
                 <th className="py-2.5 px-3 rounded-l">Planning Dimension</th>
                 <th className="py-2.5 px-3">Audited Baseline</th>
                 <th className="py-2.5 px-3">Simulated Outcome</th>
@@ -1037,22 +1037,22 @@ const Simulator = () => {
             </thead>
             <tbody className="divide-y divide-slate-100">
               {/* Overall Health Score Row */}
-              <tr className="bg-slate-50/50 font-semibold">
+              <tr className="bg-[#E2E8F0]/50 font-semibold">
                 <td className="py-3 px-3">
-                  <div className="flex items-center gap-1.5 text-slate-950 font-bold">
-                    <Sparkles size={14} className="text-teal-700" />
+                  <div className="flex items-center gap-1.5 text-[#1B3A6B] font-bold">
+                    <Sparkles size={14} className="text-[#14532D]" />
                     <span>Overall Financial Health Score</span>
                   </div>
                 </td>
-                <td className="py-3 px-3 tabular-nums text-slate-800">{baseScore} / 100</td>
-                <td className="py-3 px-3 tabular-nums text-slate-950 font-bold">{simScore} / 100</td>
+                <td className="py-3 px-3 tabular-nums text-[#1B3A6B]">{baseScore} / 100</td>
+                <td className="py-3 px-3 tabular-nums text-[#1B3A6B] font-bold">{simScore} / 100</td>
                 <td className="py-3 px-3 tabular-nums">
                   {scoreDelta > 0 ? (
-                    <span className="text-teal-700 font-bold">+{scoreDelta} pts</span>
+                    <span className="text-[#14532D] font-bold">+{scoreDelta} pts</span>
                   ) : scoreDelta < 0 ? (
-                    <span className="text-red-700 font-bold">{scoreDelta} pts</span>
+                    <span className="text-[#C2410C] font-bold">{scoreDelta} pts</span>
                   ) : (
-                    <span className="text-slate-400">0 pts</span>
+                    <span className="text-blue-300">0 pts</span>
                   )}
                 </td>
                 <td className="py-3 px-3 text-right">
@@ -1064,23 +1064,23 @@ const Simulator = () => {
               {dimensionMatrix.map((dim) => {
                 const status = dim.simScore >= 70 ? 'healthy' : dim.simScore >= 50 ? 'warning' : 'critical';
                 return (
-                  <tr key={dim.key} className="hover:bg-slate-50 transition-colors">
-                    <td className="py-2.5 px-3 font-medium text-slate-800">
+                  <tr key={dim.key} className="hover:bg-[#E2E8F0] transition-colors">
+                    <td className="py-2.5 px-3 font-medium text-[#1B3A6B]">
                       {dim.label}
                     </td>
-                    <td className="py-2.5 px-3 tabular-nums text-slate-600">
+                    <td className="py-2.5 px-3 tabular-nums text-[#2D4A6B]">
                       {dim.baseScore} / 100
                     </td>
-                    <td className="py-2.5 px-3 tabular-nums font-semibold text-slate-900">
+                    <td className="py-2.5 px-3 tabular-nums font-semibold text-[#111827]">
                       {dim.simScore} / 100
                     </td>
                     <td className="py-2.5 px-3 tabular-nums">
                       {dim.delta > 0 ? (
-                        <span className="text-teal-700 font-semibold">+{dim.delta} pts</span>
+                        <span className="text-[#14532D] font-semibold">+{dim.delta} pts</span>
                       ) : dim.delta < 0 ? (
-                        <span className="text-red-700 font-semibold">{dim.delta} pts</span>
+                        <span className="text-[#C2410C] font-semibold">{dim.delta} pts</span>
                       ) : (
-                        <span className="text-slate-400">—</span>
+                        <span className="text-blue-300">—</span>
                       )}
                     </td>
                     <td className="py-2.5 px-3 text-right">

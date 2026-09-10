@@ -6,7 +6,7 @@ const statusConfig = {
   warning: { label: 'Warning', className: 'status-warning', Icon: AlertTriangle },
   opportunity: { label: 'Opportunity', className: 'status-opportunity', Icon: CircleDot },
   healthy: { label: 'Healthy', className: 'status-healthy', Icon: CheckCircle2 },
-  neutral: { label: 'Neutral', className: 'border-slate-200 bg-slate-100 text-slate-700', Icon: Info },
+  neutral: { label: 'Neutral', className: 'border-[#BFDBFE] bg-[#EFF6FF] text-[#1F3555]', Icon: Info },
 };
 
 const StatusBadge = ({ status = 'neutral', label, className = '' }) => {

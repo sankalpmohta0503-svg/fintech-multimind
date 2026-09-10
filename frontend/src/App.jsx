@@ -9,6 +9,8 @@ import Portfolio from './pages/Portfolio'
 import Simulator from './pages/Simulator'
 import Recommendations from './pages/Recommendations'
 import Report from './pages/Report'
+import AboutUs from './pages/AboutUs'
+import ContactUs from './pages/ContactUs'
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
           <Route path="/simulator" element={<Simulator />} />
           <Route path="/recommendations" element={<Recommendations />} />
           <Route path="/report" element={<Report />} />
+          <Route path="/about" element={<AboutUs />} />
+          <Route path="/contact" element={<ContactUs />} />
         </Routes>
       </Layout>
     </Router>

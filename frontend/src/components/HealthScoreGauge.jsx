@@ -1,10 +1,11 @@
 import React from 'react';
-import { getHealthScoreStatus, getHealthScoreColor } from '../utils/formatters';
+import { getHealthScoreStatus } from '../utils/formatters';
 
 const HealthScoreGauge = ({ score, size = 'large' }) => {
   const status = getHealthScoreStatus(score);
   const circumference = 2 * Math.PI * 45;
   const strokeDashoffset = circumference - (score / 100) * circumference;
+  const gradientId = `gaugeGrad-${size}`;
 
   const sizeClasses = {
     small: 'w-24 h-24',
@@ -13,61 +14,63 @@ const HealthScoreGauge = ({ score, size = 'large' }) => {
   };
 
   const textSizes = {
-    small: 'text-2xl',
-    medium: 'text-3xl',
+    small: 'text-lg sm:text-xl',
+    medium: 'text-xl sm:text-2xl',
     large: 'text-4xl'
   };
 
   const labelSizes = {
     small: 'text-xs',
-    medium: 'text-sm',
-    large: 'text-base'
+    medium: 'text-xs sm:text-sm',
+    large: 'text-xs sm:text-sm'
   };
 
   return (
     <div className="flex flex-col items-center">
       <div className={`relative ${sizeClasses[size]}`}>
-        <svg className="transform -rotate-90" viewBox="0 0 100 100">
+        <svg className="transform -rotate-90 w-full h-full" viewBox="0 0 100 100">
+          <defs>
+            <linearGradient id={gradientId} x1="0%" y1="100%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#EA580C" />
+              <stop offset="35%" stopColor="#F97316" />
+              <stop offset="65%" stopColor="#84CC16" />
+              <stop offset="100%" stopColor="#16A34A" />
+            </linearGradient>
+          </defs>
           {/* Background circle */}
           <circle
             cx="50"
             cy="50"
             r="45"
             fill="none"
-            stroke="#e5e7eb"
+            stroke="#CBD5E1"
             strokeWidth="8"
           />
-          {/* Progress circle */}
+          {/* Gradient progress circle */}
           <circle
             cx="50"
             cy="50"
             r="45"
             fill="none"
-            stroke={
-              score >= 80 ? '#10b981' :
-              score >= 70 ? '#3b82f6' :
-              score >= 60 ? '#eab308' :
-              score >= 50 ? '#f97316' :
-              '#ef4444'
-            }
-            strokeWidth="8"
+            stroke={`url(#${gradientId})`}
+            strokeWidth="10"
             strokeDasharray={circumference}
             strokeDashoffset={strokeDashoffset}
-            strokeLinecap="round"
+            strokeLinecap="butt"
             className="transition-all duration-1000 ease-out"
           />
         </svg>
-        
+
         {/* Score text */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className={`font-bold ${textSizes[size]} ${status.color}`}>
+          <span className={`font-bold ${textSizes[size]} text-[#1B3A6B]`}>
             {score}
           </span>
-          <span className={`${labelSizes[size]} text-gray-500`}>/ 100</span>
+          <span className={`${labelSizes[size]} text-[#4B6080]`}>/ 100</span>
         </div>
       </div>
-      
-      <div className={`mt-2 font-semibold ${status.color} ${labelSizes[size]}`}>
+
+      <div className={`mt-2 font-bold ${status.color} ${labelSizes[size]}`}>
         {status.label}
       </div>
     </div>
@@ -75,3 +78,4 @@ const HealthScoreGauge = ({ score, size = 'large' }) => {
 };
 
 export default HealthScoreGauge;
+

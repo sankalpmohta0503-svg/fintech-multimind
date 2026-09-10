@@ -16,38 +16,10 @@ import StatusBadge from './StatusBadge';
 import { formatCurrency } from '../utils/formatters';
 
 const severityStyles = {
-  critical: {
-    borderLeft: 'border-l-red-600',
-    badge: 'bg-red-50 text-red-800 border-red-200',
-    badgeLabel: 'CRITICAL BREACH',
-    icon: ShieldAlert,
-    iconBg: 'bg-red-100 text-red-800',
-    highlightText: 'text-red-700',
-  },
-  warning: {
-    borderLeft: 'border-l-amber-500',
-    badge: 'bg-amber-50 text-amber-800 border-amber-200',
-    badgeLabel: 'POLICY WARNING',
-    icon: AlertTriangle,
-    iconBg: 'bg-amber-100 text-amber-800',
-    highlightText: 'text-amber-700',
-  },
-  opportunity: {
-    borderLeft: 'border-l-blue-600',
-    badge: 'bg-blue-50 text-blue-800 border-blue-200',
-    badgeLabel: 'TAX OPTIMIZATION',
-    icon: Lightbulb,
-    iconBg: 'bg-blue-100 text-blue-800',
-    highlightText: 'text-blue-700',
-  },
-  healthy: {
-    borderLeft: 'border-l-teal-600',
-    badge: 'bg-teal-50 text-teal-800 border-teal-200',
-    badgeLabel: 'BENCHMARK COMPLIANT',
-    icon: CheckCircle2,
-    iconBg: 'bg-teal-100 text-teal-800',
-    highlightText: 'text-teal-700',
-  },
+  critical: { accent: '#DC2626', soft: '#FEF2F2', border: '#FECACA', icon: ShieldAlert, label: 'Critical' },
+  warning: { accent: '#EA580C', soft: '#FFF7ED', border: '#FFEDD5', icon: AlertTriangle, label: 'Warning' },
+  opportunity: { accent: '#1B3A6B', soft: '#EFF6FF', border: '#BFDBFE', icon: Lightbulb, label: 'Opportunity' },
+  healthy: { accent: '#15803D', soft: '#F0FDF4', border: '#BBF7D0', icon: CheckCircle2, label: 'Healthy' },
 };
 
 const formatEvidenceLabel = (key) =>
@@ -79,169 +51,163 @@ const formatEvidenceValue = (key, value) => {
 };
 
 const getDirectAction = (finding) => {
-  const cat = (finding.category || '').toLowerCase();
-  if (cat.includes('insurance') || cat.includes('protection')) {
-    return { label: 'Initiate Coverage Proposal', route: '/recommendations' };
+  const category = (finding.category || '').toLowerCase();
+  if (category.includes('retirement') || category.includes('goal')) {
+    return { label: 'Open goals', route: '/goals' };
   }
-  if (cat.includes('retirement') || cat.includes('goal')) {
-    return { label: 'Adjust Trajectory in Goals', route: '/goals' };
+  if (category.includes('asset') || category.includes('portfolio') || category.includes('concentration')) {
+    return { label: 'Open simulator', route: '/simulator' };
   }
-  if (cat.includes('asset') || cat.includes('portfolio') || cat.includes('concentration')) {
-    return { label: 'Review in Simulator', route: '/simulator' };
-  }
-  if (cat.includes('tax')) {
-    return { label: 'Explore Tax Strategy', route: '/recommendations' };
-  }
-  return { label: 'View Recommendations', route: '/recommendations' };
+  return { label: 'View recommendations', route: '/recommendations' };
 };
+
+const EvidenceMetric = ({ label, value, index }) => (
+  <div className={`min-w-0 rounded-lg border border-[#DBEAFE] bg-white px-3 py-2.5 ${index === 0 ? 'md:col-span-2' : ''}`}>
+    <div className="truncate text-[10px] font-semibold uppercase tracking-[0.14em] text-[#6B7280]">{label}</div>
+    <div className="mt-1 truncate text-[15px] font-bold tracking-tight text-[#1B3A6B]">{value}</div>
+  </div>
+);
 
 const AuditFindingCard = ({ finding, expanded, onToggle, onExplain }) => {
   const navigate = useNavigate();
-  const severity = severityStyles[finding.severity] || severityStyles.warning;
-  const Icon = severity.icon;
+  const style = severityStyles[finding.severity] || severityStyles.warning;
+  const Icon = style.icon;
   const action = getDirectAction(finding);
-
-  // Check if there's a deficit / gap metric in evidence
-  const deficitValue =
-    finding.evidence?.gap ||
-    finding.evidence?.shortfall ||
-    (finding.evidence?.required && finding.evidence?.existing
-      ? finding.evidence.required - finding.evidence.existing
-      : null);
+  const evidence = finding.evidence && Object.entries(finding.evidence);
+  const deficitValue = finding.evidence?.gap || finding.evidence?.shortfall || null;
 
   return (
     <article
-      className={`rounded-lg border border-slate-200 border-l-4 bg-white shadow-none transition-all ${
-        severity.borderLeft
-      } ${expanded ? 'ring-1 ring-slate-200' : 'hover:border-slate-300'}`}
+      className={`group relative overflow-hidden rounded-xl border bg-white transition-all duration-200 ${
+        expanded
+          ? 'shadow-md border-[#1B3A6B]/40 ring-1 ring-[#1B3A6B]/20'
+          : 'shadow-sm border-[#1B3A6B22] hover:-translate-y-0.5 hover:shadow-md'
+      }`}
+      style={{
+        borderLeftWidth: '4px',
+        borderLeftColor: style.accent,
+      }}
     >
-      {/* Card Header clickable button */}
-      <div className="p-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold border ${severity.badge}`}>
-              <Icon size={13} />
-              {severity.badgeLabel}
-            </span>
-            <span className="rounded bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600">
-              {finding.category}
-            </span>
+      <div className="p-5 pl-6 md:p-6 md:pl-7">
+        <div className="flex items-start gap-4">
+          <div
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
+            style={{ backgroundColor: style.soft, color: style.accent }}
+          >
+            <Icon size={20} strokeWidth={2} />
           </div>
-
-          <div className="flex items-center gap-3">
-            {deficitValue && deficitValue > 0 && (
-              <span className={`text-xs font-semibold tabular-nums ${severity.highlightText}`}>
-                Deficit: {formatCurrency(deficitValue)}
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <StatusBadge status={finding.severity} label={style.label} />
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-[#6B7280]">
+                {finding.category}
               </span>
-            )}
-            <button
-              type="button"
-              onClick={onToggle}
-              className="text-slate-500 hover:text-slate-900 p-1 rounded hover:bg-slate-100 transition-colors"
-              aria-label={expanded ? 'Collapse finding details' : 'Expand finding details'}
-              aria-expanded={expanded}
-            >
-              {expanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+            </div>
+            <button type="button" onClick={onToggle} aria-expanded={expanded} className="mt-2.5 block w-full text-left">
+              <h3 className="text-base sm:text-lg font-bold tracking-tight text-[#1B3A6B] transition-colors group-hover:text-[#2563EB]">
+                {finding.title}
+              </h3>
+              {finding.description && (
+                <p className="mt-1.5 max-w-3xl text-xs sm:text-sm leading-relaxed text-[#374151]">{finding.description}</p>
+              )}
             </button>
           </div>
+          <button
+            type="button"
+            onClick={onToggle}
+            aria-label={expanded ? 'Collapse finding details' : 'Expand finding details'}
+            aria-expanded={expanded}
+            className="rounded-full border border-[#DBEAFE] p-2 text-[#4B6080] transition hover:border-[#1B3A6B] hover:text-[#1B3A6B] hover:bg-[#EFF6FF]"
+          >
+            {expanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+          </button>
         </div>
 
-        {/* Title & Core Narrative */}
-        <div className="cursor-pointer" onClick={onToggle}>
-          <h3 className="text-base font-semibold text-slate-950 hover:text-teal-900 transition-colors">
-            {finding.title}
-          </h3>
-          {finding.description && (
-            <p className="mt-1 text-xs leading-relaxed text-slate-600">
-              {finding.description}
-            </p>
+        <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-[#DBEAFE] pt-3 text-xs text-[#4B6080]">
+          {deficitValue > 0 && (
+            <div>
+              <span className="mr-1.5 text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">Gap</span>
+              <span className="font-bold text-[#DC2626]">{formatCurrency(deficitValue)}</span>
+            </div>
           )}
+          {finding.impact && (
+            <div className="flex items-center gap-1.5 text-xs text-[#374151]">
+              <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: style.accent }} />
+              <span>Impact identified</span>
+            </div>
+          )}
+          <button
+            type="button"
+            onClick={onToggle}
+            className="ml-auto inline-flex items-center gap-1 text-xs font-bold text-[#1B3A6B] hover:text-[#2563EB]"
+          >
+            {expanded ? 'Hide evidence' : 'Review evidence'} <ArrowRight size={13} />
+          </button>
         </div>
       </div>
 
-      {/* Two-Column Audited Evidence Drawer (Expanded) */}
       {expanded && (
-        <div className="border-t border-slate-200 bg-slate-50/80 p-4 space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Left: Audited Numbers */}
-            <div className="space-y-2">
-              <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-slate-700">
-                <FileSearch size={14} className="text-teal-700" />
-                <span>Audited Evidence & Baseline Metrics</span>
+        <div className="border-t border-[#DBEAFE] px-5 pb-6 pt-5 md:px-7" style={{ backgroundColor: style.soft }}>
+          <div className="grid gap-5 lg:grid-cols-[1.05fr_.95fr]">
+            <section>
+              <div className="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#1B3A6B]">
+                <FileSearch size={15} style={{ color: style.accent }} /> Evidence returned by the audit
               </div>
-
-              {finding.evidence && Object.keys(finding.evidence).length > 0 ? (
-                <div className="divide-y divide-slate-200 rounded border border-slate-200 bg-white px-3 py-1">
-                  {Object.entries(finding.evidence).map(([key, value]) => (
-                    <div key={key} className="flex items-center justify-between py-1.5 text-xs">
-                      <span className="text-slate-500">{formatEvidenceLabel(key)}</span>
-                      <span className="font-semibold text-slate-900 tabular-nums">
-                        {formatEvidenceValue(key, value)}
-                      </span>
-                    </div>
+              {evidence?.length ? (
+                <div className="grid grid-cols-2 gap-2 md:grid-cols-3">
+                  {evidence.map(([key, value], index) => (
+                    <EvidenceMetric
+                      key={key}
+                      label={formatEvidenceLabel(key)}
+                      value={formatEvidenceValue(key, value)}
+                      index={index}
+                    />
                   ))}
                 </div>
               ) : (
-                <div className="p-3 bg-white rounded border border-slate-200 text-xs text-slate-500">
-                  No numerical evidence metrics recorded for this audit item.
+                <div className="rounded-lg border border-[#DBEAFE] bg-white p-3.5 text-xs text-[#4B6080]">
+                  No numerical evidence was returned for this finding.
                 </div>
               )}
-            </div>
-
-            {/* Right: Impact & Action */}
-            <div className="space-y-3 flex flex-col justify-between">
+            </section>
+            <section className="space-y-4 lg:border-l lg:border-[#DBEAFE] lg:pl-5">
               <div>
-                <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-slate-700 mb-2">
-                  <ShieldAlert size={14} className="text-amber-700" />
-                  <span>Fiduciary Impact & Prescribed Action</span>
-                </div>
-
                 {finding.impact && (
-                  <p className="text-xs leading-relaxed text-slate-700 bg-white p-2.5 rounded border border-slate-200 mb-2">
-                    <strong className="text-slate-900">Why it matters: </strong>
-                    {finding.impact}
-                  </p>
+                  <>
+                    <div className="text-xs font-bold uppercase tracking-wider text-[#4B6080]">Impact</div>
+                    <p className="mt-1 text-xs sm:text-sm leading-relaxed text-[#1F2937]">{finding.impact}</p>
+                  </>
                 )}
-
                 {finding.recommendation && (
-                  <div className="bg-teal-50/70 border border-teal-200 p-2.5 rounded">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-teal-800 block">
-                      Direct Advisory Action
-                    </span>
-                    <p className="text-xs font-medium text-teal-950 mt-0.5">
-                      {finding.recommendation}
-                    </p>
+                  <div className="mt-3 border-t border-[#DBEAFE] pt-3">
+                    <div className="text-xs font-bold uppercase tracking-wider text-[#14532D]">Recommendation</div>
+                    <p className="mt-1 text-xs sm:text-sm font-semibold leading-relaxed text-[#14532D]">{finding.recommendation}</p>
                   </div>
                 )}
               </div>
-
-              {/* Action Buttons */}
-              <div className="pt-2 flex flex-wrap items-center gap-2">
-                {finding.severity !== 'healthy' && (
-                  <button
-                    type="button"
-                    onClick={() => navigate(action.route)}
-                    className="btn-primary text-xs px-3 py-1.5 inline-flex items-center gap-1.5"
-                  >
-                    <span>{action.label}</span>
-                    <ArrowRight size={13} />
-                  </button>
-                )}
+              <div className="flex flex-wrap gap-2 pt-1">
+                <button
+                  type="button"
+                  onClick={() => navigate(action.route)}
+                  className="inline-flex items-center justify-center gap-1.5 rounded-md px-3.5 py-1.5 text-xs font-bold text-white transition shadow-sm bg-[#1B3A6B] hover:bg-[#2563EB]"
+                >
+                  <span>{action.label}</span>
+                  <ArrowRight size={13} />
+                </button>
                 <button
                   type="button"
                   onClick={onExplain}
-                  className="btn-secondary text-xs px-3 py-1.5 inline-flex items-center gap-1"
+                  className="inline-flex items-center justify-center gap-1.5 rounded-md border border-[#BFDBFE] bg-white px-3.5 py-1.5 text-xs font-bold text-[#1B3A6B] transition hover:border-[#1B3A6B] hover:bg-[#EFF6FF]"
                 >
                   <HelpCircle size={13} />
                   <span>Why am I seeing this?</span>
                 </button>
               </div>
-            </div>
+            </section>
           </div>
-
           {finding.disclaimer && (
-            <div className="text-[11px] text-slate-400 pt-1 border-t border-slate-200/60">
-              ℹ️ {finding.disclaimer}
+            <div className="mt-4 border-t border-[#DBEAFE] pt-2.5 text-[11px] italic text-[#6B7280]">
+              {finding.disclaimer}
             </div>
           )}
         </div>

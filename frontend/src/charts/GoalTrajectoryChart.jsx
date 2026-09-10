@@ -5,7 +5,7 @@ import { formatCurrency } from '../utils/formatters';
 const GoalTrajectoryChart = ({ data, goalName }) => {
   if (!data || !Array.isArray(data) || data.length === 0) {
     return (
-      <div className="flex h-64 items-center justify-center text-sm text-slate-500">
+      <div className="flex h-64 items-center justify-center text-sm text-[#4B6080]">
         Trajectory data not available for this goal.
       </div>
     );
@@ -14,8 +14,8 @@ const GoalTrajectoryChart = ({ data, goalName }) => {
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (
-        <div className="rounded-lg border border-slate-200 bg-white p-3 shadow-lg">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
+        <div className="rounded-lg border border-[#BFDBFE] bg-white p-3 shadow-lg">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-[#4B6080]">
             {label === 0 ? 'Year 0 (Today)' : `Year ${label}`}
           </p>
           <div className="space-y-1.5">
@@ -26,9 +26,9 @@ const GoalTrajectoryChart = ({ data, goalName }) => {
                     className="h-2 w-2 rounded-full"
                     style={{ backgroundColor: entry.color }}
                   />
-                  <span className="text-slate-600">{entry.name}:</span>
+                  <span className="text-[#2D4A6B]">{entry.name}:</span>
                 </div>
-                <span className="font-semibold text-slate-900 tabular-nums">
+                <span className="font-semibold text-[#111827] tabular-nums">
                   {formatCurrency(entry.value)}
                 </span>
               </div>

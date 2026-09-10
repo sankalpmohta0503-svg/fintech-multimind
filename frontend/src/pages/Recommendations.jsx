@@ -1,25 +1,21 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Lightbulb,
-  AlertCircle,
-  AlertTriangle,
+  ArrowRight,
   CheckCircle2,
-  Sliders,
-  ShieldAlert,
-  ShieldCheck,
   ChevronDown,
   ChevronUp,
+  Clock,
+  Compass,
+  Info,
+  Lightbulb,
+  ListChecks,
+  Pin,
+  Scale,
   Search,
   SlidersHorizontal,
-  Clock,
-  Target,
   Sparkles,
-  ChevronRight,
-  Info,
-  Scale,
-  ListChecks,
-  Compass
+  Target,
 } from 'lucide-react';
 import api from '../services/api';
 import StatusBadge from '../components/StatusBadge';
@@ -27,6 +23,203 @@ import Skeleton from '../components/Skeleton';
 import ErrorState from '../components/ErrorState';
 import EmptyState from '../components/EmptyState';
 import { formatCurrency } from '../utils/formatters';
+
+const priorityStyle = {
+  critical: { status: 'critical', label: 'Critical', accent: '#DC2626', soft: '#FEF2F2' },
+  high: { status: 'warning', label: 'High priority', accent: '#EA580C', soft: '#FFF7ED' },
+  medium: { status: 'opportunity', label: 'Medium', accent: '#1B3A6B', soft: '#EFF6FF' },
+  low: { status: 'healthy', label: 'Low', accent: '#15803D', soft: '#F0FDF4' },
+};
+
+const formatValue = (key, value) => {
+  if (value === null || value === undefined) return '—';
+  if (typeof value !== 'number') return String(value);
+  const normalized = key.toLowerCase();
+  if (
+    normalized.includes('amount') ||
+    normalized.includes('shortfall') ||
+    normalized.includes('gap') ||
+    normalized.includes('corpus') ||
+    normalized.includes('sip') ||
+    normalized.includes('income') ||
+    normalized.includes('coverage') ||
+    value >= 10000
+  ) {
+    return formatCurrency(value);
+  }
+  if (
+    normalized.includes('ratio') ||
+    normalized.includes('percentage') ||
+    normalized.includes('allocation') ||
+    normalized.includes('rate')
+  ) {
+    return `${value}%`;
+  }
+  return value.toLocaleString('en-IN');
+};
+
+const RecommendationPanel = ({ recommendation, expanded, onToggle }) => {
+  const style = priorityStyle[recommendation.priority] || priorityStyle.medium;
+  const evidence = recommendation.evidence && Object.entries(recommendation.evidence);
+
+  return (
+    <article
+      className={`group relative overflow-hidden rounded-xl border bg-white transition-all duration-200 ${
+        expanded
+          ? 'shadow-md border-[#1B3A6B]/40 ring-1 ring-[#1B3A6B]/20'
+          : 'shadow-sm border-[#1B3A6B22] hover:-translate-y-0.5 hover:shadow-md'
+      }`}
+      style={{
+        borderLeftWidth: '4px',
+        borderLeftColor: style.accent,
+      }}
+    >
+      <div className="p-5 pl-6 md:p-6 md:pl-7">
+        <div className="flex items-start gap-4">
+          <div
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
+            style={{ backgroundColor: style.soft, color: style.accent }}
+          >
+            <Lightbulb size={20} strokeWidth={2} />
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <StatusBadge status={style.status} label={style.label} />
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-[#6B7280]">
+                {recommendation.category}
+              </span>
+              {recommendation.estimatedTimeframe && (
+                <span className="inline-flex items-center gap-1 text-xs text-[#4B6080]">
+                  <Clock size={12} />
+                  {recommendation.estimatedTimeframe}
+                </span>
+              )}
+            </div>
+            <button type="button" onClick={onToggle} className="mt-2.5 block w-full text-left" aria-expanded={expanded}>
+              <h2 className="text-base sm:text-lg font-bold tracking-tight text-[#1B3A6B] transition-colors group-hover:text-[#2563EB]">
+                {recommendation.title}
+              </h2>
+              <p className="mt-1.5 max-w-3xl text-xs sm:text-sm leading-relaxed text-[#374151]">
+                {recommendation.what}
+              </p>
+            </button>
+          </div>
+          <button
+            type="button"
+            onClick={onToggle}
+            aria-expanded={expanded}
+            aria-label={expanded ? 'Hide recommendation details' : 'Show recommendation details'}
+            className="rounded-full border border-[#DBEAFE] p-2 text-[#4B6080] transition hover:border-[#1B3A6B] hover:text-[#1B3A6B] hover:bg-[#EFF6FF]"
+          >
+            {expanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+          </button>
+        </div>
+        <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-[#DBEAFE] pt-3 text-xs text-[#4B6080]">
+          <span className="inline-flex items-center gap-1.5">
+            <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: style.accent }} />
+            <span>Actionable Fiduciary Insight</span>
+          </span>
+          {recommendation.confidence && (
+            <span>
+              Confidence: <strong className="capitalize text-[#111827]">{recommendation.confidence}</strong>
+            </span>
+          )}
+          <button
+            type="button"
+            onClick={onToggle}
+            className="ml-auto inline-flex items-center gap-1 text-xs font-bold text-[#1B3A6B] hover:text-[#2563EB]"
+          >
+            {expanded ? 'Hide rationale' : 'Review rationale'} <ArrowRight size={13} />
+          </button>
+        </div>
+      </div>
+      {expanded && (
+        <div className="border-t border-[#DBEAFE] px-5 pb-6 pt-5 md:px-7" style={{ backgroundColor: style.soft }}>
+          <div className="grid gap-6 lg:grid-cols-[1.05fr_.95fr]">
+            <section className="space-y-4">
+              <div>
+                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#1B3A6B]">
+                  <Info size={15} style={{ color: style.accent }} />
+                  Why this matters
+                </div>
+                <p className="mt-1.5 text-xs sm:text-sm leading-relaxed text-[#1F2937]">{recommendation.why}</p>
+              </div>
+              {recommendation.expectedImpact && (
+                <div className="border-t border-[#DBEAFE] pt-3">
+                  <div className="text-xs font-bold uppercase tracking-wider text-[#14532D]">
+                    Expected Impact
+                  </div>
+                  <p className="mt-1 text-xs sm:text-sm font-semibold leading-relaxed text-[#14532D]">
+                    {recommendation.expectedImpact}
+                  </p>
+                </div>
+              )}
+              {evidence?.length ? (
+                <div className="border-t border-[#DBEAFE] pt-3">
+                  <div className="text-xs font-bold uppercase tracking-wider text-[#4B6080]">
+                    Supporting Evidence
+                  </div>
+                  <div className="mt-2.5 grid grid-cols-2 gap-2">
+                    {evidence.map(([key, value]) => (
+                      <div key={key} className="rounded-lg border border-[#DBEAFE] bg-white px-3 py-2.5">
+                        <div className="truncate text-[10px] font-semibold uppercase tracking-wider text-[#6B7280]">
+                          {key.replace(/([A-Z])/g, ' $1')}
+                        </div>
+                        <div className="mt-0.5 truncate text-xs sm:text-sm font-bold text-[#1B3A6B]">
+                          {formatValue(key, value)}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+            </section>
+            <section className="space-y-4 lg:border-l lg:border-[#DBEAFE] lg:pl-6">
+              {recommendation.actionSteps?.length ? (
+                <div>
+                  <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#1B3A6B]">
+                    <CheckCircle2 size={15} style={{ color: style.accent }} />
+                    Action steps
+                  </div>
+                  <div className="mt-2.5 space-y-2">
+                    {recommendation.actionSteps.map((step, index) => (
+                      <div key={index} className="flex items-start gap-2.5 text-xs sm:text-sm leading-relaxed text-[#1F2937]">
+                        <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-[#BFDBFE] bg-[#EFF6FF] text-[11px] font-bold text-[#1B3A6B]">
+                          {index + 1}
+                        </span>
+                        <span>{step}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+              {recommendation.tradeoffs?.length ? (
+                <div className="border-t border-[#DBEAFE] pt-3">
+                  <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#EA580C]">
+                    <Scale size={15} />
+                    Trade-offs to consider
+                  </div>
+                  <div className="mt-2 space-y-1.5">
+                    {recommendation.tradeoffs.map((tradeoff, index) => (
+                      <p key={index} className="text-xs leading-relaxed text-[#4B6080]">
+                        • {tradeoff}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+            </section>
+          </div>
+          {recommendation.disclaimer && (
+            <div className="mt-4 border-t border-[#DBEAFE] pt-2.5 text-[11px] italic text-[#6B7280]">
+              {recommendation.disclaimer}
+            </div>
+          )}
+        </div>
+      )}
+    </article>
+  );
+};
 
 const Recommendations = () => {
   const [loading, setLoading] = useState(true);
@@ -38,651 +231,304 @@ const Recommendations = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
 
-  useEffect(() => {
-    loadData();
-  }, []);
-
   const loadData = async () => {
     try {
       setLoading(true);
       setError(null);
       const [recsRes, clientRes] = await Promise.all([
         api.getRecommendations(),
-        api.getClient().catch(() => ({ data: null }))
+        api.getClient().catch(() => ({ data: null })),
       ]);
-
       setRecommendationsData(recsRes.data);
       setClientData(clientRes.data);
-
-      // Auto-expand critical recommendations by default
-      if (recsRes.data?.recommendations) {
-        const criticalIds = recsRes.data.recommendations
-          .filter(r => r.priority === 'critical')
-          .map(r => r.id);
-        setExpandedRecs(new Set(criticalIds));
-      }
+      const criticalIds =
+        recsRes.data?.recommendations?.filter((rec) => rec.priority === 'critical').map((rec) => rec.id) || [];
+      setExpandedRecs(new Set(criticalIds));
     } catch (err) {
       console.error('Failed to load recommendations:', err);
-      setError('Unable to generate explainable recommendations. Please check the backend connection and try again.');
+      setError('Unable to load recommendations. Please check the backend connection and try again.');
     } finally {
       setLoading(false);
     }
   };
 
-  const toggleRecommendation = (id) => {
-    setExpandedRecs((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) {
-        next.delete(id);
-      } else {
-        next.add(id);
-      }
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const toggleRecommendation = (id) =>
+    setExpandedRecs((current) => {
+      const next = new Set(current);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
       return next;
     });
-  };
 
-  const expandAll = () => {
-    if (!recommendationsData?.recommendations) return;
-    setExpandedRecs(new Set(recommendationsData.recommendations.map((r) => r.id)));
-  };
+  const recommendations = recommendationsData?.recommendations || [];
+  const summary = recommendationsData?.summary;
+  const categories = summary?.categories || [];
 
-  const collapseAll = () => {
-    setExpandedRecs(new Set());
-  };
-
-  const getPriorityBadgeStatus = (priority) => {
-    switch (priority) {
-      case 'critical':
-        return { status: 'critical', label: 'Critical' };
-      case 'high':
-        return { status: 'warning', label: 'High Priority' };
-      case 'medium':
-        return { status: 'opportunity', label: 'Medium' };
-      case 'low':
-        return { status: 'healthy', label: 'Low' };
-      default:
-        return { status: 'neutral', label: priority };
-    }
-  };
-
-  const getPriorityBorderClass = (priority) => {
-    switch (priority) {
-      case 'critical':
-        return 'border-l-4 border-l-rose-600';
-      case 'high':
-        return 'border-l-4 border-l-amber-500';
-      case 'medium':
-        return 'border-l-4 border-l-blue-500';
-      case 'low':
-        return 'border-l-4 border-l-teal-500';
-      default:
-        return 'border-l-4 border-l-slate-400';
-    }
-  };
-
-  // Filter recommendations based on active filters
-  const filteredRecommendations = useMemo(() => {
-    if (!recommendationsData?.recommendations) return [];
-
-    return recommendationsData.recommendations.filter((rec) => {
-      // Priority filter
-      if (selectedPriority !== 'all' && rec.priority !== selectedPriority) {
-        return false;
-      }
-      // Category filter
-      if (selectedCategory !== 'all' && rec.category !== selectedCategory) {
-        return false;
-      }
-      // Search query
-      if (searchQuery.trim()) {
-        const query = searchQuery.toLowerCase();
-        const matchesTitle = rec.title?.toLowerCase().includes(query);
-        const matchesWhat = rec.what?.toLowerCase().includes(query);
-        const matchesWhy = rec.why?.toLowerCase().includes(query);
-        const matchesCategory = rec.category?.toLowerCase().includes(query);
-        return matchesTitle || matchesWhat || matchesWhy || matchesCategory;
-      }
-      return true;
-    });
-  }, [recommendationsData, selectedPriority, selectedCategory, searchQuery]);
+  const filteredRecommendations = useMemo(
+    () =>
+      recommendations.filter((rec) => {
+        if (selectedPriority !== 'all' && rec.priority !== selectedPriority) return false;
+        if (selectedCategory !== 'all' && rec.category !== selectedCategory) return false;
+        if (searchQuery.trim()) {
+          const query = searchQuery.toLowerCase();
+          return [rec.title, rec.what, rec.why, rec.category].some((value) => value?.toLowerCase().includes(query));
+        }
+        return true;
+      }),
+    [recommendations, selectedPriority, selectedCategory, searchQuery]
+  );
 
   if (loading) {
     return (
       <div className="space-y-6">
-        <Skeleton variant="card" height="56px" />
-        <div className="space-y-2">
-          <Skeleton variant="text" width="300px" height="32px" />
-          <Skeleton variant="text" width="550px" height="18px" />
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Skeleton variant="card" height="120px" />
-          <Skeleton variant="card" height="120px" />
-          <Skeleton variant="card" height="120px" />
-          <Skeleton variant="card" height="120px" />
-        </div>
-        <Skeleton variant="card" height="56px" />
-        <div className="space-y-4">
-          <Skeleton variant="card" height="180px" />
-          <Skeleton variant="card" height="180px" />
-          <Skeleton variant="card" height="180px" />
-        </div>
+        <Skeleton className="h-36" />
+        <Skeleton className="h-28" />
+        <Skeleton className="h-20" />
+        <Skeleton className="h-48" />
+        <Skeleton className="h-48" />
       </div>
     );
   }
 
   if (error) {
-    return <ErrorState message={error} onRetry={loadData} />;
+    return (
+      <div>
+        <ErrorState message={error} onRetry={loadData} />
+      </div>
+    );
   }
 
-  const { summary, recommendations = [] } = recommendationsData || {};
+  const counts = summary?.byPriority || {};
   const clientName = clientData?.personalInfo?.name || 'Client';
-  const categories = summary?.categories || [];
 
   return (
-    <div className="space-y-6">
-      {/* 1. Client Context & Breadcrumb Strip */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-lg border border-slate-200 bg-white px-4 py-3 shadow-sm">
-        <div className="flex flex-wrap items-center gap-1.5 text-xs text-slate-500">
-          <span className="font-medium text-slate-700">Accounts</span>
-          <ChevronRight size={13} className="text-slate-400" />
-          <span className="font-medium text-slate-700">Advisory Portfolio</span>
-          <ChevronRight size={13} className="text-slate-400" />
-          <span className="font-medium text-slate-900">{clientName}</span>
-          <ChevronRight size={13} className="text-slate-400" />
-          <span className="font-semibold text-slate-950">Explainable Recommendations</span>
+    <div className="animate-enter space-y-6">
+      {/* 1. Header with Eyebrow and Actions */}
+      <header className="card bg-white p-5">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div className="max-w-3xl">
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#1B3A6B]">
+              <Compass size={15} /> Advise · Actionable Roadmap
+            </div>
+            <h1 className="mt-1.5 text-lg sm:text-2xl font-bold tracking-tight text-[#1B3A6B]">
+              Strategic Recommendations
+            </h1>
+            <p className="mt-1 text-xs sm:text-sm text-[#374151]">
+              A curated set of fiduciary actions grounded in {clientName}’s audited profile. Review supporting rationale and expected impact before exploring scenarios.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2.5 shrink-0">
+            <Link
+              to="/audit"
+              className="btn-secondary rounded-lg text-xs"
+            >
+              <Target size={15} /> Review Audit
+            </Link>
+            <Link
+              to="/simulator"
+              className="btn-primary rounded-lg text-xs"
+            >
+              <Sparkles size={15} /> Explore Scenario
+            </Link>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 border border-slate-200 px-2.5 py-0.5 text-xs font-medium text-slate-800">
-            <span className="h-1.5 w-1.5 rounded-full bg-teal-600 animate-pulse" />
-            Audit-Linked Logic
+      </header>
+
+      {/* 2. Hero Summary Banner & Priority Badges */}
+      <section className="grid grid-cols-1 gap-4 lg:grid-cols-12">
+        <div className="lg:col-span-7 relative overflow-hidden rounded-xl bg-gradient-to-br from-[#1B3A6B] via-[#1E427B] to-[#162E56] p-6 text-white shadow-md flex flex-col justify-between">
+          <div className="absolute -right-10 -top-12 h-44 w-44 rounded-full border border-white/10" />
+          <div className="relative">
+            <div className="text-xs font-bold uppercase tracking-widest text-[#93C5FD]">Action Brief</div>
+            <div className="mt-3 flex items-baseline gap-3">
+              <span className="text-4xl sm:text-5xl font-black leading-none tracking-tight text-white">
+                {summary?.total || recommendations.length}
+              </span>
+              <span className="text-sm font-semibold text-blue-100">
+                Action Items Recommended
+              </span>
+            </div>
+            <div className="mt-3 max-w-xl border-t border-white/20 pt-3 text-xs sm:text-sm text-blue-100 leading-relaxed">
+              {summary?.message || 'Review prioritized recommendations and underlying fiduciary rationale below.'}
+            </div>
+          </div>
+          <div className="mt-4 pt-2 flex items-center gap-2 text-xs text-blue-200 font-medium">
+            <span className="h-2 w-2 rounded-full bg-[#86EFAC] animate-pulse" />
+            <span>Generated from deterministic SEBI RIA scoring & audit engine</span>
+          </div>
+        </div>
+
+        <div className="lg:col-span-5 grid grid-cols-2 gap-3">
+          <div className="card bg-[#FEF2F2] border border-[#FECACA] p-4 flex flex-col justify-between rounded-xl">
+            <div className="flex items-center justify-between">
+              <div className="text-[11px] font-bold uppercase tracking-wider text-[#DC2626]">Critical</div>
+              <Pin size={15} className="text-[#DC2626]" />
+            </div>
+            <div className="mt-2 text-2xl sm:text-3xl font-extrabold text-[#DC2626]">
+              {counts.critical || 0}
+            </div>
+            <div className="text-[11px] font-medium text-[#DC2626]">Requires Immediate Action</div>
+          </div>
+          <div className="card bg-[#FFF7ED] border border-[#FFEDD5] p-4 flex flex-col justify-between rounded-xl">
+            <div className="flex items-center justify-between">
+              <div className="text-[11px] font-bold uppercase tracking-wider text-[#EA580C]">High Priority</div>
+              <Pin size={15} className="text-[#EA580C]" />
+            </div>
+            <div className="mt-2 text-2xl sm:text-3xl font-extrabold text-[#EA580C]">{counts.high || 0}</div>
+            <div className="text-[11px] font-medium text-[#EA580C]">Important Financial Risk</div>
+          </div>
+          <div className="card bg-[#EFF6FF] border border-[#BFDBFE] p-4 flex flex-col justify-between rounded-xl">
+            <div className="flex items-center justify-between">
+              <div className="text-[11px] font-bold uppercase tracking-wider text-[#1B3A6B]">Medium</div>
+              <Pin size={15} className="text-[#1B3A6B]" />
+            </div>
+            <div className="mt-2 text-2xl sm:text-3xl font-extrabold text-[#1B3A6B]">{counts.medium || 0}</div>
+            <div className="text-[11px] font-medium text-[#2563EB]">Optimization Steps</div>
+          </div>
+          <div className="card bg-[#F0FDF4] border border-[#BBF7D0] p-4 flex flex-col justify-between rounded-xl">
+            <div className="flex items-center justify-between">
+              <div className="text-[11px] font-bold uppercase tracking-wider text-[#14532D]">Low / Ongoing</div>
+              <Pin size={15} className="text-[#15803D]" />
+            </div>
+            <div className="mt-2 text-2xl sm:text-3xl font-extrabold text-[#14532D]">{counts.low || 0}</div>
+            <div className="text-[11px] font-medium text-[#15803D]">Maintenance Tasks</div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. Review Controls & Filters Card */}
+      <section className="card bg-white p-5 rounded-xl border border-[#DBEAFE]">
+        <div className="flex items-center gap-2 border-b border-[#DBEAFE] pb-3">
+          <SlidersHorizontal size={16} className="text-[#1B3A6B]" />
+          <div>
+            <div className="text-xs font-bold uppercase tracking-wider text-[#1B3A6B]">Filter & Search Controls</div>
+            <p className="text-xs text-[#4B6080]">Filter action items by priority level, planning domain, or keyword.</p>
+          </div>
+        </div>
+        <div className="mt-3.5 flex flex-wrap gap-1.5">
+          {['all', 'critical', 'high', 'medium', ...(counts.low > 0 ? ['low'] : [])].map((priority) => (
+            <button
+              key={priority}
+              type="button"
+              onClick={() => setSelectedPriority(priority)}
+              className={`rounded-md border px-3 py-1.5 text-xs font-bold capitalize transition ${
+                selectedPriority === priority
+                  ? 'border-[#1B3A6B] bg-[#1B3A6B] text-white shadow-sm'
+                  : 'border-[#DBEAFE] bg-white text-[#4B6080] hover:border-[#1B3A6B] hover:text-[#1B3A6B] hover:bg-[#EFF6FF]'
+              }`}
+            >
+              {priority === 'all' ? 'All' : priority}
+              <span className="ml-1.5 opacity-80">
+                ({priority === 'all' ? recommendations.length : counts[priority] || 0})
+              </span>
+            </button>
+          ))}
+        </div>
+        <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-12">
+          <label className="relative md:col-span-7">
+            <Search size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#6B7280]" />
+            <span className="sr-only">Search recommendations</span>
+            <input
+              value={searchQuery}
+              onChange={(event) => setSearchQuery(event.target.value)}
+              placeholder="Search recommendations, rationale, or category..."
+              className="w-full rounded-md border border-[#DBEAFE] bg-[#F8FAFC] py-2 pl-9 pr-3 text-xs sm:text-sm text-[#111827] placeholder:text-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-[#1B3A6B]/20 focus:border-[#1B3A6B]"
+            />
+          </label>
+          <label className="relative md:col-span-5">
+            <span className="sr-only">Filter by category</span>
+            <select
+              value={selectedCategory}
+              onChange={(event) => setSelectedCategory(event.target.value)}
+              className="w-full rounded-md border border-[#DBEAFE] bg-[#F8FAFC] px-3 py-2 text-xs sm:text-sm text-[#111827] focus:outline-none focus:ring-2 focus:ring-[#1B3A6B]/20 focus:border-[#1B3A6B]"
+            >
+              <option value="all">All categories ({categories.length})</option>
+              {categories.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+        <div className="mt-3 flex justify-end gap-3 text-xs border-t border-[#DBEAFE] pt-2.5">
+          <button
+            type="button"
+            onClick={() => setExpandedRecs(new Set(recommendations.map((rec) => rec.id)))}
+            className="font-bold text-[#1B3A6B] hover:text-[#2563EB]"
+          >
+            Expand all
+          </button>
+          <span className="text-[#DBEAFE]">|</span>
+          <button
+            type="button"
+            onClick={() => setExpandedRecs(new Set())}
+            className="font-bold text-[#1B3A6B] hover:text-[#2563EB]"
+          >
+            Collapse all
+          </button>
+        </div>
+      </section>
+
+      {/* 4. Action List */}
+      <section aria-live="polite" className="space-y-3.5">
+        <div className="flex items-center justify-between pb-2 border-b border-[#DBEAFE]">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-[#1B3A6B]">
+            Curated Action Items
+          </h2>
+          <span className="rounded bg-[#EFF6FF] px-2 py-0.5 text-xs font-bold text-[#1B3A6B] border border-[#BFDBFE]">
+            {filteredRecommendations.length} Shown
           </span>
         </div>
-      </div>
-
-      {/* 2. Executive Page Header & Action Triggers */}
-      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2 mb-1.5">
-            <span className="inline-flex items-center gap-1.5 rounded bg-slate-100 border border-slate-200 px-2.5 py-0.5 text-xs font-semibold text-slate-800 uppercase tracking-wide">
-              <Compass size={13} className="text-slate-600" />
-              Explainable Decision Support
-            </span>
-            <span className="text-xs text-slate-500">Evidence-Based Fiduciary Plan</span>
-          </div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">
-            Advisory Recommendations & Action Plan
-          </h1>
-          <p className="mt-1 text-sm text-slate-600 max-w-3xl">
-            {summary?.total || recommendations.length} Algorithmic Recommendations (
-            <span className="font-semibold text-rose-700">{summary?.byPriority?.critical || 0} Critical</span>,{' '}
-            <span className="font-semibold text-amber-700">{summary?.byPriority?.high || 0} High Priority</span>,{' '}
-            <span className="font-semibold text-blue-700">{summary?.byPriority?.medium || 0} Optimization</span>
-            ) ranked by urgency, solvency impact, and risk alignment.
-          </p>
-        </div>
-
-        {/* Action Triggers */}
-        <div className="flex items-center gap-2.5 flex-shrink-0">
-          <Link
-            to="/audit"
-            className="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-sm hover:bg-slate-50 transition-colors"
-          >
-            <ShieldCheck size={15} className="text-slate-500" />
-            <span>Inspect Audit Findings</span>
-          </Link>
-          <Link
-            to="/simulator"
-            className="inline-flex items-center gap-2 rounded-lg bg-slate-900 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-slate-800 transition-colors"
-          >
-            <Sliders size={15} />
-            <span>Simulate in What-If</span>
-          </Link>
-        </div>
-      </div>
-
-      {/* 3. Priority Summary Metric Banner (4 Institutional Metric Cards) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Metric 1 */}
-        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm flex flex-col justify-between">
-          <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-slate-500">
-            <span>Total Action Items</span>
-            <ListChecks size={16} className="text-slate-400" />
-          </div>
-          <div className="my-3">
-            <div className="text-2xl font-bold tracking-tight text-slate-950 tabular-nums">
-              {summary?.total || recommendations.length}
-            </div>
-            <p className="mt-1 text-xs text-slate-500">
-              Active evidence-backed actions
-            </p>
-          </div>
-          <div className="-mx-4 -mb-4 rounded-b-xl bg-slate-50 px-4 py-2 text-xs text-slate-600 flex items-center justify-between border-t border-slate-100">
-            <span>Action Status</span>
-            <span className="font-semibold text-slate-900">{summary?.message || 'Ready for Review'}</span>
-          </div>
-        </div>
-
-        {/* Metric 2 */}
-        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm flex flex-col justify-between">
-          <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-slate-500">
-            <span>Critical Priority</span>
-            <ShieldAlert size={16} className="text-rose-600" />
-          </div>
-          <div className="my-3">
-            <div className="text-2xl font-bold tracking-tight text-rose-600 tabular-nums">
-              {summary?.byPriority?.critical || 0}
-            </div>
-            <p className="mt-1 text-xs text-rose-700">
-              Immediate fiduciary remediation
-            </p>
-          </div>
-          <div className="-mx-4 -mb-4 rounded-b-xl bg-rose-50/80 px-4 py-2 text-xs text-rose-800 flex items-center justify-between border-t border-rose-100">
-            <span>Risk Severity</span>
-            <span className="font-bold">Urgent Action</span>
-          </div>
-        </div>
-
-        {/* Metric 3 */}
-        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm flex flex-col justify-between">
-          <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-slate-500">
-            <span>High Priority</span>
-            <AlertTriangle size={16} className="text-amber-600" />
-          </div>
-          <div className="my-3">
-            <div className="text-2xl font-bold tracking-tight text-amber-600 tabular-nums">
-              {summary?.byPriority?.high || 0}
-            </div>
-            <p className="mt-1 text-xs text-amber-700">
-              Structural & goal adjustments
-            </p>
-          </div>
-          <div className="-mx-4 -mb-4 rounded-b-xl bg-amber-50/80 px-4 py-2 text-xs text-amber-900 flex items-center justify-between border-t border-amber-100">
-            <span>Horizon Focus</span>
-            <span className="font-bold">Quarterly Target</span>
-          </div>
-        </div>
-
-        {/* Metric 4 */}
-        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm flex flex-col justify-between">
-          <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-slate-500">
-            <span>Optimization / Medium</span>
-            <Sparkles size={16} className="text-blue-600" />
-          </div>
-          <div className="my-3">
-            <div className="text-2xl font-bold tracking-tight text-blue-600 tabular-nums">
-              {(summary?.byPriority?.medium || 0) + (summary?.byPriority?.low || 0)}
-            </div>
-            <p className="mt-1 text-xs text-slate-500">
-              Tax & portfolio efficiency upgrades
-            </p>
-          </div>
-          <div className="-mx-4 -mb-4 rounded-b-xl bg-blue-50/80 px-4 py-2 text-xs text-blue-900 flex items-center justify-between border-t border-blue-100">
-            <span>Efficiency Scope</span>
-            <span className="font-bold">Yield Optimization</span>
-          </div>
-        </div>
-      </div>
-
-      {/* 4. Filter, Category & Search Toolbar */}
-      <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm space-y-3">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
-          {/* Priority Filter Tabs */}
-          <div className="flex flex-wrap items-center gap-1.5">
-            <button
-              type="button"
-              onClick={() => setSelectedPriority('all')}
-              className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${
-                selectedPriority === 'all'
-                  ? 'bg-slate-900 text-white shadow-sm'
-                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-              }`}
-            >
-              All ({summary?.total || recommendations.length})
-            </button>
-            <button
-              type="button"
-              onClick={() => setSelectedPriority('critical')}
-              className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${
-                selectedPriority === 'critical'
-                  ? 'bg-rose-600 text-white shadow-sm'
-                  : 'bg-rose-50 text-rose-700 hover:bg-rose-100'
-              }`}
-            >
-              Critical ({summary?.byPriority?.critical || 0})
-            </button>
-            <button
-              type="button"
-              onClick={() => setSelectedPriority('high')}
-              className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${
-                selectedPriority === 'high'
-                  ? 'bg-amber-600 text-white shadow-sm'
-                  : 'bg-amber-50 text-amber-700 hover:bg-amber-100'
-              }`}
-            >
-              High ({summary?.byPriority?.high || 0})
-            </button>
-            <button
-              type="button"
-              onClick={() => setSelectedPriority('medium')}
-              className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${
-                selectedPriority === 'medium'
-                  ? 'bg-blue-600 text-white shadow-sm'
-                  : 'bg-blue-50 text-blue-700 hover:bg-blue-100'
-              }`}
-            >
-              Optimization ({summary?.byPriority?.medium || 0})
-            </button>
-            {summary?.byPriority?.low > 0 && (
-              <button
-                type="button"
-                onClick={() => setSelectedPriority('low')}
-                className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${
-                  selectedPriority === 'low'
-                    ? 'bg-teal-600 text-white shadow-sm'
-                    : 'bg-teal-50 text-teal-700 hover:bg-teal-100'
-                }`}
-              >
-                Low ({summary.byPriority.low})
-              </button>
-            )}
-          </div>
-
-          {/* Expand/Collapse Controls */}
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={expandAll}
-              className="text-xs font-semibold text-slate-600 hover:text-slate-900 px-2 py-1 rounded hover:bg-slate-100 transition-colors"
-            >
-              Expand All
-            </button>
-            <span className="text-slate-300">|</span>
-            <button
-              type="button"
-              onClick={collapseAll}
-              className="text-xs font-semibold text-slate-600 hover:text-slate-900 px-2 py-1 rounded hover:bg-slate-100 transition-colors"
-            >
-              Collapse All
-            </button>
-          </div>
-        </div>
-
-        {/* Search & Category Dropdown Strip */}
-        <div className="flex flex-col sm:flex-row items-center gap-3 pt-2 border-t border-slate-100">
-          <div className="relative w-full sm:flex-1">
-            <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search recommendations by title, rationale, or category..."
-              className="w-full rounded-lg border border-slate-200 pl-9 pr-3 py-1.5 text-xs text-slate-900 placeholder:text-slate-400 focus:border-slate-900 focus:outline-none"
-            />
-          </div>
-
-          {categories.length > 0 && (
-            <div className="w-full sm:w-auto">
-              <select
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full sm:w-auto rounded-lg border border-slate-200 px-3 py-1.5 text-xs text-slate-700 focus:border-slate-900 focus:outline-none"
-              >
-                <option value="all">All Categories</option>
-                {categories.map((cat, idx) => (
-                  <option key={idx} value={cat}>
-                    {cat}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* 5. Recommendations List (Dense, Professional Cards) */}
-      <div className="space-y-4">
-        {filteredRecommendations.map((rec) => {
-          const isExpanded = expandedRecs.has(rec.id);
-          const badgeProps = getPriorityBadgeStatus(rec.priority);
-          const borderClass = getPriorityBorderClass(rec.priority);
-
-          return (
+        {filteredRecommendations.length ? (
+          filteredRecommendations.map((rec, index) => (
             <div
               key={rec.id}
-              className={`rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden transition-all duration-150 ${borderClass}`}
+              className="animate-enter"
+              style={{ animationDelay: `${Math.min(index, 5) * 45}ms` }}
             >
-              {/* Card Header Section */}
-              <div className="p-4 sm:p-5">
-                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
-                  <div className="space-y-1.5 flex-1 min-w-0">
-                    {/* Metadata tags */}
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="rounded bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-700 uppercase tracking-wide">
-                        {rec.category}
-                      </span>
-                      <StatusBadge status={badgeProps.status} label={badgeProps.label} />
-                      {rec.estimatedTimeframe && (
-                        <span className="inline-flex items-center gap-1 rounded bg-slate-50 border border-slate-200 px-2 py-0.5 text-[11px] text-slate-600">
-                          <Clock size={11} className="text-slate-400" />
-                          {rec.estimatedTimeframe}
-                        </span>
-                      )}
-                      {rec.confidence && (
-                        <span className="inline-flex items-center gap-1 rounded bg-slate-50 border border-slate-200 px-2 py-0.5 text-[11px] text-slate-600 capitalize">
-                          <Target size={11} className="text-slate-400" />
-                          {rec.confidence} Confidence
-                        </span>
-                      )}
-                    </div>
-
-                    {/* Recommendation Title */}
-                    <h3 className="text-base sm:text-lg font-bold text-slate-950 leading-snug">
-                      {rec.title}
-                    </h3>
-                  </div>
-
-                  {/* Top-Right Quick Action Triggers */}
-                  <div className="flex items-center gap-2 flex-shrink-0 self-start sm:self-auto">
-                    <Link
-                      to="/simulator"
-                      className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 px-2.5 py-1.5 text-xs font-semibold text-slate-800 transition-colors"
-                    >
-                      <Sliders size={13} className="text-slate-500" />
-                      <span>Simulate</span>
-                    </Link>
-                    <button
-                      type="button"
-                      onClick={() => toggleRecommendation(rec.id)}
-                      className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 px-2.5 py-1.5 text-xs font-semibold text-slate-700 transition-colors"
-                      aria-expanded={isExpanded}
-                    >
-                      <span>{isExpanded ? 'Hide Details' : 'View Details'}</span>
-                      {isExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-                    </button>
-                  </div>
-                </div>
-
-                {/* Primary Proposal & Expected Impact Callouts (Always Visible) */}
-                <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3 pt-3 border-t border-slate-100 text-xs">
-                  <div className="rounded-lg bg-slate-50 p-3">
-                    <span className="font-semibold text-slate-700 uppercase tracking-wider text-[11px] block mb-1">
-                      Action Required (What)
-                    </span>
-                    <p className="text-slate-900 font-medium leading-relaxed">{rec.what}</p>
-                  </div>
-                  <div className="rounded-lg bg-teal-50/70 border border-teal-100 p-3">
-                    <span className="font-semibold text-teal-800 uppercase tracking-wider text-[11px] block mb-1">
-                      Target Outcome (Expected Impact)
-                    </span>
-                    <p className="text-teal-950 font-medium leading-relaxed">{rec.expectedImpact}</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Collapsible Details Drawer */}
-              {isExpanded && (
-                <div className="border-t border-slate-200 bg-slate-50/50 p-4 sm:p-5 space-y-4">
-                  {/* Why This Matters */}
-                  <div className="space-y-1.5">
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-slate-600 flex items-center gap-1.5">
-                      <Info size={14} className="text-slate-400" />
-                      Why This Matters (Fiduciary Rationale)
-                    </h4>
-                    <div className="rounded-lg border border-slate-200 bg-white p-3 text-xs leading-relaxed text-slate-800">
-                      {rec.why}
-                    </div>
-                  </div>
-
-                  {/* Audited Evidence */}
-                  {rec.evidence && Object.keys(rec.evidence).length > 0 && (
-                    <div className="space-y-1.5">
-                      <h4 className="text-xs font-bold uppercase tracking-wider text-slate-600 flex items-center gap-1.5">
-                        <Target size={14} className="text-slate-400" />
-                        Audited Evidence & Diagnostic Data
-                      </h4>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5">
-                        {Object.entries(rec.evidence).map(([key, value]) => {
-                          const formattedKey = key
-                            .replace(/([A-Z])/g, ' $1')
-                            .replace(/^./, (str) => str.toUpperCase());
-
-                          let displayVal = value;
-                          if (typeof value === 'number') {
-                            if (key.toLowerCase().includes('shortfall') || key.toLowerCase().includes('gap') || key.toLowerCase().includes('amount') || value >= 10000) {
-                              displayVal = formatCurrency(value);
-                            } else if (key.toLowerCase().includes('months') || key.toLowerCase().includes('recommended') || key.toLowerCase().includes('years')) {
-                              displayVal = `${value} ${key.toLowerCase().includes('year') ? 'Years' : 'Months'}`;
-                            } else if (key.toLowerCase().includes('ratio') || key.toLowerCase().includes('allocation') || key.toLowerCase().includes('dti')) {
-                              displayVal = `${value}%`;
-                            }
-                          }
-
-                          return (
-                            <div
-                              key={key}
-                              className="rounded-lg border border-slate-200 bg-white p-2.5"
-                            >
-                              <span className="text-[11px] text-slate-500 block truncate">
-                                {formattedKey}
-                              </span>
-                              <span className="mt-0.5 text-xs font-bold text-slate-900 tabular-nums block truncate">
-                                {String(displayVal)}
-                              </span>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* 2-Column: Action Steps & Trade-offs */}
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    {/* Implementation Action Steps */}
-                    {rec.actionSteps && rec.actionSteps.length > 0 && (
-                      <div className="space-y-1.5">
-                        <h4 className="text-xs font-bold uppercase tracking-wider text-slate-600 flex items-center gap-1.5">
-                          <CheckCircle2 size={14} className="text-teal-600" />
-                          Recommended Implementation Steps
-                        </h4>
-                        <div className="rounded-lg border border-slate-200 bg-white p-3 space-y-2 text-xs">
-                          {rec.actionSteps.map((step, sIdx) => (
-                            <div key={sIdx} className="flex items-start gap-2 text-slate-800">
-                              <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-slate-100 text-[10px] font-bold text-slate-700 mt-0.5">
-                                {sIdx + 1}
-                              </span>
-                              <span className="leading-relaxed">{step}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Trade-offs to Consider */}
-                    {rec.tradeoffs && rec.tradeoffs.length > 0 && (
-                      <div className="space-y-1.5">
-                        <h4 className="text-xs font-bold uppercase tracking-wider text-slate-600 flex items-center gap-1.5">
-                          <Scale size={14} className="text-amber-600" />
-                          Trade-offs & Considerations
-                        </h4>
-                        <div className="rounded-lg border border-slate-200 bg-white p-3 space-y-2 text-xs">
-                          {rec.tradeoffs.map((tradeoff, tIdx) => (
-                            <div key={tIdx} className="flex items-start gap-2 text-slate-700">
-                              <span className="text-amber-600 font-bold">•</span>
-                              <span className="leading-relaxed">{tradeoff}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Disclaimer / Regulatory Note if present */}
-                  {rec.disclaimer && (
-                    <div className="rounded-lg border border-slate-100 bg-white/70 px-3 py-2 text-[11px] italic text-slate-500">
-                      ℹ️ {rec.disclaimer}
-                    </div>
-                  )}
-                </div>
-              )}
+              <RecommendationPanel
+                recommendation={rec}
+                expanded={expandedRecs.has(rec.id)}
+                onToggle={() => toggleRecommendation(rec.id)}
+              />
             </div>
-          );
-        })}
-
-        {/* Empty Search / Filter Results */}
-        {filteredRecommendations.length === 0 && (
+          ))
+        ) : (
           <EmptyState
-            title="No matching recommendations"
-            description="There are no recommendations matching your current priority, category, or search filters."
+            title="No recommendations match your filters"
+            message="Try another priority, category, or search phrase."
             action={
               <button
                 type="button"
+                className="btn-secondary text-xs rounded-md"
                 onClick={() => {
                   setSelectedPriority('all');
                   setSelectedCategory('all');
                   setSearchQuery('');
                 }}
-                className="rounded-lg bg-slate-900 px-4 py-2 text-xs font-semibold text-white hover:bg-slate-800 transition-colors"
               >
-                Reset All Filters
+                Reset filters
               </button>
             }
           />
         )}
-      </div>
+      </section>
 
-      {/* 6. Recommendation Methodology Framework */}
-      <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm space-y-3">
-        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
-          <Compass size={15} className="text-slate-400" />
-          Fiduciary Recommendation Methodology
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
-          <div className="space-y-1">
-            <h4 className="font-bold text-slate-900">1. Evidence-Based</h4>
-            <p className="text-slate-600 leading-relaxed">
-              Every recommendation is directly derived from quantitative audit findings and balance-sheet diagnostics.
-            </p>
-          </div>
-          <div className="space-y-1">
-            <h4 className="font-bold text-slate-900">2. Explainable Structure</h4>
-            <p className="text-slate-600 leading-relaxed">
-              Structured transparently across What / Why / Evidence / Expected Impact / Trade-offs.
-            </p>
-          </div>
-          <div className="space-y-1">
-            <h4 className="font-bold text-slate-900">3. Priority-Ranked</h4>
-            <p className="text-slate-600 leading-relaxed">
-              Ordered by solvency urgency, risk exposure severity, and overall financial health uplift.
-            </p>
-          </div>
-          <div className="space-y-1">
-            <h4 className="font-bold text-slate-900">4. Advisor Oversight</h4>
-            <p className="text-slate-600 leading-relaxed">
-              Acts as objective decision support for professional financial advisors and client discussion.
-            </p>
-          </div>
+      {/* 5. Bottom Advice Note */}
+      <section className="card bg-white p-4 rounded-xl border border-[#DBEAFE] flex items-start gap-3">
+        <ListChecks size={18} className="mt-0.5 text-[#1B3A6B] shrink-0" />
+        <div>
+          <div className="text-xs sm:text-sm font-bold text-[#1B3A6B]">Fiduciary Advisor Advisory Notice</div>
+          <p className="mt-0.5 max-w-2xl text-xs leading-relaxed text-[#4B6080]">
+            These recommendations are prioritized based on SEBI RIA fiduciary guidelines. Use the supporting rationale, evidence, and simulator to review trade-offs prior to client implementation.
+          </p>
         </div>
-      </div>
+      </section>
     </div>
   );
 };
