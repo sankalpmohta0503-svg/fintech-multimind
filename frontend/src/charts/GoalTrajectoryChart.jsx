@@ -6,7 +6,7 @@ const GoalTrajectoryChart = ({ data, goalName }) => {
   if (!data || !Array.isArray(data) || data.length === 0) {
     return (
       <div className="flex h-64 items-center justify-center text-sm text-[#4B6080]">
-        Trajectory data not available for this goal.
+        Trajectory data is not available for this goal.
       </div>
     );
   }
