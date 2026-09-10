@@ -8,7 +8,7 @@ function AboutUs() {
       <div>
         <h1 className="text-xl sm:text-2xl font-bold text-[#1B3A6B]">About Us</h1>
         <p className="text-[#4B6080] mt-1">
-          Learn about FinAuditX and our commitment to financial advisory excellence
+          Learn about FinAudit<span className="text-yellow-500 font-semibold">X</span> and our commitment to financial advisory excellence
         </p>
       </div>
       {/* Hero Banner */}
@@ -20,12 +20,14 @@ function AboutUs() {
                 <Building className="text-[#1D4ED8]" size={28} />
               </div>
               <div>
-                <h2 className="text-lg sm:text-xl font-bold text-[#1B3A6B]">FinAuditX</h2>
+                <h2 className="text-lg sm:text-xl font-bold text-[#1B3A6B]">
+                  FinAudit<span className="text-yellow-500">X</span>
+                </h2>
                 <p className="text-xs sm:text-sm text-[#4B6080]">Financial Co-Pilot • Audit & Advisory Platform</p>
               </div>
             </div>
             <p className="text-xs sm:text-sm text-[#1F3555] leading-relaxed">
-              FinAuditX is a comprehensive digital audit and advisory platform
+              FinAudit<span className="text-yellow-500 font-semibold">X</span> is a comprehensive digital audit and advisory platform
               designed to empower clients with reliable financial insights,
               improved compliance, and informed decision-making for a stronger
               financial future.
