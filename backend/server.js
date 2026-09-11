@@ -15,22 +15,28 @@ const PORT = 3001;
 app.use(cors());
 app.use(express.json());
 
-// Routes
-app.use('/api/client', clientRoutes);
-app.use('/api/audit', auditRoutes);
-app.use('/api/goals', goalsRoutes);
-app.use('/api/portfolio', portfolioRoutes);
-app.use('/api/simulation', simulationRoutes);
-app.use('/api/recommendations', recommendationsRoutes);
-app.use('/api/report', reportRoutes);
+// Routes registration helper
+const registerRoutes = (prefix = '') => {
+  app.use(`${prefix}/client`, clientRoutes);
+  app.use(`${prefix}/audit`, auditRoutes);
+  app.use(`${prefix}/goals`, goalsRoutes);
+  app.use(`${prefix}/portfolio`, portfolioRoutes);
+  app.use(`${prefix}/simulation`, simulationRoutes);
+  app.use(`${prefix}/recommendations`, recommendationsRoutes);
+  app.use(`${prefix}/report`, reportRoutes);
+  app.get(`${prefix}/health`, (req, res) => {
+    res.json({ status: 'ok', message: 'FinAuditX API is running' });
+  });
+};
 
-// Health check
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', message: 'FinAuditX API is running' });
-});
+// Register for both standard /api and direct serverless invocation
+registerRoutes('/api');
+registerRoutes('');
 
-app.listen(PORT, () => {
-  console.log(`FinAuditX Backend running on http://localhost:${PORT}`);
-});
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`FinAuditX Backend running on http://localhost:${PORT}`);
+  });
+}
 
 export default app;

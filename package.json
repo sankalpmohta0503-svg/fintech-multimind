@@ -3,17 +3,23 @@
   "version": "1.0.0",
   "description": "Intelligent Financial Advisory & Audit System",
   "private": true,
+  "type": "module",
   "workspaces": [
     "frontend",
     "backend"
   ],
   "scripts": {
+    "build": "cd frontend && npm run build",
     "install:all": "npm install",
     "dev:frontend": "cd frontend && npm run dev",
     "dev:backend": "cd backend && npm run dev",
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
     "build:frontend": "cd frontend && npm run build",
     "start:backend": "cd backend && npm start"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "cors": "^2.8.5"
   },
   "keywords": ["fintech", "financial", "audit", "advisory"],
   "author": "",
