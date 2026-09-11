@@ -1,0 +1,9 @@
+/* Space Grotesk gives the FinAuditX wordmark a distinct, geometric, fintech-appropriate
+   identity — used here and referenced by the same .font-finAudit utility in Footer.jsx,
+   so the brand mark reads consistently across the header and footer. */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&display=swap');
+
+.font-finAudit {
+  font-family: 'Space Grotesk', 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 700;
+}

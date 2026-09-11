@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import logo from "../assets/logo.png";
 import "./Footer.css";
 
 function Footer() {
@@ -10,9 +11,12 @@ function Footer() {
 
         {/* Brand / Contact */}
         <div className="p-6 lg:p-7 lg:border-r border-white/20">
-          <h2 className="text-lg sm:text-xl font-bold mb-4 tracking-wide text-white">
-            FinAudit<span className="text-yellow-400">X</span>
-          </h2>
+          <div className="flex items-center gap-2.5 mb-4">
+            <img src={logo} alt="FinAuditX" className="h-8 w-8 object-contain" />
+            <h2 className="text-lg sm:text-xl font-bold tracking-wide text-white">
+              FinAudit<span className="text-yellow-400">X</span>
+            </h2>
+          </div>
 
           <div className="space-y-2 text-xs sm:text-sm text-blue-100">
             <p>

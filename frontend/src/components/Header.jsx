@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import logo from "../assets/logo.png";
 import "./Header.css";
 
 const InstagramIcon = () => (
@@ -80,9 +81,7 @@ function Header() {
           {/* Left branding */}
           <div className="flex items-center gap-3 min-w-0">
             <Link to="/" className="flex items-center gap-3">
-              <div className="h-10 w-10 bg-[#1B3A6B] text-white flex items-center justify-center font-bold text-xs sm:text-sm shadow-sm">
-                FIN
-              </div>
+              <img src={logo} alt="FinAuditX Logo" className="h-10 w-10 object-contain" />
 
               <div className="min-w-0">
                 <h1 className="text-lg sm:text-xl font-bold text-[#1B3A6B] leading-none">
@@ -98,6 +97,9 @@ function Header() {
           {/* Center navigation & tagline */}
           <div className="hidden md:flex items-center gap-6">
             <Link to="/" className="text-xs sm:text-sm font-semibold text-[#1F3555] hover:text-[#EA580C] transition-colors">
+              Home
+            </Link>
+            <Link to="/dashboard" className="text-xs sm:text-sm font-semibold text-[#1F3555] hover:text-[#EA580C] transition-colors">
               Dashboard
             </Link>
             <Link to="/about" className="text-xs sm:text-sm font-semibold text-[#1F3555] hover:text-[#EA580C] transition-colors">

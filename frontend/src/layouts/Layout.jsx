@@ -18,9 +18,10 @@ import {
 import api from '../services/api';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import logo from '../assets/logo.png';
 
 const navigationGroups = [
-  { label: 'Overview', items: [{ name: 'Dashboard', path: '/', icon: LayoutDashboard }] },
+  { label: 'Overview', items: [{ name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard }] },
   {
     label: 'Understand',
     items: [
@@ -67,17 +68,24 @@ const Layout = ({ children }) => {
     };
   }, []);
 
-  const isActive = (path) => (path === '/' ? location.pathname === '/' : location.pathname.startsWith(path));
+  const isActive = (path) => (path === '/dashboard' ? location.pathname === '/dashboard' : location.pathname.startsWith(path));
 
   return (
     <div className="manus-page flex min-h-screen bg-[#E2E8F0] font-sans antialiased text-[#111827]">
       <aside className={`app-shell-chrome sticky top-0 flex h-screen shrink-0 flex-col bg-[#1B3A6B] text-blue-100 transition-all duration-200 ${sidebarOpen ? 'w-64' : 'w-[76px]'}`}>
         <div className={`flex h-[72px] items-center border-b border-blue-900/60 ${sidebarOpen ? 'justify-between px-5' : 'justify-center px-3'}`}>
-          {sidebarOpen && (
-            <div className="min-w-0">
-              <h1 className="text-xl font-bold tracking-tight text-white">FinAuditX</h1>
-              <p className="text-xs text-blue-300 mt-0.5">Advisor workspace</p>
+          {sidebarOpen ? (
+            <div className="flex items-center gap-2.5 min-w-0">
+              <img src={logo} alt="FinAuditX" className="h-8 w-8 object-contain shrink-0" />
+              <div className="min-w-0">
+                <h1 className="text-xl font-bold tracking-tight text-white leading-none">
+                  FinAudit<span className="text-yellow-400">X</span>
+                </h1>
+                <p className="text-xs text-blue-300 mt-1">Advisor workspace</p>
+              </div>
             </div>
+          ) : (
+            <img src={logo} alt="FinAuditX" className="h-8 w-8 object-contain" />
           )}
           <button type="button" onClick={() => setSidebarOpen((open) => !open)} className="rounded p-2 text-blue-300 transition-colors hover:bg-blue-900 hover:text-green-300" aria-label={sidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'}>
             {sidebarOpen ? <ChevronLeft size={18} /> : <ChevronRight size={18} />}
