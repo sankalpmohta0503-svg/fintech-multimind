@@ -32,3 +32,5 @@ app.get('/api/health', (req, res) => {
 app.listen(PORT, () => {
   console.log(`FinAuditX Backend running on http://localhost:${PORT}`);
 });
+
+export default app;
